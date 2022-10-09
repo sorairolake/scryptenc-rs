@@ -16,7 +16,8 @@ use scrypt::errors::InvalidParams;
 use scryptenc::{Decryptor, Error};
 
 const PASSWORD: &[u8] = b"password";
-const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
+// Same as `data/data.txt`.
+const TEST_DATA: &[u8] = b"Hello, world!\n";
 // Generated using `scrypt` version 1.3.1.
 const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.enc");
 
@@ -50,7 +51,7 @@ fn invalid_length() {
 #[test]
 fn invalid_magic_number() {
     let mut data = TEST_DATA_ENC.to_vec();
-    data[0] = 'b'.try_into().unwrap();
+    data[0] = u32::from('b').try_into().unwrap();
     let decrypted = decrypt(PASSWORD, &data).unwrap_err();
     assert_eq!(decrypted.to_string(), Error::InvalidMagicNumber.to_string());
 }
