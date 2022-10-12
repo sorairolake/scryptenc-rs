@@ -27,7 +27,7 @@ impl From<Version> for u8 {
 }
 
 /// Header of the scrypt encrypted data format.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Header {
     magic_number: [u8; 6],
     version: Version,
@@ -164,7 +164,7 @@ impl Header {
 }
 
 /// Derived key.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct DerivedKey {
     encrypt: [u8; 32],
     mac: [u8; 32],
@@ -190,7 +190,7 @@ impl DerivedKey {
 }
 
 /// Signature of the scrypt encrypted data format.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Signature([u8; 32]);
 
 impl Signature {

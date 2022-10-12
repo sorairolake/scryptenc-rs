@@ -16,7 +16,7 @@ use scrypt::Params;
 use crate::format::{self, DerivedKey, Header, Signature};
 
 /// Encryptor for the scrypt encrypted data format.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Encryptor {
     header: Header,
     dk: DerivedKey,

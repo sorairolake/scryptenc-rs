@@ -18,7 +18,7 @@ use crate::{
 };
 
 /// Decryptor for the scrypt encrypted data format.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Decryptor {
     header: Header,
     dk: DerivedKey,

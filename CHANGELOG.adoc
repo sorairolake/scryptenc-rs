@@ -17,6 +17,7 @@ toc::[]
 === Added
 
 * Add `Encryptor::out_len()` and `Decryptor::out_len()`
+* Add `Clone` for `Encryptor` and `Decryptor`
 
 === Changed
 
