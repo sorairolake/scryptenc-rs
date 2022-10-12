@@ -15,48 +15,53 @@ use scrypt::Params;
 use scryptenc::Encryptor;
 use sha2::{Digest, Sha256};
 
-fn encrypt() -> Vec<u8> {
+fn encrypt() -> Encryptor {
     let password = "password";
     let data = "Hello, world!";
 
     let params = Params::new(10, 1, 1).unwrap();
-    let cipher = Encryptor::with_params(password, &params, data);
-    cipher.encrypt_to_vec()
+    Encryptor::with_params(password, params, data)
 }
 
 #[test]
 fn magic_number() {
-    let encrypted = encrypt();
+    let encrypted = encrypt().encrypt_to_vec();
     assert_eq!(&encrypted[..6], b"scrypt");
 }
 
 #[test]
 fn version() {
-    let encrypted = encrypt();
+    let encrypted = encrypt().encrypt_to_vec();
     assert_eq!(encrypted[6], 0);
 }
 
 #[test]
 fn log_n() {
-    let encrypted = encrypt();
+    let encrypted = encrypt().encrypt_to_vec();
     assert_eq!(encrypted[7], 10);
 }
 
 #[test]
 fn r() {
-    let encrypted = encrypt();
+    let encrypted = encrypt().encrypt_to_vec();
     assert_eq!(&encrypted[8..12], u32::to_be_bytes(1));
 }
 
 #[test]
 fn p() {
-    let encrypted = encrypt();
+    let encrypted = encrypt().encrypt_to_vec();
     assert_eq!(&encrypted[12..16], u32::to_be_bytes(1));
 }
 
 #[test]
 fn checksum() {
-    let encrypted = encrypt();
+    let encrypted = encrypt().encrypt_to_vec();
     let checksum = Sha256::digest(&encrypted[..48]);
     assert_eq!(&encrypted[48..64], &checksum[..16]);
+}
+
+#[test]
+fn out_len() {
+    let cipher = encrypt();
+    assert_eq!(cipher.out_len(), 141);
 }

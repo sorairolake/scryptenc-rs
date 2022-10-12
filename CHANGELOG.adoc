@@ -26,6 +26,7 @@ toc::[]
 * Rename `Encryptor::new()` to `Encryptor::with_params()`
 * Change `Encryptor::new()` to use the recommended scrypt parameters instead of
   taking parameters
+* Change the structure of types about the format
 
 == {project-url}/releases/tag/v0.1.0[0.1.0] - 2022-10-09
 

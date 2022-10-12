@@ -115,3 +115,9 @@ fn invalid_signature() {
         Error::InvalidSignature(MacError).to_string()
     );
 }
+
+#[test]
+fn out_len() {
+    let cipher = Decryptor::new(PASSWORD, TEST_DATA_ENC).unwrap();
+    assert_eq!(cipher.out_len(), 14);
+}
