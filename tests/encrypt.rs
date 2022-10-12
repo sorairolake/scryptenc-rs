@@ -20,8 +20,8 @@ fn encrypt() -> Vec<u8> {
     let data = "Hello, world!";
 
     let params = Params::new(10, 1, 1).unwrap();
-    let cipher = Encryptor::new(password, &params, data);
-    cipher.encrypt_to_vec().unwrap()
+    let cipher = Encryptor::with_params(password, &params, data);
+    cipher.encrypt_to_vec()
 }
 
 #[test]

@@ -22,8 +22,7 @@ fn main() {
     let password = password.trim_end();
 
     let plaintext = std::fs::read(from).unwrap();
-    let params = scrypt::Params::recommended();
-    let cipher = scryptenc::Encryptor::new(password, &params, plaintext);
-    let encrypted = cipher.encrypt_to_vec().unwrap();
+    let cipher = scryptenc::Encryptor::new(password, plaintext);
+    let encrypted = cipher.encrypt_to_vec();
     std::fs::write(to, encrypted).unwrap();
 }
