@@ -6,24 +6,17 @@
 
 //! Encrypts to the scrypt encrypted data format.
 
-use std::io::Write;
-
 use aes::{
     cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher},
     Aes256,
 };
 use ctr::Ctr128BE;
-use rand::{Rng, SeedableRng};
-use rand_chacha::ChaCha20Rng;
 use scrypt::Params;
 
-use crate::{
-    error::Error,
-    format::{self, DerivedKey, Header, Version},
-};
+use crate::format::{self, DerivedKey, Header, Signature};
 
 /// Encryptor for the scrypt encrypted data format.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Encryptor {
     header: Header,
     dk: DerivedKey,
@@ -31,71 +24,69 @@ pub struct Encryptor {
 }
 
 impl Encryptor {
-    #[allow(clippy::missing_panics_doc)]
     /// Creates a new `Encryptor`.
-    pub fn new(password: impl AsRef<[u8]>, params: &Params, data: impl AsRef<[u8]>) -> Self {
-        fn generate_salt() -> [u8; 32] {
-            let mut rng = ChaCha20Rng::from_entropy();
-            rng.gen()
-        }
-
-        let salt = generate_salt();
-
-        let mut dk: [u8; 64] = [u8::default(); 64];
-        scrypt::scrypt(password.as_ref(), &salt, params, &mut dk).unwrap();
-
-        let mut header: [u8; 96] = [u8::default(); 96];
-        header[..6].copy_from_slice(b"scrypt");
-        header[6] = Version::V0.into();
-        header[7] = params.log_n();
-        header[8..12].copy_from_slice(&params.r().to_be_bytes());
-        header[12..16].copy_from_slice(&params.p().to_be_bytes());
-        header[16..48].copy_from_slice(&salt);
-
-        let processed: [u8; 48] = header[..48].try_into().unwrap();
-        header[48..64].copy_from_slice(&format::compute_checksum(&processed));
-
-        let processed: [u8; 64] = header[..64].try_into().unwrap();
-        header[64..].copy_from_slice(&format::compute_signature(&dk[32..], &processed));
-
-        let header = Header::new(header);
-        let dk = DerivedKey::new(dk);
-        let data = data.as_ref().to_vec();
-        Self { header, dk, data }
+    ///
+    /// This uses the recommended values for the scrypt parameters which is
+    /// sufficient for most use-cases.
+    pub fn new(password: impl AsRef<[u8]>, data: impl AsRef<[u8]>) -> Self {
+        Self::with_params(password, Params::recommended(), data)
     }
 
-    /// Encrypt data in place.
+    #[allow(clippy::missing_panics_doc)]
+    /// Creates a new `Encryptor`.
+    pub fn with_params(password: impl AsRef<[u8]>, params: Params, data: impl AsRef<[u8]>) -> Self {
+        let inner = |password: &[u8], params: Params, data: &[u8]| -> Self {
+            let mut header = Header::new(params);
+
+            let mut dk: [u8; 64] = [u8::default(); 64];
+            scrypt::scrypt(password, &header.salt(), &params, &mut dk).unwrap();
+            let dk = DerivedKey::new(dk);
+
+            header.compute_checksum();
+            header.compute_signature(&dk);
+
+            let data = data.to_vec();
+            Self { header, dk, data }
+        };
+        inner(password.as_ref(), params, data.as_ref())
+    }
+
+    /// Encrypt data into `buf`.
     ///
-    /// # Errors
+    /// # Panics
     ///
-    /// Returns `Err` if I/O operations fails.
-    pub fn encrypt(self, mut buf: impl Write) -> Result<(), Error> {
-        type Aes256Ctr128BE = Ctr128BE<Aes256>;
+    /// Panics if `buf` and the encrypted data have different lengths.
+    pub fn encrypt(self, mut buf: impl AsMut<[u8]>) {
+        let inner = |encryptor: Self, buf: &mut [u8]| {
+            type Aes256Ctr128BE = Ctr128BE<Aes256>;
 
-        let dk = self.dk.as_bytes();
-        let mut cipher = Aes256Ctr128BE::new(dk[..32].into(), &GenericArray::default());
-        let mut data = self.data;
-        cipher.apply_keystream(&mut data);
+            let bound = (Header::size(), encryptor.out_len() - Signature::size());
 
-        let mut output = self.header.as_bytes().to_vec();
-        output.append(&mut data);
+            let mut cipher =
+                Aes256Ctr128BE::new(&encryptor.dk.encrypt().into(), &GenericArray::default());
+            let mut data = encryptor.data;
+            cipher.apply_keystream(&mut data);
 
-        let processed = output.clone();
-        let signature = format::compute_signature(&dk[32..], &processed);
-        output.extend_from_slice(&signature);
+            buf[..bound.0].copy_from_slice(&encryptor.header.as_bytes());
+            buf[bound.0..bound.1].copy_from_slice(&data);
 
-        buf.write_all(&output)?;
-        Ok(())
+            let signature = format::compute_signature(&encryptor.dk.mac(), &buf[..bound.1]);
+            buf[bound.1..].copy_from_slice(&signature);
+        };
+        inner(self, buf.as_mut());
     }
 
     /// Encrypt data and into a newly allocated `Vec`.
-    ///
-    /// # Errors
-    ///
-    /// Returns `Err` if I/O operations fails.
-    pub fn encrypt_to_vec(self) -> Result<Vec<u8>, Error> {
-        let mut buf = Vec::new();
-        self.encrypt(&mut buf)?;
-        Ok(buf)
+    #[must_use]
+    pub fn encrypt_to_vec(self) -> Vec<u8> {
+        let mut buf = vec![u8::default(); self.out_len()];
+        self.encrypt(&mut buf);
+        buf
+    }
+
+    /// Returns the number of output bytes of the encrypted data.
+    #[must_use]
+    pub fn out_len(&self) -> usize {
+        Header::size() + self.data.len() + Signature::size()
     }
 }

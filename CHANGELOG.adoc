@@ -12,6 +12,23 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 toc::[]
 
+== {compare-url}/v0.1.0\...v0.2.0[0.2.0] - 2022-10-14
+
+=== Added
+
+* Add `Encryptor::out_len()` and `Decryptor::out_len()`
+* Add `Clone` for `Encryptor` and `Decryptor`
+
+=== Changed
+
+* Change the type of parameters for `Encryptor::encrypt()` and
+  `Decryptor::decrypt()`.
+  These now takes `impl AsMut<[u8]>`.
+* Rename `Encryptor::new()` to `Encryptor::with_params()`
+* Change `Encryptor::new()` to use the recommended scrypt parameters instead of
+  taking parameters
+* Change the structure of types about the format
+
 == {project-url}/releases/tag/v0.1.0[0.1.0] - 2022-10-09
 
 === Added
