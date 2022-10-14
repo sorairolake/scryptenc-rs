@@ -16,7 +16,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.1.0"
+scryptenc = "0.2.0"
 ```
 
 ### Documentation
