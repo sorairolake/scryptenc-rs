@@ -38,7 +38,7 @@ impl Encryptor {
         let inner = |password: &[u8], params: Params, data: &[u8]| -> Self {
             let mut header = Header::new(params);
 
-            let mut dk: [u8; 64] = [u8::default(); 64];
+            let mut dk = [u8::default(); 64];
             scrypt::scrypt(password, &header.salt(), &params, &mut dk).unwrap();
             let dk = DerivedKey::new(dk);
 
@@ -86,6 +86,7 @@ impl Encryptor {
 
     /// Returns the number of output bytes of the encrypted data.
     #[must_use]
+    #[inline]
     pub fn out_len(&self) -> usize {
         Header::size() + self.data.len() + Signature::size()
     }

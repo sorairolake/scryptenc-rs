@@ -133,7 +133,7 @@ impl Header {
 
     /// Converts this header to a byte array.
     pub fn as_bytes(&self) -> [u8; 96] {
-        let mut header: [u8; 96] = [u8::default(); 96];
+        let mut header = [u8::default(); 96];
         header[..6].copy_from_slice(&self.magic_number);
         header[6] = self.version.into();
         header[7] = self.params.log_n();
@@ -219,7 +219,6 @@ pub struct Params {
 }
 
 impl Params {
-    #[allow(clippy::missing_panics_doc)]
     /// Creates a new instance of the scrypt parameters from `data`.
     ///
     /// # Errors
@@ -238,24 +237,28 @@ impl Params {
 
     /// Gets log2 of the scrypt parameter `N`.
     #[must_use]
+    #[inline]
     pub const fn log_n(&self) -> u8 {
         self.log_n
     }
 
     /// Gets `N` parameter.
     #[must_use]
+    #[inline]
     pub const fn n(&self) -> u64 {
         1 << self.log_n
     }
 
     /// Gets `r` parameter.
     #[must_use]
+    #[inline]
     pub const fn r(&self) -> u32 {
         self.r
     }
 
     /// Gets `p` parameter.
     #[must_use]
+    #[inline]
     pub const fn p(&self) -> u32 {
         self.p
     }
@@ -302,6 +305,11 @@ mod tests {
     use std::str;
 
     use super::*;
+
+    #[test]
+    fn version() {
+        assert_eq!(Version::V0 as u8, 0);
+    }
 
     #[test]
     fn magic_number() {

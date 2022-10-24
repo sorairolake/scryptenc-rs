@@ -54,7 +54,7 @@ fn incorrect_password() {
 
 #[test]
 fn invalid_length() {
-    let data: [u8; 127] = [u8::default(); 127];
+    let data = [u8::default(); 127];
     let decrypted = Decryptor::new(PASSWORD, data)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
