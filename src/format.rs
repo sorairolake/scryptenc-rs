@@ -308,6 +308,11 @@ mod tests {
     use super::*;
 
     #[test]
+    fn version() {
+        assert_eq!(Version::V0 as u8, 0);
+    }
+
+    #[test]
     fn magic_number() {
         assert_eq!(str::from_utf8(&Header::MAGIC_NUMBER).unwrap(), "scrypt");
     }
