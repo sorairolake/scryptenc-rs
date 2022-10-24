@@ -86,6 +86,7 @@ impl Encryptor {
 
     /// Returns the number of output bytes of the encrypted data.
     #[must_use]
+    #[inline]
     pub fn out_len(&self) -> usize {
         Header::size() + self.data.len() + Signature::size()
     }

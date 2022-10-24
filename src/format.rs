@@ -238,24 +238,28 @@ impl Params {
 
     /// Gets log2 of the scrypt parameter `N`.
     #[must_use]
+    #[inline]
     pub const fn log_n(&self) -> u8 {
         self.log_n
     }
 
     /// Gets `N` parameter.
     #[must_use]
+    #[inline]
     pub const fn n(&self) -> u64 {
         1 << self.log_n
     }
 
     /// Gets `r` parameter.
     #[must_use]
+    #[inline]
     pub const fn r(&self) -> u32 {
         self.r
     }
 
     /// Gets `p` parameter.
     #[must_use]
+    #[inline]
     pub const fn p(&self) -> u32 {
         self.p
     }

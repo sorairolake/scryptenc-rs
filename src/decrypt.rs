@@ -107,6 +107,7 @@ impl Decryptor {
 
     /// Returns the number of output bytes of the decrypted data.
     #[must_use]
+    #[inline]
     pub fn out_len(&self) -> usize {
         self.data.len()
     }
