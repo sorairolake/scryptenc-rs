@@ -133,7 +133,7 @@ impl Header {
 
     /// Converts this header to a byte array.
     pub fn as_bytes(&self) -> [u8; 96] {
-        let mut header: [u8; 96] = [u8::default(); 96];
+        let mut header = [u8::default(); 96];
         header[..6].copy_from_slice(&self.magic_number);
         header[6] = self.version.into();
         header[7] = self.params.log_n();

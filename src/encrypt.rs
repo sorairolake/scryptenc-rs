@@ -38,7 +38,7 @@ impl Encryptor {
         let inner = |password: &[u8], params: Params, data: &[u8]| -> Self {
             let mut header = Header::new(params);
 
-            let mut dk: [u8; 64] = [u8::default(); 64];
+            let mut dk = [u8::default(); 64];
             scrypt::scrypt(password, &header.salt(), &params, &mut dk).unwrap();
             let dk = DerivedKey::new(dk);
 

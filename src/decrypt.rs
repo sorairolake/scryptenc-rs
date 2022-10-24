@@ -46,7 +46,7 @@ impl Decryptor {
 
             header.verify_checksum(&data[48..64])?;
 
-            let mut dk: [u8; 64] = [u8::default(); 64];
+            let mut dk = [u8::default(); 64];
             scrypt::scrypt(password, &header.salt(), &header.params(), &mut dk).unwrap();
             let dk = DerivedKey::new(dk);
 
