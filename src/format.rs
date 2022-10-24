@@ -219,7 +219,6 @@ pub struct Params {
 }
 
 impl Params {
-    #[allow(clippy::missing_panics_doc)]
     /// Creates a new instance of the scrypt parameters from `data`.
     ///
     /// # Errors
