@@ -26,5 +26,5 @@ thiserror = "1.0.37"
 
 [dev-dependencies]
 anyhow = "1.0.66"
-clap = { version = "3.2.23", features = ["derive"] }
+clap = { version = "4.0.18", features = ["derive"] }
 dialoguer = { version = "0.10.2", default-features = false, features = ["password"] }
