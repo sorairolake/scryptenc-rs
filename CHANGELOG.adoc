@@ -12,6 +12,12 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 toc::[]
 
+== {compare-url}/v0.3.0\...HEAD[Unreleased]
+
+=== Changed
+
+* Change password input prompt of examples
+
 == {compare-url}/v0.2.1\...v0.3.0[0.3.0] - 2022-10-31
 
 === Changed

@@ -35,8 +35,8 @@ fn main() -> anyhow::Result<()> {
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
     let password = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
-        .with_prompt("Password")
-        .with_confirmation("Confirm password", "Password mismatch")
+        .with_prompt("Enter password")
+        .with_confirmation("Confirm password", "Passwords mismatch, try again")
         .interact()
         .context("could not read password")?;
     let cipher = scryptenc::Encryptor::new(plaintext, password);
