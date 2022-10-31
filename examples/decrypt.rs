@@ -13,16 +13,39 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-fn main() {
-    let args: Vec<_> = std::env::args_os().skip(1).take(2).collect();
-    let (from, to) = (args.get(0).unwrap(), args.get(1).unwrap());
+use anyhow::Context;
+use clap::Parser;
 
-    let mut password = String::new();
-    std::io::stdin().read_line(&mut password).unwrap();
-    let password = password.trim_end();
+#[derive(Debug, Parser)]
+#[clap(version, about)]
+struct Opt {
+    /// File to decrypt.
+    #[clap(value_name("INFILE"))]
+    input: std::path::PathBuf,
 
-    let ciphertext = std::fs::read(from).unwrap();
-    let cipher = scryptenc::Decryptor::new(password, ciphertext).unwrap();
-    let decrypted = cipher.decrypt_to_vec().unwrap();
-    std::fs::write(to, decrypted).unwrap();
+    /// File to write the result to.
+    #[clap(value_name("OUTFILE"))]
+    output: std::path::PathBuf,
+}
+
+fn main() -> anyhow::Result<()> {
+    let opt = Opt::parse();
+
+    let ciphertext = std::fs::read(&opt.input)
+        .with_context(|| format!("could not read data from {}", opt.input.display()))?;
+
+    let password = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
+        .with_prompt("Password")
+        .interact()
+        .context("could not read password")?;
+    let cipher = match scryptenc::Decryptor::new(ciphertext, password) {
+        c @ Err(scryptenc::Error::InvalidSignature(_)) => c.context("password is incorrect"),
+        c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
+    }?;
+    let decrypted = cipher
+        .decrypt_to_vec()
+        .with_context(|| format!("{} is corrupted", opt.input.display()))?;
+    std::fs::write(opt.output, decrypted)
+        .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
+    Ok(())
 }

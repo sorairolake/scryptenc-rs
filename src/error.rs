@@ -16,15 +16,15 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum Error {
     /// The length of the encrypted data was less than 128 bytes.
-    #[error("The encrypted data size `{0}` bytes is too small")]
+    #[error("encrypted data size `{0}` bytes is too small")]
     InvalidLength(usize),
 
     /// The magic number was invalid.
-    #[error("The magic number is invalid")]
+    #[error("invalid magic number")]
     InvalidMagicNumber,
 
     /// The version was the unrecognized scrypt version number.
-    #[error("The version number `{0}` is unrecognized")]
+    #[error("unknown version number `{0}`")]
     UnknownVersion(u8),
 
     /// The scrypt parameters were invalid.
@@ -32,7 +32,7 @@ pub enum Error {
     InvalidParams(#[from] InvalidParams),
 
     /// The checksum of the header mismatched.
-    #[error("The checksum mismatch")]
+    #[error("checksum mismatch")]
     InvalidChecksum,
 
     /// The MAC mismatched.

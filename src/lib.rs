@@ -19,19 +19,19 @@
 //! let data = b"Hello, world!";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = Params::new(10, 1, 1).unwrap();
-//! let cipher = Encryptor::with_params(password, params, data);
+//! let params = Params::new(10, 8, 1).unwrap();
+//! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
 //!
 //! // And decrypt it back.
-//! let cipher = Decryptor::new(password, encrypted).unwrap();
+//! let cipher = Decryptor::new(encrypted, password).unwrap();
 //! let decrypted = cipher.decrypt_to_vec().unwrap();
 //! assert_eq!(decrypted, data);
 //! ```
 //!
 //! [specification-url]: https://github.com/Tarsnap/scrypt/blob/d7a543fb19dca17688e34947aee4558a94200877/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.2.1/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.3.0/")]
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
 #![deny(missing_debug_implementations, missing_docs)]
