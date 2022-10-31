@@ -212,11 +212,7 @@ impl Signature {
 
 /// The scrypt parameters.
 #[derive(Clone, Copy, Debug)]
-pub struct Params {
-    log_n: u8,
-    r: u32,
-    p: u32,
-}
+pub struct Params(scrypt::Params);
 
 impl Params {
     /// Creates a new instance of the scrypt parameters from `data`.
@@ -230,55 +226,36 @@ impl Params {
     /// - The version number other than `0`.
     /// - The scrypt parameters are invalid.
     pub fn new(data: impl AsRef<[u8]>) -> Result<Self, Error> {
-        Header::parse(data.as_ref())
-            .map(|h| h.params())
-            .map(Self::from)
+        let params = Header::parse(data.as_ref()).map(|h| h.params())?;
+        Ok(Self(params))
     }
 
     /// Gets log2 of the scrypt parameter `N`.
     #[must_use]
     #[inline]
-    pub const fn log_n(&self) -> u8 {
-        self.log_n
+    pub fn log_n(&self) -> u8 {
+        self.0.log_n()
     }
 
     /// Gets `N` parameter.
     #[must_use]
     #[inline]
-    pub const fn n(&self) -> u64 {
-        1 << self.log_n
+    pub fn n(&self) -> u64 {
+        1 << self.0.log_n()
     }
 
     /// Gets `r` parameter.
     #[must_use]
     #[inline]
-    pub const fn r(&self) -> u32 {
-        self.r
+    pub fn r(&self) -> u32 {
+        self.0.r()
     }
 
     /// Gets `p` parameter.
     #[must_use]
     #[inline]
-    pub const fn p(&self) -> u32 {
-        self.p
-    }
-}
-
-impl From<scrypt::Params> for Params {
-    fn from(params: scrypt::Params) -> Self {
-        Self {
-            log_n: params.log_n(),
-            r: params.r(),
-            p: params.p(),
-        }
-    }
-}
-
-impl TryFrom<Params> for scrypt::Params {
-    type Error = scrypt::errors::InvalidParams;
-
-    fn try_from(params: Params) -> Result<Self, Self::Error> {
-        Self::new(params.log_n(), params.r(), params.p())
+    pub fn p(&self) -> u32 {
+        self.0.p()
     }
 }
 

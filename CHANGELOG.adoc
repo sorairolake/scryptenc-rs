@@ -12,6 +12,17 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 toc::[]
 
+== {compare-url}/v0.2.1\...HEAD[Unreleased]
+
+=== Changed
+
+* Change the inner structure of `Params`
+
+=== Removed
+
+* Remove `From<scrypt::Params>` for `Params`
+* Remove `TryFrom<Params>` for `scrypt::Params`
+
 == {compare-url}/v0.2.0\...v0.2.1[0.2.1] - 2022-10-24
 
 === Added

@@ -37,7 +37,7 @@ fn n() {
 #[test]
 fn r() {
     let params = Params::new(TEST_DATA_ENC).unwrap();
-    assert_eq!(params.r(), 1);
+    assert_eq!(params.r(), 8);
 }
 
 #[test]
