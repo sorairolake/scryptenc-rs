@@ -13,16 +13,35 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-fn main() {
-    let args: Vec<_> = std::env::args_os().skip(1).take(2).collect();
-    let (from, to) = (args.get(0).unwrap(), args.get(1).unwrap());
+use anyhow::Context;
+use clap::Parser;
 
-    let mut password = String::new();
-    std::io::stdin().read_line(&mut password).unwrap();
-    let password = password.trim_end();
+#[derive(Debug, Parser)]
+#[command(version, about)]
+struct Opt {
+    /// File to encrypt.
+    #[arg(value_name("INFILE"))]
+    input: std::path::PathBuf,
 
-    let plaintext = std::fs::read(from).unwrap();
+    /// File to write the result to.
+    #[arg(value_name("OUTFILE"))]
+    output: std::path::PathBuf,
+}
+
+fn main() -> anyhow::Result<()> {
+    let opt = Opt::parse();
+
+    let plaintext = std::fs::read(&opt.input)
+        .with_context(|| format!("could not read data from {}", opt.input.display()))?;
+
+    let password = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
+        .with_prompt("Password")
+        .with_confirmation("Confirm password", "Password mismatch")
+        .interact()
+        .context("could not read password")?;
     let cipher = scryptenc::Encryptor::new(password, plaintext);
     let encrypted = cipher.encrypt_to_vec();
-    std::fs::write(to, encrypted).unwrap();
+    std::fs::write(opt.output, encrypted)
+        .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
+    Ok(())
 }

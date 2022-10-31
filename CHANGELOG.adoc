@@ -18,6 +18,7 @@ toc::[]
 
 * Change the inner structure of `Params`
 * Change error message
+* Update examples
 
 === Removed
 
