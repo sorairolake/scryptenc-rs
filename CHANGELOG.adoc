@@ -17,6 +17,7 @@ toc::[]
 === Changed
 
 * Change the inner structure of `Params`
+* Change error message
 
 === Removed
 
