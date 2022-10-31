@@ -17,10 +17,10 @@ use anyhow::Context;
 use clap::Parser;
 
 #[derive(Debug, Parser)]
-#[command(version, about)]
+#[clap(version, about)]
 struct Opt {
     /// File to print the scrypt parameters.
-    #[arg(value_name("FILE"))]
+    #[clap(value_name("FILE"))]
     input: std::path::PathBuf,
 }
 

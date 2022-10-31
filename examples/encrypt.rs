@@ -17,14 +17,14 @@ use anyhow::Context;
 use clap::Parser;
 
 #[derive(Debug, Parser)]
-#[command(version, about)]
+#[clap(version, about)]
 struct Opt {
     /// File to encrypt.
-    #[arg(value_name("INFILE"))]
+    #[clap(value_name("INFILE"))]
     input: std::path::PathBuf,
 
     /// File to write the result to.
-    #[arg(value_name("OUTFILE"))]
+    #[clap(value_name("OUTFILE"))]
     output: std::path::PathBuf,
 }
 
