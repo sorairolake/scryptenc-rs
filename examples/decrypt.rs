@@ -38,7 +38,7 @@ fn main() -> anyhow::Result<()> {
         .with_prompt("Password")
         .interact()
         .context("could not read password")?;
-    let cipher = match scryptenc::Decryptor::new(password, ciphertext) {
+    let cipher = match scryptenc::Decryptor::new(ciphertext, password) {
         c @ Err(scryptenc::Error::InvalidSignature(_)) => c.context("password is incorrect"),
         c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
     }?;

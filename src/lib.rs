@@ -20,11 +20,11 @@
 //!
 //! // Encrypt `data` using `password`.
 //! let params = Params::new(10, 8, 1).unwrap();
-//! let cipher = Encryptor::with_params(password, params, data);
+//! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
 //!
 //! // And decrypt it back.
-//! let cipher = Decryptor::new(password, encrypted).unwrap();
+//! let cipher = Decryptor::new(encrypted, password).unwrap();
 //! let decrypted = cipher.decrypt_to_vec().unwrap();
 //! assert_eq!(decrypted, data);
 //! ```

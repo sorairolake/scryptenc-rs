@@ -39,7 +39,7 @@ fn main() -> anyhow::Result<()> {
         .with_confirmation("Confirm password", "Password mismatch")
         .interact()
         .context("could not read password")?;
-    let cipher = scryptenc::Encryptor::new(password, plaintext);
+    let cipher = scryptenc::Encryptor::new(plaintext, password);
     let encrypted = cipher.encrypt_to_vec();
     std::fs::write(opt.output, encrypted)
         .with_context(|| format!("could not write the result to {}", opt.input.display()))?;

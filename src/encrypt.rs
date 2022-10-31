@@ -28,14 +28,14 @@ impl Encryptor {
     ///
     /// This uses the recommended values for the scrypt parameters which is
     /// sufficient for most use-cases.
-    pub fn new(password: impl AsRef<[u8]>, data: impl AsRef<[u8]>) -> Self {
-        Self::with_params(password, Params::recommended(), data)
+    pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Self {
+        Self::with_params(data, password, Params::recommended())
     }
 
     #[allow(clippy::missing_panics_doc)]
     /// Creates a new `Encryptor`.
-    pub fn with_params(password: impl AsRef<[u8]>, params: Params, data: impl AsRef<[u8]>) -> Self {
-        let inner = |password: &[u8], params: Params, data: &[u8]| -> Self {
+    pub fn with_params(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>, params: Params) -> Self {
+        let inner = |data: &[u8], password: &[u8], params: Params| -> Self {
             let mut header = Header::new(params);
 
             let mut dk = [u8::default(); 64];
@@ -48,7 +48,7 @@ impl Encryptor {
             let data = data.to_vec();
             Self { header, dk, data }
         };
-        inner(password.as_ref(), params, data.as_ref())
+        inner(data.as_ref(), password.as_ref(), params)
     }
 
     /// Encrypt data into `buf`.

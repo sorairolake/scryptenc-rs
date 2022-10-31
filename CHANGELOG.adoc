@@ -19,6 +19,7 @@ toc::[]
 * Change the inner structure of `Params`
 * Change error message
 * Update examples
+* Change order of parameters in public API
 
 === Removed
 

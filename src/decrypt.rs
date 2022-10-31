@@ -40,8 +40,8 @@ impl Decryptor {
     /// - The scrypt parameters are invalid.
     /// - SHA-256 checksum of the header mismatch.
     /// - HMAC-SHA-256 signature of the header mismatch.
-    pub fn new(password: impl AsRef<[u8]>, data: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let inner = |password: &[u8], data: &[u8]| -> Result<Self, Error> {
+    pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Result<Self, Error> {
+        let inner = |data: &[u8], password: &[u8]| -> Result<Self, Error> {
             let mut header = Header::parse(data)?;
 
             header.verify_checksum(&data[48..64])?;
@@ -63,7 +63,7 @@ impl Decryptor {
                 signature,
             })
         };
-        inner(password.as_ref(), data.as_ref())
+        inner(data.as_ref(), password.as_ref())
     }
 
     /// Decrypt data into `buf`.
