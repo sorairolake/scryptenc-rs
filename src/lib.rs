@@ -31,7 +31,7 @@
 //!
 //! [specification-url]: https://github.com/Tarsnap/scrypt/blob/d7a543fb19dca17688e34947aee4558a94200877/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.2.1/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.3.0/")]
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
 #![deny(missing_debug_implementations, missing_docs)]
