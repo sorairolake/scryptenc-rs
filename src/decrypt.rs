@@ -46,8 +46,12 @@ impl Decryptor {
 
             header.verify_checksum(&data[48..64])?;
 
+            // The derived key size is 64 bytes.
+            // The first 256 bits are for AES-256-CTR key, and the last 256 bits are for
+            // HMAC-SHA-256 key.
             let mut dk = [u8::default(); 64];
-            scrypt::scrypt(password, &header.salt(), &header.params(), &mut dk).unwrap();
+            scrypt::scrypt(password, &header.salt(), &header.params(), &mut dk)
+                .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
             header.verify_signature(&dk, &data[64..Header::size()])?;
@@ -55,7 +59,11 @@ impl Decryptor {
             let (data, signature) =
                 data[Header::size()..].split_at(data.len() - Header::size() - Signature::size());
             let data = data.to_vec();
-            let signature = Signature::new(signature.try_into().unwrap());
+            let signature = Signature::new(
+                signature
+                    .try_into()
+                    .expect("output size of HMAC-SHA-256 should be 256 bits"),
+            );
             Ok(Self {
                 header,
                 dk,

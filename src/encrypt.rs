@@ -38,8 +38,12 @@ impl Encryptor {
         let inner = |data: &[u8], password: &[u8], params: Params| -> Self {
             let mut header = Header::new(params);
 
+            // The derived key size is 64 bytes.
+            // The first 256 bits are for AES-256-CTR key, and the last 256 bits are for
+            // HMAC-SHA-256 key.
             let mut dk = [u8::default(); 64];
-            scrypt::scrypt(password, &header.salt(), &params, &mut dk).unwrap();
+            scrypt::scrypt(password, &header.salt(), &params, &mut dk)
+                .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
             header.compute_checksum();
