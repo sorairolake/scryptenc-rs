@@ -17,6 +17,7 @@ toc::[]
 === Changed
 
 * Change password input prompt of examples
+* Change `Result::unwrap()` to `Result::expect()`
 
 == {compare-url}/v0.2.1\...v0.3.0[0.3.0] - 2022-10-31
 

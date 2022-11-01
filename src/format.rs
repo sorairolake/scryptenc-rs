@@ -84,10 +84,20 @@ impl Header {
             Err(Error::UnknownVersion(data[6]))
         }?;
         let log_n = data[7];
-        let r = u32::from_be_bytes(data[8..12].try_into().unwrap());
-        let p = u32::from_be_bytes(data[12..16].try_into().unwrap());
+        let r = u32::from_be_bytes(
+            data[8..12]
+                .try_into()
+                .expect("size of `r` parameter should be 4 bytes"),
+        );
+        let p = u32::from_be_bytes(
+            data[12..16]
+                .try_into()
+                .expect("size of `p` parameter should be 4 bytes"),
+        );
         let params = scrypt::Params::new(log_n, r, p).map_err(Error::from)?;
-        let salt = data[16..48].try_into().unwrap();
+        let salt = data[16..48]
+            .try_into()
+            .expect("size of salt should be 32 bytes");
 
         let checksum = Default::default();
         let signature = Default::default();
@@ -173,8 +183,12 @@ pub struct DerivedKey {
 impl DerivedKey {
     /// Creates a new `DerivedKey`.
     pub fn new(dk: [u8; 64]) -> Self {
-        let encrypt = dk[..32].try_into().unwrap();
-        let mac = dk[32..].try_into().unwrap();
+        let encrypt = dk[..32]
+            .try_into()
+            .expect("AES-256-CTR key size should be 256 bits");
+        let mac = dk[32..]
+            .try_into()
+            .expect("HMAC-SHA-256 key size should be 256 bits");
         Self { encrypt, mac }
     }
 
@@ -263,7 +277,8 @@ impl Params {
 pub fn compute_signature(key: &[u8], data: &[u8]) -> [u8; 32] {
     type HmacSha256 = Hmac<Sha256>;
 
-    let mut mac = HmacSha256::new_from_slice(key).unwrap();
+    let mut mac =
+        HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
     mac.update(data);
     mac.finalize().into_bytes().into()
 }
@@ -272,7 +287,8 @@ pub fn compute_signature(key: &[u8], data: &[u8]) -> [u8; 32] {
 pub fn verify_signature(key: &[u8], data: &[u8], signature: &[u8]) -> Result<(), MacError> {
     type HmacSha256 = Hmac<Sha256>;
 
-    let mut mac = HmacSha256::new_from_slice(key).unwrap();
+    let mut mac =
+        HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
     mac.update(data);
     mac.verify(signature.into())
 }
