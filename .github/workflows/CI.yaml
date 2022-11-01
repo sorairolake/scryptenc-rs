@@ -47,12 +47,12 @@ jobs:
       with:
         key: ${{ matrix.target }}
     - name: Build a package
-      uses: actions-rs/cargo@v1.0.1
+      uses: actions-rs/cargo@v1.0.3
       with:
         command: build
         args: --target ${{ matrix.target }}
     - name: Run tests
-      uses: actions-rs/cargo@v1.0.1
+      uses: actions-rs/cargo@v1.0.3
       with:
         command: test
         args: --target ${{ matrix.target }}
@@ -73,7 +73,7 @@ jobs:
     - name: Cache build artifacts
       uses: Swatinem/rust-cache@v1.3.0
     - name: Check code formatted
-      uses: actions-rs/cargo@v1.0.1
+      uses: actions-rs/cargo@v1.0.3
       with:
         command: fmt
         args: -- --check
@@ -94,7 +94,7 @@ jobs:
     - name: Cache build artifacts
       uses: Swatinem/rust-cache@v1.3.0
     - name: Check no lint warnings
-      uses: actions-rs/cargo@v1.0.1
+      uses: actions-rs/cargo@v1.0.3
       with:
         command: clippy
         args: -- -D warnings
