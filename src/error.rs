@@ -6,8 +6,6 @@
 
 //! Error types for this crate.
 
-use std::io;
-
 use hmac::digest::MacError;
 use scrypt::errors::InvalidParams;
 use thiserror::Error;
@@ -38,8 +36,4 @@ pub enum Error {
     /// The MAC mismatched.
     #[error(transparent)]
     InvalidSignature(#[from] MacError),
-
-    /// An error occurred during I/O operations.
-    #[error(transparent)]
-    Io(#[from] io::Error),
 }
