@@ -70,7 +70,7 @@ impl Header {
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self, Error> {
         if data.len() < 128 {
-            return Err(Error::InvalidLength(data.len()));
+            return Err(Error::InvalidLength);
         }
 
         let magic_number = if data[..6] == Self::MAGIC_NUMBER {

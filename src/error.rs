@@ -13,9 +13,9 @@ use thiserror::Error;
 /// The error type for the scrypt encrypted data format.
 #[derive(Debug, Error)]
 pub enum Error {
-    /// The length of the encrypted data was less than 128 bytes.
-    #[error("encrypted data size `{0}` bytes is too small")]
-    InvalidLength(usize),
+    /// The encrypted data was shorter than 128 bytes.
+    #[error("encrypted data is shorter than 128 bytes")]
+    InvalidLength,
 
     /// The magic number was invalid.
     #[error("invalid magic number")]
@@ -33,20 +33,26 @@ pub enum Error {
     #[error("checksum mismatch")]
     InvalidChecksum,
 
-    /// The MAC mismatched.
-    #[error(transparent)]
-    InvalidSignature(#[from] MacError),
+    /// The signature was invalid.
+    #[error("invalid signature")]
+    InvalidSignature(
+        #[from]
+        #[source]
+        MacError,
+    ),
 }
 
 #[cfg(test)]
 mod tests {
+    use std::error::Error as _;
+
     use super::*;
 
     #[test]
     fn display() {
         assert_eq!(
-            format!("{}", Error::InvalidLength(usize::MIN)),
-            "encrypted data size `0` bytes is too small"
+            format!("{}", Error::InvalidLength),
+            "encrypted data is shorter than 128 bytes"
         );
         assert_eq!(
             format!("{}", Error::InvalidMagicNumber),
@@ -63,8 +69,21 @@ mod tests {
         assert_eq!(format!("{}", Error::InvalidChecksum), "checksum mismatch");
         assert_eq!(
             format!("{}", Error::InvalidSignature(MacError)),
-            "MAC tag mismatch"
+            "invalid signature"
         );
+    }
+
+    #[test]
+    fn source() {
+        assert!(Error::InvalidLength.source().is_none());
+        assert!(Error::InvalidMagicNumber.source().is_none());
+        assert!(Error::UnknownVersion(u8::MAX).source().is_none());
+        assert!(Error::InvalidParams(InvalidParams).source().is_none());
+        assert!(Error::InvalidChecksum.source().is_none());
+        assert!(Error::InvalidSignature(MacError)
+            .source()
+            .unwrap()
+            .is::<MacError>());
     }
 
     #[test]

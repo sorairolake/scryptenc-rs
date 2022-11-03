@@ -55,7 +55,7 @@ fn invalid_length() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidLength(127)));
+    assert!(matches!(decrypted, Error::InvalidLength));
 }
 
 #[test]
