@@ -37,3 +37,49 @@ pub enum Error {
     #[error(transparent)]
     InvalidSignature(#[from] MacError),
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn display() {
+        assert_eq!(
+            format!("{}", Error::InvalidLength(usize::MIN)),
+            "encrypted data size `0` bytes is too small"
+        );
+        assert_eq!(
+            format!("{}", Error::InvalidMagicNumber),
+            "invalid magic number"
+        );
+        assert_eq!(
+            format!("{}", Error::UnknownVersion(u8::MAX)),
+            "unknown version number `255`"
+        );
+        assert_eq!(
+            format!("{}", Error::InvalidParams(InvalidParams)),
+            "invalid scrypt parameters"
+        );
+        assert_eq!(format!("{}", Error::InvalidChecksum), "checksum mismatch");
+        assert_eq!(
+            format!("{}", Error::InvalidSignature(MacError)),
+            "MAC tag mismatch"
+        );
+    }
+
+    #[test]
+    fn invalid_params_to_error() {
+        assert!(matches!(
+            Error::from(InvalidParams),
+            Error::InvalidParams(InvalidParams)
+        ));
+    }
+
+    #[test]
+    fn mac_error_to_error() {
+        assert!(matches!(
+            Error::from(MacError),
+            Error::InvalidSignature(MacError)
+        ));
+    }
+}
