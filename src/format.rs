@@ -295,7 +295,7 @@ pub fn verify_signature(key: &[u8], data: &[u8], signature: &[u8]) -> Result<(),
 
 #[cfg(test)]
 mod tests {
-    use std::str;
+    use core::str;
 
     use super::*;
 

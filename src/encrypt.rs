@@ -6,6 +6,8 @@
 
 //! Encrypts to the scrypt encrypted data format.
 
+use alloc::vec::Vec;
+
 use aes::{
     cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher},
     Aes256,

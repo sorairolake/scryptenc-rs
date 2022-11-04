@@ -13,9 +13,12 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
+#[cfg(feature = "std")]
 use anyhow::Context;
+#[cfg(feature = "std")]
 use clap::Parser;
 
+#[cfg(feature = "std")]
 #[derive(Debug, Parser)]
 #[clap(version, about)]
 struct Opt {
@@ -24,6 +27,7 @@ struct Opt {
     input: std::path::PathBuf,
 }
 
+#[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
     let opt = Opt::parse();
 
@@ -43,4 +47,9 @@ fn main() -> anyhow::Result<()> {
         params.p()
     );
     Ok(())
+}
+
+#[cfg(not(feature = "std"))]
+fn main() -> anyhow::Result<()> {
+    anyhow::bail!("`std` feature is required");
 }

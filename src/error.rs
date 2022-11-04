@@ -6,46 +6,75 @@
 
 //! Error types for this crate.
 
+use core::fmt;
+
 use hmac::digest::MacError;
 use scrypt::errors::InvalidParams;
-use thiserror::Error;
 
 /// The error type for the scrypt encrypted data format.
-#[derive(Debug, Error)]
+#[derive(Debug)]
 pub enum Error {
     /// The encrypted data was shorter than 128 bytes.
-    #[error("encrypted data is shorter than 128 bytes")]
     InvalidLength,
 
     /// The magic number was invalid.
-    #[error("invalid magic number")]
     InvalidMagicNumber,
 
     /// The version was the unrecognized scrypt version number.
-    #[error("unknown version number `{0}`")]
     UnknownVersion(u8),
 
     /// The scrypt parameters were invalid.
-    #[error(transparent)]
-    InvalidParams(#[from] InvalidParams),
+    InvalidParams(InvalidParams),
 
     /// The checksum of the header mismatched.
-    #[error("checksum mismatch")]
     InvalidChecksum,
 
     /// The signature was invalid.
-    #[error("invalid signature")]
-    InvalidSignature(
-        #[from]
-        #[source]
-        MacError,
-    ),
+    InvalidSignature(MacError),
+}
+
+impl fmt::Display for Error {
+    #[inline]
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::InvalidLength => write!(f, "encrypted data is shorter than 128 bytes"),
+            Self::InvalidMagicNumber => write!(f, "invalid magic number"),
+            Self::UnknownVersion(version) => write!(f, "unknown version number `{}`", version),
+            Self::InvalidParams(err) => write!(f, "{}", err),
+            Self::InvalidChecksum => write!(f, "checksum mismatch"),
+            Self::InvalidSignature(_) => write!(f, "invalid signature"),
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "std")))]
+impl std::error::Error for Error {
+    #[inline]
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::InvalidSignature(err) => Some(err),
+            _ => None,
+        }
+    }
+}
+
+impl From<InvalidParams> for Error {
+    #[inline]
+    fn from(source: InvalidParams) -> Self {
+        Self::InvalidParams(source)
+    }
+}
+
+impl From<MacError> for Error {
+    #[inline]
+    fn from(source: MacError) -> Self {
+        Self::InvalidSignature(source)
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use std::error::Error as _;
-
     use super::*;
 
     #[test]
@@ -73,8 +102,11 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "std")]
     #[test]
     fn source() {
+        use std::error::Error as _;
+
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
