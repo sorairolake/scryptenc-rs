@@ -16,8 +16,20 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.3.1"
+scryptenc = "0.4.0"
 ```
+
+### Crate features
+
+#### `std`
+
+Enables features that depend on the standard library.
+This is enabled by default.
+
+### `no_std` support
+
+This supports `no_std` mode.
+Disables the `default` feature to enable this.
 
 ### Documentation
 

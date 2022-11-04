@@ -70,7 +70,7 @@ impl Header {
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self, Error> {
         if data.len() < 128 {
-            return Err(Error::InvalidLength(data.len()));
+            return Err(Error::InvalidLength);
         }
 
         let magic_number = if data[..6] == Self::MAGIC_NUMBER {
@@ -295,7 +295,7 @@ pub fn verify_signature(key: &[u8], data: &[u8], signature: &[u8]) -> Result<(),
 
 #[cfg(test)]
 mod tests {
-    use std::str;
+    use core::str;
 
     use super::*;
 
