@@ -17,6 +17,7 @@ toc::[]
 === Added
 
 * Add `no_std` support
+* Add benchmarks
 
 === Removed
 
