@@ -16,7 +16,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.4.0"
+scryptenc = "0.4.1"
 ```
 
 ### Crate features
