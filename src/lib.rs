@@ -12,8 +12,7 @@
 //! # Examples
 //!
 //! ```
-//! use scrypt::Params;
-//! use scryptenc::{Decryptor, Encryptor};
+//! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 //!
 //! let password = "password";
 //! let data = b"Hello, world!";
@@ -50,5 +49,8 @@ mod decrypt;
 mod encrypt;
 mod error;
 mod format;
+
+pub use hmac::digest;
+pub use scrypt;
 
 pub use crate::{decrypt::Decryptor, encrypt::Encryptor, error::Error, format::Params};
