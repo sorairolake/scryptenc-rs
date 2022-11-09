@@ -11,11 +11,9 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-use hmac::digest::MacError;
-use scrypt::errors::InvalidParams;
-use scryptenc::{Decryptor, Error};
+use scryptenc::{digest::MacError, scrypt::errors::InvalidParams, Decryptor, Error};
 
-const PASSWORD: &[u8] = b"password";
+const PASSWORD: &str = "password";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 // Generated using `scrypt` version 1.3.1.
 const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.enc");

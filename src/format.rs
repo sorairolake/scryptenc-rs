@@ -224,7 +224,7 @@ impl Signature {
     }
 }
 
-/// The scrypt parameters.
+/// The scrypt parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
 pub struct Params(scrypt::Params);
 
