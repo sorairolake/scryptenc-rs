@@ -11,21 +11,45 @@
 //!
 //! # Examples
 //!
+//! ## Encrypt and decrypt
+//!
 //! ```
-//! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+//! use scryptenc::{Decryptor, Encryptor};
 //!
 //! let password = "password";
 //! let data = b"Hello, world!";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = Params::new(10, 8, 1).unwrap();
+//! let params = scrypt::Params::new(10, 8, 1).unwrap();
 //! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
+//! assert_ne!(encrypted, data);
 //!
 //! // And decrypt it back.
 //! let cipher = Decryptor::new(encrypted, password).unwrap();
 //! let decrypted = cipher.decrypt_to_vec().unwrap();
 //! assert_eq!(decrypted, data);
+//! ```
+//!
+//! ## Extract the scrypt parameters in the encrypted data
+//!
+//! ```
+//! use scryptenc::{Encryptor, Params};
+//!
+//! let password = "password";
+//! let data = b"Hello, world!";
+//!
+//! // Encrypt `data` using `password`.
+//! let params = scrypt::Params::new(10, 8, 1).unwrap();
+//! let cipher = Encryptor::with_params(data, password, params);
+//! let encrypted = cipher.encrypt_to_vec();
+//!
+//! // And extract the scrypt parameters from it.
+//! let params = Params::new(encrypted).unwrap();
+//! assert_eq!(params.log_n(), 10);
+//! assert_eq!(params.n(), 1024);
+//! assert_eq!(params.r(), 8);
+//! assert_eq!(params.p(), 1);
 //! ```
 //!
 //! [specification-url]: https://github.com/Tarsnap/scrypt/blob/d7a543fb19dca17688e34947aee4558a94200877/FORMAT

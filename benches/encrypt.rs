@@ -18,7 +18,7 @@ use test::Bencher;
 
 use scryptenc::{scrypt::Params, Encryptor};
 
-const PASSWORD: &[u8] = b"password";
+const PASSWORD: &str = "password";
 const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
 
 #[bench]

@@ -14,7 +14,7 @@
 use scryptenc::{scrypt::Params, Encryptor};
 use sha2::{Digest, Sha256};
 
-const PASSWORD: &[u8] = b"password";
+const PASSWORD: &str = "password";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
 #[test]
