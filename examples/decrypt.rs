@@ -1,7 +1,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
-// Copyright (C) 2022 Shun Sakai
+// Copyright (C) 2022-2023 Shun Sakai
 //
 
 //! An example of decrypting a file from the scrypt encrypted data format.
