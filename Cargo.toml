@@ -11,6 +11,15 @@ repository = "https://github.com/sorairolake/scryptenc-rs"
 license = "Apache-2.0 OR MIT"
 keywords = ["crypto", "scrypt"]
 categories = ["cryptography", "no-std"]
+exclude = [
+  "/.github",
+  "/benches",
+  "/clippy.toml",
+  "/examples",
+  "/justfile",
+  "/rustfmt.toml",
+  "/tests",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
