@@ -12,6 +12,13 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 toc::[]
 
+== {compare-url}/v0.4.1\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump `scrypt` to v0.11
+* Bump MSRV to 1.60.0
+
 == {compare-url}/v0.4.0\...v0.4.1[0.4.1] - 2022-11-09
 
 === Changed

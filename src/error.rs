@@ -39,8 +39,8 @@ impl fmt::Display for Error {
         match self {
             Self::InvalidLength => write!(f, "encrypted data is shorter than 128 bytes"),
             Self::InvalidMagicNumber => write!(f, "invalid magic number"),
-            Self::UnknownVersion(version) => write!(f, "unknown version number `{}`", version),
-            Self::InvalidParams(err) => write!(f, "{}", err),
+            Self::UnknownVersion(version) => write!(f, "unknown version number `{version}`"),
+            Self::InvalidParams(err) => write!(f, "{err}"),
             Self::InvalidChecksum => write!(f, "checksum mismatch"),
             Self::InvalidSignature(_) => write!(f, "invalid signature"),
         }

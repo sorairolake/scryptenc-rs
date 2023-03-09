@@ -20,7 +20,7 @@
 //! let data = b"Hello, world!";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = scrypt::Params::new(10, 8, 1).unwrap();
+//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
 //! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
 //! assert_ne!(encrypted, data);
@@ -40,7 +40,7 @@
 //! let data = b"Hello, world!";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = scrypt::Params::new(10, 8, 1).unwrap();
+//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
 //! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
 //!

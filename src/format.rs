@@ -94,7 +94,8 @@ impl Header {
                 .try_into()
                 .expect("size of `p` parameter should be 4 bytes"),
         );
-        let params = scrypt::Params::new(log_n, r, p).map_err(Error::from)?;
+        let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
+            .map_err(Error::from)?;
         let salt = data[16..48]
             .try_into()
             .expect("size of salt should be 32 bytes");
