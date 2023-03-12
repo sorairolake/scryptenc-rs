@@ -14,10 +14,16 @@ toc::[]
 
 == {compare-url}/v0.4.1\...HEAD[Unreleased]
 
+=== Added
+
+* Add `Error::InvalidHeaderSignature`
+
 === Changed
 
 * Bump `scrypt` to v0.11
 * Bump MSRV to 1.60.0
+* Change to return `Error::InvalidHeaderSignature` if the header signature was
+  invalid
 
 == {compare-url}/v0.4.0\...v0.4.1[0.4.1] - 2022-11-09
 

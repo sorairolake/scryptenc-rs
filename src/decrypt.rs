@@ -96,7 +96,8 @@ impl Decryptor {
             let mut data = decryptor.data;
             cipher.apply_keystream(&mut data);
 
-            format::verify_signature(&decryptor.dk.mac(), &input, &decryptor.signature.as_bytes())?;
+            format::verify_signature(&decryptor.dk.mac(), &input, &decryptor.signature.as_bytes())
+                .map_err(Error::InvalidSignature)?;
 
             buf.copy_from_slice(&data);
             Ok(())
