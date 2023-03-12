@@ -1,14 +1,14 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
-// Copyright (C) 2022 Shun Sakai
+// Copyright (C) 2022-2023 Shun Sakai
 //
 
 //! An example of encrypting a file to the scrypt encrypted data format.
 
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
-#![deny(missing_debug_implementations, missing_docs)]
+#![deny(missing_debug_implementations)]
 #![warn(rust_2018_idioms)]
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]

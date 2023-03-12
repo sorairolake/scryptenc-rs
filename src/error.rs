@@ -1,7 +1,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
-// Copyright (C) 2022 Shun Sakai
+// Copyright (C) 2022-2023 Shun Sakai
 //
 
 //! Error types for this crate.
@@ -29,7 +29,10 @@ pub enum Error {
     /// The checksum of the header mismatched.
     InvalidChecksum,
 
-    /// The signature was invalid.
+    /// The header signature was invalid.
+    InvalidHeaderSignature(MacError),
+
+    /// The signature at EOF was invalid.
     InvalidSignature(MacError),
 }
 
@@ -39,9 +42,10 @@ impl fmt::Display for Error {
         match self {
             Self::InvalidLength => write!(f, "encrypted data is shorter than 128 bytes"),
             Self::InvalidMagicNumber => write!(f, "invalid magic number"),
-            Self::UnknownVersion(version) => write!(f, "unknown version number `{}`", version),
-            Self::InvalidParams(err) => write!(f, "{}", err),
+            Self::UnknownVersion(version) => write!(f, "unknown version number `{version}`"),
+            Self::InvalidParams(err) => write!(f, "{err}"),
             Self::InvalidChecksum => write!(f, "checksum mismatch"),
+            Self::InvalidHeaderSignature(_) => write!(f, "invalid header signature"),
             Self::InvalidSignature(_) => write!(f, "invalid signature"),
         }
     }
@@ -53,7 +57,7 @@ impl std::error::Error for Error {
     #[inline]
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            Self::InvalidSignature(err) => Some(err),
+            Self::InvalidHeaderSignature(err) | Self::InvalidSignature(err) => Some(err),
             _ => None,
         }
     }
@@ -63,13 +67,6 @@ impl From<InvalidParams> for Error {
     #[inline]
     fn from(source: InvalidParams) -> Self {
         Self::InvalidParams(source)
-    }
-}
-
-impl From<MacError> for Error {
-    #[inline]
-    fn from(source: MacError) -> Self {
-        Self::InvalidSignature(source)
     }
 }
 
@@ -97,6 +94,10 @@ mod tests {
         );
         assert_eq!(format!("{}", Error::InvalidChecksum), "checksum mismatch");
         assert_eq!(
+            format!("{}", Error::InvalidHeaderSignature(MacError)),
+            "invalid header signature"
+        );
+        assert_eq!(
             format!("{}", Error::InvalidSignature(MacError)),
             "invalid signature"
         );
@@ -112,6 +113,10 @@ mod tests {
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
         assert!(Error::InvalidParams(InvalidParams).source().is_none());
         assert!(Error::InvalidChecksum.source().is_none());
+        assert!(Error::InvalidHeaderSignature(MacError)
+            .source()
+            .unwrap()
+            .is::<MacError>());
         assert!(Error::InvalidSignature(MacError)
             .source()
             .unwrap()
@@ -123,14 +128,6 @@ mod tests {
         assert!(matches!(
             Error::from(InvalidParams),
             Error::InvalidParams(InvalidParams)
-        ));
-    }
-
-    #[test]
-    fn mac_error_to_error() {
-        assert!(matches!(
-            Error::from(MacError),
-            Error::InvalidSignature(MacError)
         ));
     }
 }

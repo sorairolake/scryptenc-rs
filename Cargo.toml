@@ -1,9 +1,9 @@
 [package]
 name = "scryptenc"
-version = "0.4.1"
+version = "0.5.0"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
-rust-version = "1.57.0"
+rust-version = "1.60.0"
 description = "An implementation of the scrypt encrypted data format"
 documentation = "https://docs.rs/scryptenc"
 readme = "README.md"
@@ -11,6 +11,15 @@ repository = "https://github.com/sorairolake/scryptenc-rs"
 license = "Apache-2.0 OR MIT"
 keywords = ["crypto", "scrypt"]
 categories = ["cryptography", "no-std"]
+exclude = [
+  "/.github",
+  "/benches",
+  "/clippy.toml",
+  "/examples",
+  "/justfile",
+  "/rustfmt.toml",
+  "/tests",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -20,7 +29,7 @@ ctr = "0.9.2"
 hmac = "0.12.1"
 rand = { version = "0.8.5", default-features = false, features = ["getrandom"] }
 rand_chacha = { version = "0.3.1", default-features = false }
-scrypt = { version = "0.10.0", default-features = false }
+scrypt = { version = "0.11.0", default-features = false }
 sha2 = { version = "0.10.6", default-features = false }
 
 [dev-dependencies]

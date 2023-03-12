@@ -1,7 +1,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
-// Copyright (C) 2022 Shun Sakai
+// Copyright (C) 2022-2023 Shun Sakai
 //
 
 // Lint levels of rustc.
@@ -44,7 +44,7 @@ fn incorrect_password() {
     let decrypted = Decryptor::new(TEST_DATA_ENC, "passphrase")
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidSignature(MacError)));
+    assert!(matches!(decrypted, Error::InvalidHeaderSignature(MacError)));
 }
 
 #[test]
@@ -115,11 +115,25 @@ fn invalid_checksum() {
 }
 
 #[test]
-fn invalid_signature() {
+fn invalid_header_signature() {
     let mut data = TEST_DATA_ENC.to_vec();
     let mut signature: [u8; 32] = data[64..96].try_into().unwrap();
     signature.reverse();
     data[64..96].copy_from_slice(&signature);
+    let decrypted = Decryptor::new(data, PASSWORD)
+        .and_then(Decryptor::decrypt_to_vec)
+        .unwrap_err();
+    assert!(matches!(decrypted, Error::InvalidHeaderSignature(MacError)));
+}
+
+#[test]
+fn invalid_signature() {
+    let data = TEST_DATA_ENC.to_vec();
+    let start_signature = data.len() - 32;
+    let mut data = data;
+    let mut signature: [u8; 32] = data[start_signature..].try_into().unwrap();
+    signature.reverse();
+    data[start_signature..].copy_from_slice(&signature);
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();

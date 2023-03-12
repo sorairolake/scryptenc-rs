@@ -1,7 +1,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
-// Copyright (C) 2022 Shun Sakai
+// Copyright (C) 2022-2023 Shun Sakai
 //
 
 //! The `scryptenc` crate is an implementation of the scrypt encrypted data
@@ -20,7 +20,7 @@
 //! let data = b"Hello, world!";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = scrypt::Params::new(10, 8, 1).unwrap();
+//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
 //! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
 //! assert_ne!(encrypted, data);
@@ -40,7 +40,7 @@
 //! let data = b"Hello, world!";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = scrypt::Params::new(10, 8, 1).unwrap();
+//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
 //! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
 //!
@@ -54,7 +54,7 @@
 //!
 //! [specification-url]: https://github.com/Tarsnap/scrypt/blob/d7a543fb19dca17688e34947aee4558a94200877/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.4.1/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.5.0/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_cfg))]
 // Lint levels of rustc.

@@ -1,7 +1,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 //
-// Copyright (C) 2022 Shun Sakai
+// Copyright (C) 2022-2023 Shun Sakai
 //
 
 //! Specifications of the scrypt encrypted data format.
@@ -94,7 +94,8 @@ impl Header {
                 .try_into()
                 .expect("size of `p` parameter should be 4 bytes"),
         );
-        let params = scrypt::Params::new(log_n, r, p).map_err(Error::from)?;
+        let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
+            .map_err(Error::from)?;
         let salt = data[16..48]
             .try_into()
             .expect("size of salt should be 32 bytes");
@@ -136,7 +137,8 @@ impl Header {
 
     /// Verifies a HMAC-SHA-256 signature stored in this header.
     pub fn verify_signature(&mut self, key: &DerivedKey, signature: &[u8]) -> Result<(), Error> {
-        verify_signature(&key.mac(), &self.as_bytes()[..64], signature)?;
+        verify_signature(&key.mac(), &self.as_bytes()[..64], signature)
+            .map_err(Error::InvalidHeaderSignature)?;
         self.signature.copy_from_slice(signature);
         Ok(())
     }

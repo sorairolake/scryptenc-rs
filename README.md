@@ -16,7 +16,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.4.1"
+scryptenc = "0.5.0"
 ```
 
 ### Crate features
@@ -37,7 +37,7 @@ See the [documentation][docs-url] for more details.
 
 ## Minimum supported Rust version
 
-The minimum supported Rust version (MSRV) of this library is v1.57.0 or later.
+The minimum supported Rust version (MSRV) of this library is v1.60.0.
 
 ## Changelog
 
@@ -49,7 +49,7 @@ Please see [CONTRIBUTING.adoc](CONTRIBUTING.adoc).
 
 ## License
 
-Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc](AUTHORS.adoc))
+Copyright &copy; 2022&ndash;2023 Shun Sakai (see [AUTHORS.adoc](AUTHORS.adoc))
 
 This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
