@@ -12,6 +12,7 @@ license = "Apache-2.0 OR MIT"
 keywords = ["crypto", "scrypt"]
 categories = ["cryptography", "no-std"]
 exclude = [
+  "/.bumpversion.cfg",
   "/.github",
   "/benches",
   "/clippy.toml",
