@@ -57,11 +57,11 @@ or the _MIT License_.
 See [COPYRIGHT](COPYRIGHT), [LICENSE-APACHE](LICENSE-APACHE) and
 [LICENSE-MIT](LICENSE-MIT) for more details.
 
-[ci-badge]: https://github.com/sorairolake/scryptenc-rs/workflows/CI/badge.svg
-[ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=workflow%3ACI
-[version-badge]: https://img.shields.io/crates/v/scryptenc
+[ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
+[ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=branch%3Adevelop+workflow%3ACI++
+[version-badge]: https://img.shields.io/crates/v/scryptenc?style=for-the-badge
 [version-url]: https://crates.io/crates/scryptenc
-[docs-badge]: https://img.shields.io/docsrs/scryptenc
+[docs-badge]: https://img.shields.io/docsrs/scryptenc?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/scryptenc
-[license-badge]: https://img.shields.io/crates/l/scryptenc
+[license-badge]: https://img.shields.io/crates/l/scryptenc?style=for-the-badge
 [specification-url]: https://github.com/Tarsnap/scrypt/blob/d7a543fb19dca17688e34947aee4558a94200877/FORMAT
