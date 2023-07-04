@@ -1,6 +1,6 @@
 [package]
 name = "scryptenc"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
 rust-version = "1.60.0"
@@ -12,6 +12,7 @@ license = "Apache-2.0 OR MIT"
 keywords = ["crypto", "scrypt"]
 categories = ["cryptography", "no-std"]
 exclude = [
+  "/.bumpversion.cfg",
   "/.github",
   "/benches",
   "/clippy.toml",
