@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022-2023 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
 [package]
 name = "scryptenc"
 version = "0.5.1"
@@ -13,6 +17,7 @@ keywords = ["crypto", "scrypt"]
 categories = ["cryptography", "no-std"]
 exclude = [
   "/.bumpversion.cfg",
+  "/.bumpversion.cfg.license",
   "/.github",
   "/benches",
   "/clippy.toml",
