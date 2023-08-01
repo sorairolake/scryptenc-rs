@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022-2023 Shun Sakai
+
+SPDX-License-Identifier: Apache-2.0 OR MIT
+-->
+
 # scryptenc-rs
 
 [![CI][ci-badge]][ci-url]
@@ -16,7 +22,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.5.1"
+scryptenc = "0.5.2"
 ```
 
 ### Crate features
@@ -54,8 +60,7 @@ Copyright &copy; 2022&ndash;2023 Shun Sakai (see [AUTHORS.adoc](AUTHORS.adoc))
 This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
 
-See [COPYRIGHT](COPYRIGHT), [LICENSE-APACHE](LICENSE-APACHE) and
-[LICENSE-MIT](LICENSE-MIT) for more details.
+See [COPYING](COPYING) for more details.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=branch%3Adevelop+workflow%3ACI++

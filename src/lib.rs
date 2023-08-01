@@ -1,8 +1,6 @@
+// SPDX-FileCopyrightText: 2022-2023 Shun Sakai
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
-//
-// Copyright (C) 2022-2023 Shun Sakai
-//
 
 //! The `scryptenc` crate is an implementation of the scrypt encrypted data
 //! format.
@@ -54,7 +52,7 @@
 //!
 //! [specification-url]: https://github.com/Tarsnap/scrypt/blob/d7a543fb19dca17688e34947aee4558a94200877/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.5.1/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.5.2/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
