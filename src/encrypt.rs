@@ -55,7 +55,7 @@ impl Encryptor {
         inner(data.as_ref(), password.as_ref(), params)
     }
 
-    /// Encrypt data into `buf`.
+    /// Encrypts data into `buf`.
     ///
     /// # Panics
     ///
@@ -80,7 +80,7 @@ impl Encryptor {
         inner(self, buf.as_mut());
     }
 
-    /// Encrypt data and into a newly allocated `Vec`.
+    /// Encrypts data and into a newly allocated `Vec`.
     #[must_use]
     pub fn encrypt_to_vec(self) -> Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];

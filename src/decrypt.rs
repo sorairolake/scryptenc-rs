@@ -74,7 +74,7 @@ impl Decryptor {
         inner(data.as_ref(), password.as_ref())
     }
 
-    /// Decrypt data into `buf`.
+    /// Decrypts data into `buf`.
     ///
     /// # Errors
     ///
@@ -103,7 +103,7 @@ impl Decryptor {
         inner(self, buf.as_mut())
     }
 
-    /// Decrypt data and into a newly allocated `Vec`.
+    /// Decrypts data and into a newly allocated `Vec`.
     ///
     /// # Errors
     ///
