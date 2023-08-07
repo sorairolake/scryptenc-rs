@@ -12,13 +12,19 @@
 //! ## Encrypt and decrypt
 //!
 //! ```
-//! use scryptenc::{Decryptor, Encryptor};
+//! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 //!
 //! let password = "password";
 //! let data = b"Hello, world!";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
+//! let params = Params::new(
+//!     10,
+//!     Params::RECOMMENDED_R,
+//!     Params::RECOMMENDED_P,
+//!     Params::RECOMMENDED_LEN,
+//! )
+//! .unwrap();
 //! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
 //! assert_ne!(encrypted, data);
@@ -32,18 +38,24 @@
 //! ## Extract the scrypt parameters in the encrypted data
 //!
 //! ```
-//! use scryptenc::{Encryptor, Params};
+//! use scryptenc::{scrypt, Encryptor};
 //!
 //! let password = "password";
 //! let data = b"Hello, world!";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
+//! let params = scrypt::Params::new(
+//!     10,
+//!     scrypt::Params::RECOMMENDED_R,
+//!     scrypt::Params::RECOMMENDED_P,
+//!     scrypt::Params::RECOMMENDED_LEN,
+//! )
+//! .unwrap();
 //! let cipher = Encryptor::with_params(data, password, params);
 //! let encrypted = cipher.encrypt_to_vec();
 //!
 //! // And extract the scrypt parameters from it.
-//! let params = Params::new(encrypted).unwrap();
+//! let params = scryptenc::Params::new(encrypted).unwrap();
 //! assert_eq!(params.log_n(), 10);
 //! assert_eq!(params.n(), 1024);
 //! assert_eq!(params.r(), 8);
