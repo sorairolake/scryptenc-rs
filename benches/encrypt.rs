@@ -14,25 +14,12 @@ extern crate test;
 
 use test::Bencher;
 
-use scryptenc::{scrypt::Params, Encryptor};
+use scryptenc::Encryptor;
 
 const PASSWORD: &str = "password";
 const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
 
 #[bench]
 fn encrypt(b: &mut Bencher) {
-    b.iter(|| {
-        Encryptor::with_params(
-            TEST_DATA,
-            PASSWORD,
-            Params::new(
-                10,
-                Params::RECOMMENDED_R,
-                Params::RECOMMENDED_P,
-                Params::RECOMMENDED_LEN,
-            )
-            .unwrap(),
-        )
-        .encrypt_to_vec()
-    });
+    b.iter(|| Encryptor::new(TEST_DATA, PASSWORD).encrypt_to_vec());
 }

@@ -23,13 +23,13 @@ fn success() {
 #[test]
 fn log_n() {
     let params = Params::new(TEST_DATA_ENC).unwrap();
-    assert_eq!(params.log_n(), 10);
+    assert_eq!(params.log_n(), 17);
 }
 
 #[test]
 fn n() {
     let params = Params::new(TEST_DATA_ENC).unwrap();
-    assert_eq!(params.n(), 1024);
+    assert_eq!(params.n(), 131_072);
 }
 
 #[test]
