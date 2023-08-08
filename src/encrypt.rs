@@ -26,14 +26,14 @@ pub struct Encryptor {
 impl Encryptor {
     /// Creates a new `Encryptor`.
     ///
-    /// This uses the recommended values for the scrypt parameters which is
-    /// sufficient for most use-cases.
+    /// This uses the recommended scrypt parameters created by
+    /// [`Params::recommended`] which are sufficient for most use-cases.
     pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Self {
         Self::with_params(data, password, Params::recommended())
     }
 
     #[allow(clippy::missing_panics_doc)]
-    /// Creates a new `Encryptor`.
+    /// Creates a new `Encryptor` with the specified [`Params`].
     pub fn with_params(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>, params: Params) -> Self {
         let inner = |data: &[u8], password: &[u8], params: Params| -> Self {
             let mut header = Header::new(params);
