@@ -25,13 +25,7 @@ fn encrypt(b: &mut Bencher) {
         Encryptor::with_params(
             TEST_DATA,
             PASSWORD,
-            Params::new(
-                10,
-                Params::RECOMMENDED_R,
-                Params::RECOMMENDED_P,
-                Params::RECOMMENDED_LEN,
-            )
-            .unwrap(),
+            Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
         )
         .encrypt_to_vec()
     });

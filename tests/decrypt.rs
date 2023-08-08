@@ -30,7 +30,7 @@ fn success() {
 }
 
 #[test]
-#[should_panic]
+#[should_panic(expected = "source slice length (14) does not match destination slice length (15)")]
 fn invalid_output_length() {
     let cipher = Decryptor::new(TEST_DATA_ENC, PASSWORD).unwrap();
     let mut buf = vec![u8::default(); cipher.out_len() + 1];

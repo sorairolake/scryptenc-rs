@@ -20,13 +20,7 @@ fn success() {
     let cipher = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     );
     let mut buf = vec![u8::default(); cipher.out_len()];
     cipher.encrypt(&mut buf);
@@ -35,31 +29,19 @@ fn success() {
     let encrypted = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
     .encrypt_to_vec();
     assert_eq!(encrypted.len(), TEST_DATA.len() + 128);
 }
 
 #[test]
-#[should_panic]
+#[should_panic(expected = "source slice length (32) does not match destination slice length (31)")]
 fn invalid_output_length() {
     let cipher = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     );
     let mut buf = vec![u8::default(); cipher.out_len() - 1];
     cipher.encrypt(&mut buf);
@@ -70,13 +52,7 @@ fn magic_number() {
     let encrypted = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
     .encrypt_to_vec();
     assert_eq!(&encrypted[..6], b"scrypt");
@@ -87,13 +63,7 @@ fn version() {
     let encrypted = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
     .encrypt_to_vec();
     assert_eq!(encrypted[6], 0);
@@ -104,13 +74,7 @@ fn log_n() {
     let encrypted = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
     .encrypt_to_vec();
     assert_eq!(encrypted[7], 10);
@@ -121,13 +85,7 @@ fn r() {
     let encrypted = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
     .encrypt_to_vec();
     assert_eq!(&encrypted[8..12], u32::to_be_bytes(8));
@@ -138,13 +96,7 @@ fn p() {
     let encrypted = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
     .encrypt_to_vec();
     assert_eq!(&encrypted[12..16], u32::to_be_bytes(1));
@@ -155,13 +107,7 @@ fn checksum() {
     let encrypted = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
     .encrypt_to_vec();
     let checksum = Sha256::digest(&encrypted[..48]);
@@ -173,13 +119,7 @@ fn out_len() {
     let cipher = Encryptor::with_params(
         TEST_DATA,
         PASSWORD,
-        Params::new(
-            10,
-            Params::RECOMMENDED_R,
-            Params::RECOMMENDED_P,
-            Params::RECOMMENDED_LEN,
-        )
-        .unwrap(),
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     );
     assert_eq!(cipher.out_len(), 142);
 }
