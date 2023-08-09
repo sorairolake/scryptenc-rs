@@ -26,14 +26,41 @@ pub struct Encryptor {
 impl Encryptor {
     /// Creates a new `Encryptor`.
     ///
-    /// This uses the recommended values for the scrypt parameters which is
-    /// sufficient for most use-cases.
+    /// This uses the recommended scrypt parameters created by
+    /// [`Params::recommended`] which are sufficient for most use-cases.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::Encryptor;
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let cipher = Encryptor::new(data, password);
+    /// let encrypted = cipher.encrypt_to_vec();
+    /// # assert_ne!(encrypted, data);
+    /// ```
     pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Self {
         Self::with_params(data, password, Params::recommended())
     }
 
     #[allow(clippy::missing_panics_doc)]
-    /// Creates a new `Encryptor`.
+    /// Creates a new `Encryptor` with the specified [`Params`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+    /// let cipher = Encryptor::with_params(data, password, params);
+    /// let encrypted = cipher.encrypt_to_vec();
+    /// # assert_ne!(encrypted, data);
+    /// ```
     pub fn with_params(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>, params: Params) -> Self {
         let inner = |data: &[u8], password: &[u8], params: Params| -> Self {
             let mut header = Header::new(params);
@@ -60,6 +87,21 @@ impl Encryptor {
     /// # Panics
     ///
     /// Panics if `buf` and the encrypted data have different lengths.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+    /// let cipher = Encryptor::with_params(data, password, params);
+    /// let mut buf = [u8::default(); 141];
+    /// cipher.encrypt(&mut buf);
+    /// # assert_ne!(buf, data.as_slice());
+    /// ```
     pub fn encrypt(self, mut buf: impl AsMut<[u8]>) {
         let inner = |encryptor: Self, buf: &mut [u8]| {
             type Aes256Ctr128BE = Ctr128BE<Aes256>;
@@ -81,6 +123,20 @@ impl Encryptor {
     }
 
     /// Encrypts data and into a newly allocated `Vec`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+    /// let cipher = Encryptor::with_params(data, password, params);
+    /// let encrypted = cipher.encrypt_to_vec();
+    /// # assert_ne!(encrypted, data);
+    /// ```
     #[must_use]
     pub fn encrypt_to_vec(self) -> Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];
@@ -89,6 +145,19 @@ impl Encryptor {
     }
 
     /// Returns the number of output bytes of the encrypted data.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+    /// let cipher = Encryptor::with_params(data, password, params);
+    /// assert_eq!(cipher.out_len(), 141);
+    /// ```
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {

@@ -40,6 +40,23 @@ impl Decryptor {
     /// - The scrypt parameters are invalid.
     /// - SHA-256 checksum of the header mismatch.
     /// - HMAC-SHA-256 signature of the header mismatch.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+    /// # assert_ne!(encrypted, data);
+    ///
+    /// let cipher = Decryptor::new(encrypted, password).unwrap();
+    /// let decrypted = cipher.decrypt_to_vec().unwrap();
+    /// # assert_eq!(decrypted, data);
+    /// ```
     pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Result<Self, Error> {
         let inner = |data: &[u8], password: &[u8]| -> Result<Self, Error> {
             let mut header = Header::parse(data)?;
@@ -83,6 +100,24 @@ impl Decryptor {
     /// # Panics
     ///
     /// Panics if `buf` and the decrypted data have different lengths.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+    /// # assert_ne!(encrypted, data);
+    ///
+    /// let cipher = Decryptor::new(encrypted, password).unwrap();
+    /// let mut buf = [u8::default(); 13];
+    /// cipher.decrypt(&mut buf).unwrap();
+    /// # assert_eq!(buf, data.as_slice());
+    /// ```
     pub fn decrypt(self, mut buf: impl AsMut<[u8]>) -> Result<(), Error> {
         let inner = |decryptor: Self, buf: &mut [u8]| -> Result<(), Error> {
             type Aes256Ctr128BE = Ctr128BE<Aes256>;
@@ -108,6 +143,23 @@ impl Decryptor {
     /// # Errors
     ///
     /// Returns `Err` if HMAC-SHA-256 signature mismatch.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+    /// # assert_ne!(encrypted, data);
+    ///
+    /// let cipher = Decryptor::new(encrypted, password).unwrap();
+    /// let decrypted = cipher.decrypt_to_vec().unwrap();
+    /// # assert_eq!(decrypted, data);
+    /// ```
     pub fn decrypt_to_vec(self) -> Result<Vec<u8>, Error> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.decrypt(&mut buf)?;
@@ -115,6 +167,22 @@ impl Decryptor {
     }
 
     /// Returns the number of output bytes of the decrypted data.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+    /// #
+    /// let password = "password";
+    /// let data = b"Hello, world!";
+    ///
+    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+    /// # assert_ne!(encrypted, data);
+    ///
+    /// let cipher = Decryptor::new(encrypted, password).unwrap();
+    /// assert_eq!(cipher.out_len(), 13);
+    /// ```
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {

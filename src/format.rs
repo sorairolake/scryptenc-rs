@@ -239,12 +239,35 @@ impl Params {
     /// - The magic number is not "scrypt".
     /// - The version number other than `0`.
     /// - The scrypt parameters are invalid.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{Encryptor, Params};
+    /// #
+    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    ///
+    /// assert!(Params::new(encrypted).is_ok());
+    /// ```
     pub fn new(data: impl AsRef<[u8]>) -> Result<Self, Error> {
         let params = Header::parse(data.as_ref()).map(|h| h.params())?;
         Ok(Self(params))
     }
 
     /// Gets log2 of the scrypt parameter `N`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{Encryptor, Params};
+    /// #
+    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    ///
+    /// let params = Params::new(encrypted).unwrap();
+    /// assert_eq!(params.log_n(), 10);
+    /// ```
     #[must_use]
     #[inline]
     pub fn log_n(&self) -> u8 {
@@ -252,6 +275,18 @@ impl Params {
     }
 
     /// Gets `N` parameter.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{Encryptor, Params};
+    /// #
+    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    ///
+    /// let params = Params::new(encrypted).unwrap();
+    /// assert_eq!(params.n(), 1024);
+    /// ```
     #[must_use]
     #[inline]
     pub fn n(&self) -> u64 {
@@ -259,6 +294,18 @@ impl Params {
     }
 
     /// Gets `r` parameter.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{Encryptor, Params};
+    /// #
+    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    ///
+    /// let params = Params::new(encrypted).unwrap();
+    /// assert_eq!(params.r(), 8);
+    /// ```
     #[must_use]
     #[inline]
     pub fn r(&self) -> u32 {
@@ -266,6 +313,18 @@ impl Params {
     }
 
     /// Gets `p` parameter.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use scryptenc::{Encryptor, Params};
+    /// #
+    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
+    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    ///
+    /// let params = Params::new(encrypted).unwrap();
+    /// assert_eq!(params.p(), 1);
+    /// ```
     #[must_use]
     #[inline]
     pub fn p(&self) -> u32 {
@@ -302,6 +361,11 @@ mod tests {
     #[test]
     fn version() {
         assert_eq!(Version::V0 as u8, 0);
+    }
+
+    #[test]
+    fn from_version_to_u8() {
+        assert_eq!(u8::from(Version::V0), 0);
     }
 
     #[test]
