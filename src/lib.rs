@@ -19,13 +19,13 @@
 //!
 //! // Encrypt `data` using `password`.
 //! let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-//! let cipher = Encryptor::with_params(data, password, params);
-//! let encrypted = cipher.encrypt_to_vec();
+//! let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
 //! assert_ne!(encrypted, data);
 //!
 //! // And decrypt it back.
-//! let cipher = Decryptor::new(encrypted, password).unwrap();
-//! let decrypted = cipher.decrypt_to_vec().unwrap();
+//! let decrypted = Decryptor::new(encrypted, password)
+//!     .and_then(Decryptor::decrypt_to_vec)
+//!     .unwrap();
 //! assert_eq!(decrypted, data);
 //! ```
 //!
@@ -39,8 +39,7 @@
 //!
 //! // Encrypt `data` using `password`.
 //! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-//! let cipher = Encryptor::with_params(data, password, params);
-//! let encrypted = cipher.encrypt_to_vec();
+//! let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
 //!
 //! // And extract the scrypt parameters from it.
 //! let params = scryptenc::Params::new(encrypted).unwrap();

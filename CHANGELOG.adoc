@@ -18,6 +18,10 @@ toc::[]
 
 == {compare-url}/v0.5.3\...HEAD[Unreleased]
 
+=== Added
+
+* Add doctests to public API ({pull-request-url}/34[#34])
+
 === Fixed
 
 * Fix `benches/encrypt.rs` ({pull-request-url}/30[#30])
