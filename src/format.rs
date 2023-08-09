@@ -364,6 +364,11 @@ mod tests {
     }
 
     #[test]
+    fn from_version_to_u8() {
+        assert_eq!(u8::from(Version::V0), 0);
+    }
+
+    #[test]
     fn magic_number() {
         assert_eq!(str::from_utf8(&Header::MAGIC_NUMBER).unwrap(), "scrypt");
     }

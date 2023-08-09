@@ -18,15 +18,19 @@ const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.enc");
 
 #[test]
 fn success() {
-    let cipher = Decryptor::new(TEST_DATA_ENC, PASSWORD).unwrap();
-    let mut buf = vec![u8::default(); cipher.out_len()];
-    cipher.decrypt(&mut buf).unwrap();
-    assert_eq!(buf, TEST_DATA);
+    {
+        let cipher = Decryptor::new(TEST_DATA_ENC, PASSWORD).unwrap();
+        let mut buf = vec![u8::default(); cipher.out_len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
 
-    let decrypted = Decryptor::new(TEST_DATA_ENC, PASSWORD)
-        .and_then(Decryptor::decrypt_to_vec)
-        .unwrap();
-    assert_eq!(decrypted, TEST_DATA);
+    {
+        let decrypted = Decryptor::new(TEST_DATA_ENC, PASSWORD)
+            .and_then(Decryptor::decrypt_to_vec)
+            .unwrap();
+        assert_eq!(decrypted, TEST_DATA);
+    }
 }
 
 #[test]
@@ -56,7 +60,7 @@ fn invalid_length() {
 
 #[test]
 fn invalid_magic_number() {
-    let mut data = TEST_DATA_ENC.to_vec();
+    let mut data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
     data[0] = u32::from('b').try_into().unwrap();
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
@@ -66,7 +70,7 @@ fn invalid_magic_number() {
 
 #[test]
 fn unknown_version() {
-    let mut data = TEST_DATA_ENC.to_vec();
+    let mut data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
     data[6] = 1;
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
@@ -76,33 +80,36 @@ fn unknown_version() {
 
 #[test]
 fn invalid_params() {
-    let data = TEST_DATA_ENC.to_vec();
+    let mut data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
 
-    let mut data_1 = data.clone();
-    data_1[7] = 65;
-    let decrypted = Decryptor::new(data_1, PASSWORD)
-        .and_then(Decryptor::decrypt_to_vec)
-        .unwrap_err();
-    assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
+    {
+        data[7] = 65;
+        let decrypted = Decryptor::new(data, PASSWORD)
+            .and_then(Decryptor::decrypt_to_vec)
+            .unwrap_err();
+        assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
+    }
 
-    let mut data_2 = data.clone();
-    data_2[8..12].copy_from_slice(&u32::to_be_bytes(0));
-    let decrypted = Decryptor::new(data_2, PASSWORD)
-        .and_then(Decryptor::decrypt_to_vec)
-        .unwrap_err();
-    assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
+    {
+        data[8..12].copy_from_slice(&u32::to_be_bytes(0));
+        let decrypted = Decryptor::new(data, PASSWORD)
+            .and_then(Decryptor::decrypt_to_vec)
+            .unwrap_err();
+        assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
+    }
 
-    let mut data_3 = data;
-    data_3[12..16].copy_from_slice(&u32::to_be_bytes(0));
-    let decrypted = Decryptor::new(data_3, PASSWORD)
-        .and_then(Decryptor::decrypt_to_vec)
-        .unwrap_err();
-    assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
+    {
+        data[12..16].copy_from_slice(&u32::to_be_bytes(0));
+        let decrypted = Decryptor::new(data, PASSWORD)
+            .and_then(Decryptor::decrypt_to_vec)
+            .unwrap_err();
+        assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
+    }
 }
 
 #[test]
 fn invalid_checksum() {
-    let mut data = TEST_DATA_ENC.to_vec();
+    let mut data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
     let mut checksum: [u8; 16] = data[48..64].try_into().unwrap();
     checksum.reverse();
     data[48..64].copy_from_slice(&checksum);
@@ -114,7 +121,7 @@ fn invalid_checksum() {
 
 #[test]
 fn invalid_header_signature() {
-    let mut data = TEST_DATA_ENC.to_vec();
+    let mut data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
     let mut signature: [u8; 32] = data[64..96].try_into().unwrap();
     signature.reverse();
     data[64..96].copy_from_slice(&signature);
@@ -126,7 +133,7 @@ fn invalid_header_signature() {
 
 #[test]
 fn invalid_signature() {
-    let data = TEST_DATA_ENC.to_vec();
+    let data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
     let start_signature = data.len() - 32;
     let mut data = data;
     let mut signature: [u8; 32] = data[start_signature..].try_into().unwrap();
