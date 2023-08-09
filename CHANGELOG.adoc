@@ -21,6 +21,8 @@ toc::[]
 === Added
 
 * Add doctests to public API ({pull-request-url}/34[#34])
+* Implement `Clone`, `Copy`, `Eq` and `PartialEq` for `Error`
+  ({pull-request-url}/35[#35])
 
 === Fixed
 

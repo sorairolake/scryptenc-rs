@@ -10,7 +10,7 @@ use hmac::digest::MacError;
 use scrypt::errors::InvalidParams;
 
 /// The error type for the scrypt encrypted data format.
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Error {
     /// The encrypted data was shorter than 128 bytes.
     InvalidLength,
@@ -72,6 +72,226 @@ mod tests {
     use super::*;
 
     #[test]
+    fn clone() {
+        assert_eq!(Error::InvalidLength.clone(), Error::InvalidLength);
+        assert_eq!(Error::InvalidMagicNumber.clone(), Error::InvalidMagicNumber);
+        assert_eq!(
+            Error::UnknownVersion(u8::MAX).clone(),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_eq!(
+            Error::InvalidParams(InvalidParams).clone(),
+            Error::InvalidParams(InvalidParams)
+        );
+        assert_eq!(Error::InvalidChecksum.clone(), Error::InvalidChecksum);
+        assert_eq!(
+            Error::InvalidHeaderSignature(MacError).clone(),
+            Error::InvalidHeaderSignature(MacError)
+        );
+        assert_eq!(
+            Error::InvalidSignature(MacError).clone(),
+            Error::InvalidSignature(MacError)
+        );
+    }
+
+    #[test]
+    fn copy() {
+        {
+            let a = Error::InvalidLength;
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Error::InvalidMagicNumber;
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Error::UnknownVersion(u8::MAX);
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Error::InvalidParams(InvalidParams);
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Error::InvalidChecksum;
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Error::InvalidHeaderSignature(MacError);
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Error::InvalidSignature(MacError);
+            let b = a;
+            assert_eq!(a, b);
+        }
+    }
+
+    #[test]
+    fn debug() {
+        assert_eq!(format!("{:?}", Error::InvalidLength), "InvalidLength");
+        assert_eq!(
+            format!("{:?}", Error::InvalidMagicNumber),
+            "InvalidMagicNumber"
+        );
+        assert_eq!(
+            format!("{:?}", Error::UnknownVersion(u8::MAX)),
+            "UnknownVersion(255)"
+        );
+        assert_eq!(
+            format!("{:?}", Error::InvalidParams(InvalidParams)),
+            "InvalidParams(InvalidParams)"
+        );
+        assert_eq!(format!("{:?}", Error::InvalidChecksum), "InvalidChecksum");
+        assert_eq!(
+            format!("{:?}", Error::InvalidHeaderSignature(MacError)),
+            "InvalidHeaderSignature(MacError)"
+        );
+        assert_eq!(
+            format!("{:?}", Error::InvalidSignature(MacError)),
+            "InvalidSignature(MacError)"
+        );
+    }
+
+    #[allow(clippy::cognitive_complexity, clippy::too_many_lines)]
+    #[test]
+    fn equality() {
+        assert_eq!(Error::InvalidLength, Error::InvalidLength);
+        assert_ne!(Error::InvalidLength, Error::InvalidMagicNumber);
+        assert_ne!(Error::InvalidLength, Error::UnknownVersion(u8::MAX));
+        assert_ne!(Error::InvalidLength, Error::InvalidParams(InvalidParams));
+        assert_ne!(Error::InvalidLength, Error::InvalidChecksum);
+        assert_ne!(
+            Error::InvalidLength,
+            Error::InvalidHeaderSignature(MacError)
+        );
+        assert_ne!(Error::InvalidLength, Error::InvalidSignature(MacError));
+        assert_ne!(Error::InvalidMagicNumber, Error::InvalidLength);
+        assert_eq!(Error::InvalidMagicNumber, Error::InvalidMagicNumber);
+        assert_ne!(Error::InvalidMagicNumber, Error::UnknownVersion(u8::MAX));
+        assert_ne!(
+            Error::InvalidMagicNumber,
+            Error::InvalidParams(InvalidParams)
+        );
+        assert_ne!(Error::InvalidMagicNumber, Error::InvalidChecksum);
+        assert_ne!(
+            Error::InvalidMagicNumber,
+            Error::InvalidHeaderSignature(MacError)
+        );
+        assert_ne!(Error::InvalidMagicNumber, Error::InvalidSignature(MacError));
+        assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidLength);
+        assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidMagicNumber);
+        assert_eq!(
+            Error::UnknownVersion(u8::MAX),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::UnknownVersion(u8::MAX),
+            Error::InvalidParams(InvalidParams)
+        );
+        assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidChecksum);
+        assert_ne!(
+            Error::UnknownVersion(u8::MAX),
+            Error::InvalidHeaderSignature(MacError)
+        );
+        assert_ne!(
+            Error::UnknownVersion(u8::MAX),
+            Error::InvalidSignature(MacError)
+        );
+        assert_ne!(Error::InvalidParams(InvalidParams), Error::InvalidLength);
+        assert_ne!(
+            Error::InvalidParams(InvalidParams),
+            Error::InvalidMagicNumber
+        );
+        assert_ne!(
+            Error::InvalidParams(InvalidParams),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_eq!(
+            Error::InvalidParams(InvalidParams),
+            Error::InvalidParams(InvalidParams)
+        );
+        assert_ne!(Error::InvalidParams(InvalidParams), Error::InvalidChecksum);
+        assert_ne!(
+            Error::InvalidParams(InvalidParams),
+            Error::InvalidHeaderSignature(MacError)
+        );
+        assert_ne!(
+            Error::InvalidParams(InvalidParams),
+            Error::InvalidSignature(MacError)
+        );
+        assert_ne!(Error::InvalidChecksum, Error::InvalidLength);
+        assert_ne!(Error::InvalidChecksum, Error::InvalidMagicNumber);
+        assert_ne!(Error::InvalidChecksum, Error::UnknownVersion(u8::MAX));
+        assert_ne!(Error::InvalidChecksum, Error::InvalidParams(InvalidParams));
+        assert_eq!(Error::InvalidChecksum, Error::InvalidChecksum);
+        assert_ne!(
+            Error::InvalidChecksum,
+            Error::InvalidHeaderSignature(MacError)
+        );
+        assert_ne!(Error::InvalidChecksum, Error::InvalidSignature(MacError));
+        assert_ne!(
+            Error::InvalidHeaderSignature(MacError),
+            Error::InvalidLength
+        );
+        assert_ne!(
+            Error::InvalidHeaderSignature(MacError),
+            Error::InvalidMagicNumber
+        );
+        assert_ne!(
+            Error::InvalidHeaderSignature(MacError),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidHeaderSignature(MacError),
+            Error::InvalidParams(InvalidParams)
+        );
+        assert_ne!(
+            Error::InvalidHeaderSignature(MacError),
+            Error::InvalidChecksum
+        );
+        assert_eq!(
+            Error::InvalidHeaderSignature(MacError),
+            Error::InvalidHeaderSignature(MacError)
+        );
+        assert_ne!(
+            Error::InvalidHeaderSignature(MacError),
+            Error::InvalidSignature(MacError)
+        );
+        assert_ne!(Error::InvalidSignature(MacError), Error::InvalidLength);
+        assert_ne!(Error::InvalidSignature(MacError), Error::InvalidMagicNumber);
+        assert_ne!(
+            Error::InvalidSignature(MacError),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidSignature(MacError),
+            Error::InvalidParams(InvalidParams)
+        );
+        assert_ne!(Error::InvalidSignature(MacError), Error::InvalidChecksum);
+        assert_ne!(
+            Error::InvalidSignature(MacError),
+            Error::InvalidHeaderSignature(MacError)
+        );
+        assert_eq!(
+            Error::InvalidSignature(MacError),
+            Error::InvalidSignature(MacError)
+        );
+    }
+
+    #[test]
     fn display() {
         assert_eq!(
             format!("{}", Error::InvalidLength),
@@ -121,10 +341,10 @@ mod tests {
     }
 
     #[test]
-    fn invalid_params_to_error() {
-        assert!(matches!(
+    fn from_invalid_params_to_error() {
+        assert_eq!(
             Error::from(InvalidParams),
             Error::InvalidParams(InvalidParams)
-        ));
+        );
     }
 }

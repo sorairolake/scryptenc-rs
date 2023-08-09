@@ -42,7 +42,7 @@ fn incorrect_password() {
     let decrypted = Decryptor::new(TEST_DATA_ENC, "passphrase")
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidHeaderSignature(MacError)));
+    assert_eq!(decrypted, Error::InvalidHeaderSignature(MacError));
 }
 
 #[test]
@@ -51,7 +51,7 @@ fn invalid_length() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidLength));
+    assert_eq!(decrypted, Error::InvalidLength);
 }
 
 #[test]
@@ -61,7 +61,7 @@ fn invalid_magic_number() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidMagicNumber));
+    assert_eq!(decrypted, Error::InvalidMagicNumber);
 }
 
 #[test]
@@ -71,7 +71,7 @@ fn unknown_version() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::UnknownVersion(1)));
+    assert_eq!(decrypted, Error::UnknownVersion(1));
 }
 
 #[test]
@@ -83,21 +83,21 @@ fn invalid_params() {
     let decrypted = Decryptor::new(data_1, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidParams(InvalidParams)));
+    assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
 
     let mut data_2 = data.clone();
     data_2[8..12].copy_from_slice(&u32::to_be_bytes(0));
     let decrypted = Decryptor::new(data_2, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidParams(InvalidParams)));
+    assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
 
     let mut data_3 = data;
     data_3[12..16].copy_from_slice(&u32::to_be_bytes(0));
     let decrypted = Decryptor::new(data_3, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidParams(InvalidParams)));
+    assert_eq!(decrypted, Error::InvalidParams(InvalidParams));
 }
 
 #[test]
@@ -109,7 +109,7 @@ fn invalid_checksum() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidChecksum));
+    assert_eq!(decrypted, Error::InvalidChecksum);
 }
 
 #[test]
@@ -121,7 +121,7 @@ fn invalid_header_signature() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidHeaderSignature(MacError)));
+    assert_eq!(decrypted, Error::InvalidHeaderSignature(MacError));
 }
 
 #[test]
@@ -135,7 +135,7 @@ fn invalid_signature() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert!(matches!(decrypted, Error::InvalidSignature(MacError)));
+    assert_eq!(decrypted, Error::InvalidSignature(MacError));
 }
 
 #[test]
