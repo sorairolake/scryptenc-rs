@@ -39,7 +39,7 @@ impl Header {
     /// Magic number of the scrypt encrypted data format.
     ///
     /// This is the ASCII code for "scrypt".
-    const MAGIC_NUMBER: [u8; 6] = [0x73, 0x63, 0x72, 0x79, 0x70, 0x74];
+    const MAGIC_NUMBER: [u8; 6] = *b"scrypt";
 
     /// Creates a new `Header`.
     pub fn new(params: scrypt::Params) -> Self {
