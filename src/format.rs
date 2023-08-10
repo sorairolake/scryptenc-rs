@@ -5,8 +5,7 @@
 //! Specifications of the scrypt encrypted data format.
 
 use hmac::{digest::MacError, Hmac, Mac};
-use rand::{Rng, SeedableRng};
-use rand_chacha::ChaCha20Rng;
+use rand::{rngs::StdRng, Rng, SeedableRng};
 use sha2::{Digest, Sha256};
 
 use crate::error::Error;
@@ -44,8 +43,7 @@ impl Header {
     /// Creates a new `Header`.
     pub fn new(params: scrypt::Params) -> Self {
         fn generate_salt() -> [u8; 32] {
-            let mut rng = ChaCha20Rng::from_entropy();
-            rng.gen()
+            StdRng::from_entropy().gen()
         }
 
         let magic_number = Self::MAGIC_NUMBER;

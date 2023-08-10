@@ -21,6 +21,8 @@ toc::[]
 === Changed
 
 * Split `Params` from `format.rs` ({pull-request-url}/38[#38])
+* Use `StdRng` instead of `ChaCha20Rng` to generate salt
+  ({pull-request-url}/38[#38])
 
 == {compare-url}/v0.5.3\...v0.6.0[0.6.0] - 2023-08-09
 
