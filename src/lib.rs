@@ -70,8 +70,9 @@ mod decrypt;
 mod encrypt;
 mod error;
 mod format;
+mod params;
 
 pub use hmac::digest;
 pub use scrypt;
 
-pub use crate::{decrypt::Decryptor, encrypt::Encryptor, error::Error, format::Params};
+pub use crate::{decrypt::Decryptor, encrypt::Encryptor, error::Error, params::Params};
