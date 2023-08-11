@@ -5,8 +5,7 @@
 //! Specifications of the scrypt encrypted data format.
 
 use hmac::{digest::MacError, Hmac, Mac};
-use rand::{Rng, SeedableRng};
-use rand_chacha::ChaCha20Rng;
+use rand::{rngs::StdRng, Rng, SeedableRng};
 use sha2::{Digest, Sha256};
 
 use crate::error::Error;
@@ -39,13 +38,12 @@ impl Header {
     /// Magic number of the scrypt encrypted data format.
     ///
     /// This is the ASCII code for "scrypt".
-    const MAGIC_NUMBER: [u8; 6] = [0x73, 0x63, 0x72, 0x79, 0x70, 0x74];
+    const MAGIC_NUMBER: [u8; 6] = *b"scrypt";
 
     /// Creates a new `Header`.
     pub fn new(params: scrypt::Params) -> Self {
         fn generate_salt() -> [u8; 32] {
-            let mut rng = ChaCha20Rng::from_entropy();
-            rng.gen()
+            StdRng::from_entropy().gen()
         }
 
         let magic_number = Self::MAGIC_NUMBER;
@@ -136,7 +134,7 @@ impl Header {
     /// Verifies a HMAC-SHA-256 signature stored in this header.
     pub fn verify_signature(&mut self, key: &DerivedKey, signature: &[u8]) -> Result<(), Error> {
         verify_signature(&key.mac(), &self.as_bytes()[..64], signature)
-            .map_err(Error::InvalidHeaderSignature)?;
+            .map_err(Error::InvalidHeaderMac)?;
         self.signature.copy_from_slice(signature);
         Ok(())
     }
@@ -221,114 +219,6 @@ impl Signature {
     /// Returns the number of bytes of the signature.
     pub const fn size() -> usize {
         32
-    }
-}
-
-/// The scrypt parameters used for the encrypted data.
-#[derive(Clone, Copy, Debug)]
-pub struct Params(scrypt::Params);
-
-impl Params {
-    /// Creates a new instance of the scrypt parameters from `data`.
-    ///
-    /// # Errors
-    ///
-    /// This function will return an error in the following situations:
-    ///
-    /// - `data` is less than 128 bytes.
-    /// - The magic number is not "scrypt".
-    /// - The version number other than `0`.
-    /// - The scrypt parameters are invalid.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use scryptenc::{Encryptor, Params};
-    /// #
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
-    ///
-    /// assert!(Params::new(encrypted).is_ok());
-    /// ```
-    pub fn new(data: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let params = Header::parse(data.as_ref()).map(|h| h.params())?;
-        Ok(Self(params))
-    }
-
-    /// Gets log2 of the scrypt parameter `N`.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use scryptenc::{Encryptor, Params};
-    /// #
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
-    /// assert_eq!(params.log_n(), 10);
-    /// ```
-    #[must_use]
-    #[inline]
-    pub fn log_n(&self) -> u8 {
-        self.0.log_n()
-    }
-
-    /// Gets `N` parameter.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use scryptenc::{Encryptor, Params};
-    /// #
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
-    /// assert_eq!(params.n(), 1024);
-    /// ```
-    #[must_use]
-    #[inline]
-    pub fn n(&self) -> u64 {
-        1 << self.0.log_n()
-    }
-
-    /// Gets `r` parameter.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use scryptenc::{Encryptor, Params};
-    /// #
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
-    /// assert_eq!(params.r(), 8);
-    /// ```
-    #[must_use]
-    #[inline]
-    pub fn r(&self) -> u32 {
-        self.0.r()
-    }
-
-    /// Gets `p` parameter.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use scryptenc::{Encryptor, Params};
-    /// #
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
-    /// assert_eq!(params.p(), 1);
-    /// ```
-    #[must_use]
-    #[inline]
-    pub fn p(&self) -> u32 {
-        self.0.p()
     }
 }
 

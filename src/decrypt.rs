@@ -46,8 +46,8 @@ impl Decryptor {
     /// ```
     /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
@@ -106,8 +106,8 @@ impl Decryptor {
     /// ```
     /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
@@ -130,7 +130,7 @@ impl Decryptor {
             cipher.apply_keystream(&mut data);
 
             format::verify_signature(&decryptor.dk.mac(), &input, &decryptor.signature.as_bytes())
-                .map_err(Error::InvalidSignature)?;
+                .map_err(Error::InvalidMac)?;
 
             buf.copy_from_slice(&data);
             Ok(())
@@ -149,8 +149,8 @@ impl Decryptor {
     /// ```
     /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
@@ -173,8 +173,8 @@ impl Decryptor {
     /// ```
     /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
