@@ -34,8 +34,8 @@ impl Encryptor {
     /// ```
     /// # use scryptenc::Encryptor;
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let cipher = Encryptor::new(data, password);
     /// let encrypted = cipher.encrypt_to_vec();
@@ -53,8 +53,8 @@ impl Encryptor {
     /// ```
     /// # use scryptenc::{scrypt::Params, Encryptor};
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let cipher = Encryptor::with_params(data, password, params);
@@ -93,8 +93,8 @@ impl Encryptor {
     /// ```
     /// # use scryptenc::{scrypt::Params, Encryptor};
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let cipher = Encryptor::with_params(data, password, params);
@@ -129,8 +129,8 @@ impl Encryptor {
     /// ```
     /// # use scryptenc::{scrypt::Params, Encryptor};
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let cipher = Encryptor::with_params(data, password, params);
@@ -151,8 +151,8 @@ impl Encryptor {
     /// ```
     /// # use scryptenc::{scrypt::Params, Encryptor};
     /// #
-    /// let password = "password";
     /// let data = b"Hello, world!";
+    /// let password = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let cipher = Encryptor::with_params(data, password, params);

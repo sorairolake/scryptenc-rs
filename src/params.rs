@@ -27,8 +27,11 @@ impl Params {
     /// ```
     /// # use scryptenc::{Encryptor, Params};
     /// #
+    /// let data = b"Hello, world!";
+    /// let password = "password";
+    ///
     /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
     ///
     /// assert!(Params::new(encrypted).is_ok());
     /// ```
@@ -44,8 +47,11 @@ impl Params {
     /// ```
     /// # use scryptenc::{Encryptor, Params};
     /// #
+    /// let data = b"Hello, world!";
+    /// let password = "password";
+    ///
     /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
     ///
     /// let params = Params::new(encrypted).unwrap();
     /// assert_eq!(params.log_n(), 10);
@@ -63,8 +69,11 @@ impl Params {
     /// ```
     /// # use scryptenc::{Encryptor, Params};
     /// #
+    /// let data = b"Hello, world!";
+    /// let password = "password";
+    ///
     /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
     ///
     /// let params = Params::new(encrypted).unwrap();
     /// assert_eq!(params.n(), 1024);
@@ -82,8 +91,11 @@ impl Params {
     /// ```
     /// # use scryptenc::{Encryptor, Params};
     /// #
+    /// let data = b"Hello, world!";
+    /// let password = "password";
+    ///
     /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
     ///
     /// let params = Params::new(encrypted).unwrap();
     /// assert_eq!(params.r(), 8);
@@ -101,8 +113,11 @@ impl Params {
     /// ```
     /// # use scryptenc::{Encryptor, Params};
     /// #
+    /// let data = b"Hello, world!";
+    /// let password = "password";
+    ///
     /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(b"Hello, world!", "password", params).encrypt_to_vec();
+    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
     ///
     /// let params = Params::new(encrypted).unwrap();
     /// assert_eq!(params.p(), 1);
