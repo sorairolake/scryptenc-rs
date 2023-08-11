@@ -41,7 +41,7 @@ fn main() -> anyhow::Result<()> {
         .interact()
         .context("could not read password")?;
     let cipher = match scryptenc::Decryptor::new(ciphertext, password) {
-        c @ Err(scryptenc::Error::InvalidMac(_)) => c.context("password is incorrect"),
+        c @ Err(scryptenc::Error::InvalidHeaderMac(_)) => c.context("password is incorrect"),
         c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
     }?;
     let decrypted = cipher
