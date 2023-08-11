@@ -27,11 +27,11 @@ pub enum Error {
     /// The checksum of the header mismatched.
     InvalidChecksum,
 
-    /// The header signature was invalid.
-    InvalidHeaderSignature(MacError),
+    /// The MAC (authentication tag) of the header was invalid.
+    InvalidHeaderMac(MacError),
 
-    /// The signature at EOF was invalid.
-    InvalidSignature(MacError),
+    /// The MAC (authentication tag) at EOF was invalid.
+    InvalidMac(MacError),
 }
 
 impl fmt::Display for Error {
@@ -43,8 +43,8 @@ impl fmt::Display for Error {
             Self::UnknownVersion(version) => write!(f, "unknown version number `{version}`"),
             Self::InvalidParams(err) => write!(f, "{err}"),
             Self::InvalidChecksum => write!(f, "checksum mismatch"),
-            Self::InvalidHeaderSignature(_) => write!(f, "invalid header signature"),
-            Self::InvalidSignature(_) => write!(f, "invalid signature"),
+            Self::InvalidHeaderMac(_) => write!(f, "invalid header MAC"),
+            Self::InvalidMac(_) => write!(f, "invalid MAC"),
         }
     }
 }
@@ -54,7 +54,7 @@ impl std::error::Error for Error {
     #[inline]
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            Self::InvalidHeaderSignature(err) | Self::InvalidSignature(err) => Some(err),
+            Self::InvalidHeaderMac(err) | Self::InvalidMac(err) => Some(err),
             _ => None,
         }
     }
@@ -85,12 +85,12 @@ mod tests {
         );
         assert_eq!(Error::InvalidChecksum.clone(), Error::InvalidChecksum);
         assert_eq!(
-            Error::InvalidHeaderSignature(MacError).clone(),
-            Error::InvalidHeaderSignature(MacError)
+            Error::InvalidHeaderMac(MacError).clone(),
+            Error::InvalidHeaderMac(MacError)
         );
         assert_eq!(
-            Error::InvalidSignature(MacError).clone(),
-            Error::InvalidSignature(MacError)
+            Error::InvalidMac(MacError).clone(),
+            Error::InvalidMac(MacError)
         );
     }
 
@@ -127,13 +127,13 @@ mod tests {
         }
 
         {
-            let a = Error::InvalidHeaderSignature(MacError);
+            let a = Error::InvalidHeaderMac(MacError);
             let b = a;
             assert_eq!(a, b);
         }
 
         {
-            let a = Error::InvalidSignature(MacError);
+            let a = Error::InvalidMac(MacError);
             let b = a;
             assert_eq!(a, b);
         }
@@ -156,12 +156,12 @@ mod tests {
         );
         assert_eq!(format!("{:?}", Error::InvalidChecksum), "InvalidChecksum");
         assert_eq!(
-            format!("{:?}", Error::InvalidHeaderSignature(MacError)),
-            "InvalidHeaderSignature(MacError)"
+            format!("{:?}", Error::InvalidHeaderMac(MacError)),
+            "InvalidHeaderMac(MacError)"
         );
         assert_eq!(
-            format!("{:?}", Error::InvalidSignature(MacError)),
-            "InvalidSignature(MacError)"
+            format!("{:?}", Error::InvalidMac(MacError)),
+            "InvalidMac(MacError)"
         );
     }
 
@@ -173,11 +173,8 @@ mod tests {
         assert_ne!(Error::InvalidLength, Error::UnknownVersion(u8::MAX));
         assert_ne!(Error::InvalidLength, Error::InvalidParams(InvalidParams));
         assert_ne!(Error::InvalidLength, Error::InvalidChecksum);
-        assert_ne!(
-            Error::InvalidLength,
-            Error::InvalidHeaderSignature(MacError)
-        );
-        assert_ne!(Error::InvalidLength, Error::InvalidSignature(MacError));
+        assert_ne!(Error::InvalidLength, Error::InvalidHeaderMac(MacError));
+        assert_ne!(Error::InvalidLength, Error::InvalidMac(MacError));
         assert_ne!(Error::InvalidMagicNumber, Error::InvalidLength);
         assert_eq!(Error::InvalidMagicNumber, Error::InvalidMagicNumber);
         assert_ne!(Error::InvalidMagicNumber, Error::UnknownVersion(u8::MAX));
@@ -186,11 +183,8 @@ mod tests {
             Error::InvalidParams(InvalidParams)
         );
         assert_ne!(Error::InvalidMagicNumber, Error::InvalidChecksum);
-        assert_ne!(
-            Error::InvalidMagicNumber,
-            Error::InvalidHeaderSignature(MacError)
-        );
-        assert_ne!(Error::InvalidMagicNumber, Error::InvalidSignature(MacError));
+        assert_ne!(Error::InvalidMagicNumber, Error::InvalidHeaderMac(MacError));
+        assert_ne!(Error::InvalidMagicNumber, Error::InvalidMac(MacError));
         assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidLength);
         assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidMagicNumber);
         assert_eq!(
@@ -204,12 +198,9 @@ mod tests {
         assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidChecksum);
         assert_ne!(
             Error::UnknownVersion(u8::MAX),
-            Error::InvalidHeaderSignature(MacError)
+            Error::InvalidHeaderMac(MacError)
         );
-        assert_ne!(
-            Error::UnknownVersion(u8::MAX),
-            Error::InvalidSignature(MacError)
-        );
+        assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidMac(MacError));
         assert_ne!(Error::InvalidParams(InvalidParams), Error::InvalidLength);
         assert_ne!(
             Error::InvalidParams(InvalidParams),
@@ -226,69 +217,51 @@ mod tests {
         assert_ne!(Error::InvalidParams(InvalidParams), Error::InvalidChecksum);
         assert_ne!(
             Error::InvalidParams(InvalidParams),
-            Error::InvalidHeaderSignature(MacError)
+            Error::InvalidHeaderMac(MacError)
         );
         assert_ne!(
             Error::InvalidParams(InvalidParams),
-            Error::InvalidSignature(MacError)
+            Error::InvalidMac(MacError)
         );
         assert_ne!(Error::InvalidChecksum, Error::InvalidLength);
         assert_ne!(Error::InvalidChecksum, Error::InvalidMagicNumber);
         assert_ne!(Error::InvalidChecksum, Error::UnknownVersion(u8::MAX));
         assert_ne!(Error::InvalidChecksum, Error::InvalidParams(InvalidParams));
         assert_eq!(Error::InvalidChecksum, Error::InvalidChecksum);
+        assert_ne!(Error::InvalidChecksum, Error::InvalidHeaderMac(MacError));
+        assert_ne!(Error::InvalidChecksum, Error::InvalidMac(MacError));
+        assert_ne!(Error::InvalidHeaderMac(MacError), Error::InvalidLength);
+        assert_ne!(Error::InvalidHeaderMac(MacError), Error::InvalidMagicNumber);
         assert_ne!(
-            Error::InvalidChecksum,
-            Error::InvalidHeaderSignature(MacError)
-        );
-        assert_ne!(Error::InvalidChecksum, Error::InvalidSignature(MacError));
-        assert_ne!(
-            Error::InvalidHeaderSignature(MacError),
-            Error::InvalidLength
-        );
-        assert_ne!(
-            Error::InvalidHeaderSignature(MacError),
-            Error::InvalidMagicNumber
-        );
-        assert_ne!(
-            Error::InvalidHeaderSignature(MacError),
+            Error::InvalidHeaderMac(MacError),
             Error::UnknownVersion(u8::MAX)
         );
         assert_ne!(
-            Error::InvalidHeaderSignature(MacError),
+            Error::InvalidHeaderMac(MacError),
             Error::InvalidParams(InvalidParams)
         );
-        assert_ne!(
-            Error::InvalidHeaderSignature(MacError),
-            Error::InvalidChecksum
-        );
+        assert_ne!(Error::InvalidHeaderMac(MacError), Error::InvalidChecksum);
         assert_eq!(
-            Error::InvalidHeaderSignature(MacError),
-            Error::InvalidHeaderSignature(MacError)
+            Error::InvalidHeaderMac(MacError),
+            Error::InvalidHeaderMac(MacError)
         );
         assert_ne!(
-            Error::InvalidHeaderSignature(MacError),
-            Error::InvalidSignature(MacError)
+            Error::InvalidHeaderMac(MacError),
+            Error::InvalidMac(MacError)
         );
-        assert_ne!(Error::InvalidSignature(MacError), Error::InvalidLength);
-        assert_ne!(Error::InvalidSignature(MacError), Error::InvalidMagicNumber);
+        assert_ne!(Error::InvalidMac(MacError), Error::InvalidLength);
+        assert_ne!(Error::InvalidMac(MacError), Error::InvalidMagicNumber);
+        assert_ne!(Error::InvalidMac(MacError), Error::UnknownVersion(u8::MAX));
         assert_ne!(
-            Error::InvalidSignature(MacError),
-            Error::UnknownVersion(u8::MAX)
-        );
-        assert_ne!(
-            Error::InvalidSignature(MacError),
+            Error::InvalidMac(MacError),
             Error::InvalidParams(InvalidParams)
         );
-        assert_ne!(Error::InvalidSignature(MacError), Error::InvalidChecksum);
+        assert_ne!(Error::InvalidMac(MacError), Error::InvalidChecksum);
         assert_ne!(
-            Error::InvalidSignature(MacError),
-            Error::InvalidHeaderSignature(MacError)
+            Error::InvalidMac(MacError),
+            Error::InvalidHeaderMac(MacError)
         );
-        assert_eq!(
-            Error::InvalidSignature(MacError),
-            Error::InvalidSignature(MacError)
-        );
+        assert_eq!(Error::InvalidMac(MacError), Error::InvalidMac(MacError));
     }
 
     #[test]
@@ -311,13 +284,10 @@ mod tests {
         );
         assert_eq!(format!("{}", Error::InvalidChecksum), "checksum mismatch");
         assert_eq!(
-            format!("{}", Error::InvalidHeaderSignature(MacError)),
-            "invalid header signature"
+            format!("{}", Error::InvalidHeaderMac(MacError)),
+            "invalid header MAC"
         );
-        assert_eq!(
-            format!("{}", Error::InvalidSignature(MacError)),
-            "invalid signature"
-        );
+        assert_eq!(format!("{}", Error::InvalidMac(MacError)), "invalid MAC");
     }
 
     #[cfg(feature = "std")]
@@ -330,11 +300,11 @@ mod tests {
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
         assert!(Error::InvalidParams(InvalidParams).source().is_none());
         assert!(Error::InvalidChecksum.source().is_none());
-        assert!(Error::InvalidHeaderSignature(MacError)
+        assert!(Error::InvalidHeaderMac(MacError)
             .source()
             .unwrap()
             .is::<MacError>());
-        assert!(Error::InvalidSignature(MacError)
+        assert!(Error::InvalidMac(MacError)
             .source()
             .unwrap()
             .is::<MacError>());

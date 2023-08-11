@@ -134,7 +134,7 @@ impl Header {
     /// Verifies a HMAC-SHA-256 signature stored in this header.
     pub fn verify_signature(&mut self, key: &DerivedKey, signature: &[u8]) -> Result<(), Error> {
         verify_signature(&key.mac(), &self.as_bytes()[..64], signature)
-            .map_err(Error::InvalidHeaderSignature)?;
+            .map_err(Error::InvalidHeaderMac)?;
         self.signature.copy_from_slice(signature);
         Ok(())
     }

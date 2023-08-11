@@ -46,7 +46,7 @@ fn incorrect_password() {
     let decrypted = Decryptor::new(TEST_DATA_ENC, "passphrase")
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert_eq!(decrypted, Error::InvalidHeaderSignature(MacError));
+    assert_eq!(decrypted, Error::InvalidHeaderMac(MacError));
 }
 
 #[test]
@@ -120,7 +120,7 @@ fn invalid_checksum() {
 }
 
 #[test]
-fn invalid_header_signature() {
+fn invalid_header_mac() {
     let mut data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
     let mut signature: [u8; 32] = data[64..96].try_into().unwrap();
     signature.reverse();
@@ -128,11 +128,11 @@ fn invalid_header_signature() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert_eq!(decrypted, Error::InvalidHeaderSignature(MacError));
+    assert_eq!(decrypted, Error::InvalidHeaderMac(MacError));
 }
 
 #[test]
-fn invalid_signature() {
+fn invalid_mac() {
     let data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
     let start_signature = data.len() - 32;
     let mut data = data;
@@ -142,7 +142,7 @@ fn invalid_signature() {
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
-    assert_eq!(decrypted, Error::InvalidSignature(MacError));
+    assert_eq!(decrypted, Error::InvalidMac(MacError));
 }
 
 #[test]
