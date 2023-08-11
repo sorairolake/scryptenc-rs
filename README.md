@@ -22,7 +22,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.6.0"
+scryptenc = "0.7.0"
 ```
 
 ### Crate features
@@ -69,4 +69,4 @@ See [COPYING](COPYING) for more details.
 [docs-badge]: https://img.shields.io/docsrs/scryptenc?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/scryptenc
 [license-badge]: https://img.shields.io/crates/l/scryptenc?style=for-the-badge
-[specification-url]: https://github.com/Tarsnap/scrypt/blob/d7a543fb19dca17688e34947aee4558a94200877/FORMAT
+[specification-url]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
