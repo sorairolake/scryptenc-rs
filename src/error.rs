@@ -15,7 +15,7 @@ pub enum Error {
     /// The encrypted data was shorter than 128 bytes.
     InvalidLength,
 
-    /// The magic number was invalid.
+    /// The magic number (file signature) was invalid.
     InvalidMagicNumber,
 
     /// The version was the unrecognized scrypt version number.

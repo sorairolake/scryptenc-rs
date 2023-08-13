@@ -14,7 +14,7 @@ use ctr::Ctr128BE;
 
 use crate::{
     error::Error,
-    format::{self, DerivedKey, Header, Signature},
+    format::{self, DerivedKey, Header, HeaderMac},
 };
 
 /// Decryptor for the scrypt encrypted data format.
@@ -23,7 +23,7 @@ pub struct Decryptor {
     header: Header,
     dk: DerivedKey,
     data: Vec<u8>,
-    signature: Signature,
+    header_mac: HeaderMac,
 }
 
 impl Decryptor {
@@ -39,7 +39,7 @@ impl Decryptor {
     /// - The version number other than `0`.
     /// - The scrypt parameters are invalid.
     /// - SHA-256 checksum of the header mismatch.
-    /// - HMAC-SHA-256 signature of the header mismatch.
+    /// - HMAC-SHA-256 of the header is invalid.
     ///
     /// # Examples
     ///
@@ -71,13 +71,13 @@ impl Decryptor {
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
-            header.verify_signature(&dk, &data[64..Header::size()])?;
+            header.verify_mac(&dk, &data[64..Header::size()])?;
 
-            let (data, signature) =
-                data[Header::size()..].split_at(data.len() - Header::size() - Signature::size());
+            let (data, header_mac) =
+                data[Header::size()..].split_at(data.len() - Header::size() - HeaderMac::size());
             let data = data.to_vec();
-            let signature = Signature::new(
-                signature
+            let header_mac = HeaderMac::new(
+                header_mac
                     .try_into()
                     .expect("output size of HMAC-SHA-256 should be 256 bits"),
             );
@@ -85,7 +85,7 @@ impl Decryptor {
                 header,
                 dk,
                 data,
-                signature,
+                header_mac,
             })
         };
         inner(data.as_ref(), password.as_ref())
@@ -95,7 +95,7 @@ impl Decryptor {
     ///
     /// # Errors
     ///
-    /// Returns `Err` if HMAC-SHA-256 signature mismatch.
+    /// Returns `Err` if HMAC-SHA-256 at EOF is invalid.
     ///
     /// # Panics
     ///
@@ -129,8 +129,12 @@ impl Decryptor {
             let mut data = decryptor.data;
             cipher.apply_keystream(&mut data);
 
-            format::verify_signature(&decryptor.dk.mac(), &input, &decryptor.signature.as_bytes())
-                .map_err(Error::InvalidMac)?;
+            format::verify_mac(
+                &decryptor.dk.mac(),
+                &input,
+                &decryptor.header_mac.as_bytes(),
+            )
+            .map_err(Error::InvalidMac)?;
 
             buf.copy_from_slice(&data);
             Ok(())
@@ -142,7 +146,7 @@ impl Decryptor {
     ///
     /// # Errors
     ///
-    /// Returns `Err` if HMAC-SHA-256 signature mismatch.
+    /// Returns `Err` if HMAC-SHA-256 at EOF is invalid.
     ///
     /// # Examples
     ///
