@@ -1,8 +1,10 @@
-// SPDX-FileCopyrightText: 2022-2023 Shun Sakai
+// SPDX-FileCopyrightText: 2022 Shun Sakai
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 //! Specifications of the scrypt encrypted data format.
+
+use core::mem;
 
 use hmac::{digest::MacError, Hmac, Mac};
 use rand::{rngs::StdRng, Rng, SeedableRng};
@@ -31,7 +33,7 @@ pub struct Header {
     params: scrypt::Params,
     salt: [u8; 32],
     checksum: [u8; 16],
-    signature: [u8; 32],
+    mac: [u8; HeaderMac::SIZE],
 }
 
 impl Header {
@@ -39,6 +41,9 @@ impl Header {
     ///
     /// This is the ASCII code for "scrypt".
     const MAGIC_NUMBER: [u8; 6] = *b"scrypt";
+
+    /// The number of bytes of the header.
+    pub const SIZE: usize = 96;
 
     /// Creates a new `Header`.
     pub fn new(params: scrypt::Params) -> Self {
@@ -51,7 +56,7 @@ impl Header {
         let salt = generate_salt();
 
         let checksum = Default::default();
-        let signature = Default::default();
+        let mac = Default::default();
 
         Self {
             magic_number,
@@ -59,7 +64,7 @@ impl Header {
             params,
             salt,
             checksum,
-            signature,
+            mac,
         }
     }
 
@@ -97,7 +102,7 @@ impl Header {
             .expect("size of salt should be 32 bytes");
 
         let checksum = Default::default();
-        let signature = Default::default();
+        let mac = Default::default();
 
         Ok(Self {
             magic_number,
@@ -105,7 +110,7 @@ impl Header {
             params,
             salt,
             checksum,
-            signature,
+            mac,
         })
     }
 
@@ -125,23 +130,22 @@ impl Header {
         }
     }
 
-    /// Gets a HMAC-SHA-256 signature of this header.
-    pub fn compute_signature(&mut self, key: &DerivedKey) {
-        let mac = compute_signature(&key.mac(), &self.as_bytes()[..64]);
-        self.signature.copy_from_slice(&mac);
+    /// Gets a HMAC-SHA-256 of this header.
+    pub fn compute_mac(&mut self, key: &DerivedKey) {
+        let mac = compute_mac(&key.mac(), &self.as_bytes()[..64]);
+        self.mac.copy_from_slice(&mac);
     }
 
-    /// Verifies a HMAC-SHA-256 signature stored in this header.
-    pub fn verify_signature(&mut self, key: &DerivedKey, signature: &[u8]) -> Result<(), Error> {
-        verify_signature(&key.mac(), &self.as_bytes()[..64], signature)
-            .map_err(Error::InvalidHeaderMac)?;
-        self.signature.copy_from_slice(signature);
+    /// Verifies a HMAC-SHA-256 stored in this header.
+    pub fn verify_mac(&mut self, key: &DerivedKey, tag: &[u8]) -> Result<(), Error> {
+        verify_mac(&key.mac(), &self.as_bytes()[..64], tag).map_err(Error::InvalidHeaderMac)?;
+        self.mac.copy_from_slice(tag);
         Ok(())
     }
 
     /// Converts this header to a byte array.
-    pub fn as_bytes(&self) -> [u8; 96] {
-        let mut header = [u8::default(); 96];
+    pub fn as_bytes(&self) -> [u8; Self::SIZE] {
+        let mut header = [u8::default(); Self::SIZE];
         header[..6].copy_from_slice(&self.magic_number);
         header[6] = self.version.into();
         header[7] = self.params.log_n();
@@ -150,7 +154,7 @@ impl Header {
         header[16..48].copy_from_slice(&self.salt);
 
         header[48..64].copy_from_slice(&self.checksum);
-        header[64..].copy_from_slice(&self.signature);
+        header[64..].copy_from_slice(&self.mac);
 
         header
     }
@@ -163,11 +167,6 @@ impl Header {
     /// Returns a salt stored in this header.
     pub const fn salt(&self) -> [u8; 32] {
         self.salt
-    }
-
-    /// Returns the number of bytes of the header.
-    pub const fn size() -> usize {
-        96
     }
 }
 
@@ -201,29 +200,27 @@ impl DerivedKey {
     }
 }
 
-/// Signature of the scrypt encrypted data format.
+/// The MAC (authentication tag) of the header.
 #[derive(Clone, Debug)]
-pub struct Signature([u8; 32]);
+pub struct HeaderMac([u8; 32]);
 
-impl Signature {
-    /// Creates a new `Signature`.
-    pub const fn new(signature: [u8; 32]) -> Self {
-        Self(signature)
+impl HeaderMac {
+    /// The number of bytes of the MAC.
+    pub const SIZE: usize = mem::size_of::<Self>();
+
+    /// Creates a new `HeaderMac`.
+    pub const fn new(mac: [u8; Self::SIZE]) -> Self {
+        Self(mac)
     }
 
-    /// Converts this signature to a byte array.
-    pub const fn as_bytes(&self) -> [u8; 32] {
+    /// Converts this MAC to a byte array.
+    pub const fn as_bytes(&self) -> [u8; Self::SIZE] {
         self.0
-    }
-
-    /// Returns the number of bytes of the signature.
-    pub const fn size() -> usize {
-        32
     }
 }
 
-/// Gets a HMAC-SHA-256 signature.
-pub fn compute_signature(key: &[u8], data: &[u8]) -> [u8; 32] {
+/// Gets a HMAC-SHA-256.
+pub fn compute_mac(key: &[u8], data: &[u8]) -> [u8; 32] {
     type HmacSha256 = Hmac<Sha256>;
 
     let mut mac =
@@ -232,14 +229,14 @@ pub fn compute_signature(key: &[u8], data: &[u8]) -> [u8; 32] {
     mac.finalize().into_bytes().into()
 }
 
-/// Verifies a HMAC-SHA-256 signature.
-pub fn verify_signature(key: &[u8], data: &[u8], signature: &[u8]) -> Result<(), MacError> {
+/// Verifies a HMAC-SHA-256.
+pub fn verify_mac(key: &[u8], data: &[u8], tag: &[u8]) -> Result<(), MacError> {
     type HmacSha256 = Hmac<Sha256>;
 
     let mut mac =
         HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
     mac.update(data);
-    mac.verify(signature.into())
+    mac.verify(tag.into())
 }
 
 #[cfg(test)]
@@ -265,11 +262,11 @@ mod tests {
 
     #[test]
     fn header_size() {
-        assert_eq!(Header::size(), 96);
+        assert_eq!(Header::SIZE, 96);
     }
 
     #[test]
-    fn signature_size() {
-        assert_eq!(Signature::size(), 32);
+    fn header_mac_size() {
+        assert_eq!(HeaderMac::SIZE, 32);
     }
 }

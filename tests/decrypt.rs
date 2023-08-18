@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Shun Sakai
+// SPDX-FileCopyrightText: 2022 Shun Sakai
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
@@ -122,9 +122,9 @@ fn invalid_checksum() {
 #[test]
 fn invalid_header_mac() {
     let mut data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
-    let mut signature: [u8; 32] = data[64..96].try_into().unwrap();
-    signature.reverse();
-    data[64..96].copy_from_slice(&signature);
+    let mut header_mac: [u8; 32] = data[64..96].try_into().unwrap();
+    header_mac.reverse();
+    data[64..96].copy_from_slice(&header_mac);
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
@@ -134,11 +134,11 @@ fn invalid_header_mac() {
 #[test]
 fn invalid_mac() {
     let data: [u8; 142] = TEST_DATA_ENC.try_into().unwrap();
-    let start_signature = data.len() - 32;
+    let start_mac = data.len() - 32;
     let mut data = data;
-    let mut signature: [u8; 32] = data[start_signature..].try_into().unwrap();
-    signature.reverse();
-    data[start_signature..].copy_from_slice(&signature);
+    let mut mac: [u8; 32] = data[start_mac..].try_into().unwrap();
+    mac.reverse();
+    data[start_mac..].copy_from_slice(&mac);
     let decrypted = Decryptor::new(data, PASSWORD)
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();

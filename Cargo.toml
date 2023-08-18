@@ -1,10 +1,10 @@
-# SPDX-FileCopyrightText: 2022-2023 Shun Sakai
+# SPDX-FileCopyrightText: 2022 Shun Sakai
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 [package]
 name = "scryptenc"
-version = "0.7.0"
+version = "0.7.1"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
 rust-version = "1.60.0"
@@ -38,7 +38,7 @@ scrypt = { version = "0.11.0", default-features = false }
 sha2 = { version = "0.10.7", default-features = false }
 
 [dev-dependencies]
-anyhow = "1.0.72"
+anyhow = "1.0.75"
 clap = { version = "3.2.25", features = ["derive"] }
 dialoguer = { version = "0.10.4", default-features = false, features = ["password"] }
 

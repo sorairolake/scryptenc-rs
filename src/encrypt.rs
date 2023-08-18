@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2023 Shun Sakai
+// SPDX-FileCopyrightText: 2022 Shun Sakai
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
@@ -13,7 +13,7 @@ use aes::{
 use ctr::Ctr128BE;
 use scrypt::Params;
 
-use crate::format::{self, DerivedKey, Header, Signature};
+use crate::format::{self, DerivedKey, Header, HeaderMac};
 
 /// Encryptor for the scrypt encrypted data format.
 #[derive(Clone, Debug)]
@@ -65,16 +65,15 @@ impl Encryptor {
         let inner = |data: &[u8], password: &[u8], params: Params| -> Self {
             let mut header = Header::new(params);
 
-            // The derived key size is 64 bytes.
-            // The first 256 bits are for AES-256-CTR key, and the last 256 bits are for
-            // HMAC-SHA-256 key.
+            // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
+            // and the last 256 bits are for HMAC-SHA-256 key.
             let mut dk = [u8::default(); 64];
             scrypt::scrypt(password, &header.salt(), &params, &mut dk)
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
             header.compute_checksum();
-            header.compute_signature(&dk);
+            header.compute_mac(&dk);
 
             let data = data.to_vec();
             Self { header, dk, data }
@@ -106,7 +105,7 @@ impl Encryptor {
         let inner = |encryptor: Self, buf: &mut [u8]| {
             type Aes256Ctr128BE = Ctr128BE<Aes256>;
 
-            let bound = (Header::size(), encryptor.out_len() - Signature::size());
+            let bound = (Header::SIZE, encryptor.out_len() - HeaderMac::SIZE);
 
             let mut cipher =
                 Aes256Ctr128BE::new(&encryptor.dk.encrypt().into(), &GenericArray::default());
@@ -116,8 +115,8 @@ impl Encryptor {
             buf[..bound.0].copy_from_slice(&encryptor.header.as_bytes());
             buf[bound.0..bound.1].copy_from_slice(&data);
 
-            let signature = format::compute_signature(&encryptor.dk.mac(), &buf[..bound.1]);
-            buf[bound.1..].copy_from_slice(&signature);
+            let mac = format::compute_mac(&encryptor.dk.mac(), &buf[..bound.1]);
+            buf[bound.1..].copy_from_slice(&mac);
         };
         inner(self, buf.as_mut());
     }
@@ -161,6 +160,6 @@ impl Encryptor {
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        Header::size() + self.data.len() + Signature::size()
+        Header::SIZE + self.data.len() + HeaderMac::SIZE
     }
 }

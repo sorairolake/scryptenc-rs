@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2022-2023 Shun Sakai
+SPDX-FileCopyrightText: 2022 Shun Sakai
 
 SPDX-License-Identifier: Apache-2.0 OR MIT
 -->
@@ -22,20 +22,19 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.7.0"
+scryptenc = "0.7.1"
 ```
 
 ### Crate features
 
 #### `std`
 
-Enables features that depend on the standard library.
-This is enabled by default.
+Enables features that depend on the standard library. This is enabled by
+default.
 
 ### `no_std` support
 
-This supports `no_std` mode.
-Disables the `default` feature to enable this.
+This supports `no_std` mode. Disables the `default` feature to enable this.
 
 ### Documentation
 
