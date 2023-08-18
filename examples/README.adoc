@@ -5,10 +5,13 @@
 = Examples
 
 link:encrypt.rs[]::
+
   An example of encrypting to the scrypt encrypted data format.
 
 link:decrypt.rs[]::
+
   An example of decrypting from the scrypt encrypted data format.
 
 link:info.rs[]::
+
   An example of reading the scrypt parameters.
