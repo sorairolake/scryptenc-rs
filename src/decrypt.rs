@@ -70,10 +70,10 @@ impl Decryptor {
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk, &data[64..Header::size()])?;
+            header.verify_mac(&dk, &data[64..Header::SIZE])?;
 
             let (data, header_mac) =
-                data[Header::size()..].split_at(data.len() - Header::size() - HeaderMac::size());
+                data[Header::SIZE..].split_at(data.len() - Header::SIZE - HeaderMac::SIZE);
             let data = data.to_vec();
             let header_mac = HeaderMac::new(
                 header_mac

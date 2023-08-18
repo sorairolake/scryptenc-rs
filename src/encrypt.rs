@@ -105,7 +105,7 @@ impl Encryptor {
         let inner = |encryptor: Self, buf: &mut [u8]| {
             type Aes256Ctr128BE = Ctr128BE<Aes256>;
 
-            let bound = (Header::size(), encryptor.out_len() - HeaderMac::size());
+            let bound = (Header::SIZE, encryptor.out_len() - HeaderMac::SIZE);
 
             let mut cipher =
                 Aes256Ctr128BE::new(&encryptor.dk.encrypt().into(), &GenericArray::default());
@@ -160,6 +160,6 @@ impl Encryptor {
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        Header::size() + self.data.len() + HeaderMac::size()
+        Header::SIZE + self.data.len() + HeaderMac::SIZE
     }
 }

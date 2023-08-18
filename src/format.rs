@@ -4,6 +4,8 @@
 
 //! Specifications of the scrypt encrypted data format.
 
+use core::mem;
+
 use hmac::{digest::MacError, Hmac, Mac};
 use rand::{rngs::StdRng, Rng, SeedableRng};
 use sha2::{Digest, Sha256};
@@ -31,7 +33,7 @@ pub struct Header {
     params: scrypt::Params,
     salt: [u8; 32],
     checksum: [u8; 16],
-    mac: [u8; 32],
+    mac: [u8; HeaderMac::SIZE],
 }
 
 impl Header {
@@ -39,6 +41,9 @@ impl Header {
     ///
     /// This is the ASCII code for "scrypt".
     const MAGIC_NUMBER: [u8; 6] = *b"scrypt";
+
+    /// The number of bytes of the header.
+    pub const SIZE: usize = 96;
 
     /// Creates a new `Header`.
     pub fn new(params: scrypt::Params) -> Self {
@@ -139,8 +144,8 @@ impl Header {
     }
 
     /// Converts this header to a byte array.
-    pub fn as_bytes(&self) -> [u8; 96] {
-        let mut header = [u8::default(); 96];
+    pub fn as_bytes(&self) -> [u8; Self::SIZE] {
+        let mut header = [u8::default(); Self::SIZE];
         header[..6].copy_from_slice(&self.magic_number);
         header[6] = self.version.into();
         header[7] = self.params.log_n();
@@ -162,11 +167,6 @@ impl Header {
     /// Returns a salt stored in this header.
     pub const fn salt(&self) -> [u8; 32] {
         self.salt
-    }
-
-    /// Returns the number of bytes of the header.
-    pub const fn size() -> usize {
-        96
     }
 }
 
@@ -205,19 +205,17 @@ impl DerivedKey {
 pub struct HeaderMac([u8; 32]);
 
 impl HeaderMac {
+    /// The number of bytes of the MAC.
+    pub const SIZE: usize = mem::size_of::<Self>();
+
     /// Creates a new `HeaderMac`.
-    pub const fn new(mac: [u8; 32]) -> Self {
+    pub const fn new(mac: [u8; Self::SIZE]) -> Self {
         Self(mac)
     }
 
     /// Converts this MAC to a byte array.
-    pub const fn as_bytes(&self) -> [u8; 32] {
+    pub const fn as_bytes(&self) -> [u8; Self::SIZE] {
         self.0
-    }
-
-    /// Returns the number of bytes of the MAC.
-    pub const fn size() -> usize {
-        32
     }
 }
 
@@ -264,11 +262,11 @@ mod tests {
 
     #[test]
     fn header_size() {
-        assert_eq!(Header::size(), 96);
+        assert_eq!(Header::SIZE, 96);
     }
 
     #[test]
     fn header_mac_size() {
-        assert_eq!(HeaderMac::size(), 32);
+        assert_eq!(HeaderMac::SIZE, 32);
     }
 }
