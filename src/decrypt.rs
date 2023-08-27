@@ -6,15 +6,16 @@
 
 use alloc::vec::Vec;
 
-use aes::{
-    cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher},
-    Aes256,
+use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
+use hmac::{
+    digest::{typenum::Unsigned, OutputSizeUser},
+    Mac,
 };
-use ctr::Ctr128BE;
 
 use crate::{
     error::Error,
-    format::{self, DerivedKey, Header, HeaderMac},
+    format::{DerivedKey, Header},
+    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
 };
 
 /// Decryptor for the scrypt encrypted data format.
@@ -22,8 +23,8 @@ use crate::{
 pub struct Decryptor {
     header: Header,
     dk: DerivedKey,
-    data: Vec<u8>,
-    header_mac: HeaderMac,
+    ciphertext: Vec<u8>,
+    mac: HmacSha256Output,
 }
 
 impl Decryptor {
@@ -65,26 +66,23 @@ impl Decryptor {
 
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
             // and the last 256 bits are for HMAC-SHA-256 key.
-            let mut dk = [u8::default(); 64];
+            let mut dk = [u8::default(); DerivedKey::SIZE];
             scrypt::scrypt(password, &header.salt(), &header.params(), &mut dk)
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk, &data[64..Header::SIZE])?;
+            header.verify_mac(&dk.mac(), data[64..Header::SIZE].into())?;
 
-            let (data, header_mac) =
-                data[Header::SIZE..].split_at(data.len() - Header::SIZE - HeaderMac::SIZE);
-            let data = data.to_vec();
-            let header_mac = HeaderMac::new(
-                header_mac
-                    .try_into()
-                    .expect("output size of HMAC-SHA-256 should be 256 bits"),
+            let (ciphertext, mac) = data[Header::SIZE..].split_at(
+                data.len() - Header::SIZE - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
             );
+            let ciphertext = ciphertext.to_vec();
+            let mac = HmacSha256Output::clone_from_slice(mac);
             Ok(Self {
                 header,
                 dk,
-                data,
-                header_mac,
+                ciphertext,
+                mac,
             })
         };
         inner(data.as_ref(), password.as_ref())
@@ -119,21 +117,28 @@ impl Decryptor {
     /// ```
     pub fn decrypt(self, mut buf: impl AsMut<[u8]>) -> Result<(), Error> {
         let inner = |decryptor: Self, buf: &mut [u8]| -> Result<(), Error> {
-            type Aes256Ctr128BE = Ctr128BE<Aes256>;
+            fn verify_mac(
+                data: &[u8],
+                key: &HmacSha256Key,
+                tag: &HmacSha256Output,
+            ) -> Result<(), Error> {
+                let mut mac = HmacSha256::new_from_slice(key)
+                    .expect("HMAC-SHA-256 key size should be 256 bits");
+                mac.update(data);
+                mac.verify(tag).map_err(Error::InvalidMac)
+            }
 
-            let input = [decryptor.header.as_bytes().as_slice(), &decryptor.data].concat();
+            let input = [
+                decryptor.header.as_bytes().as_slice(),
+                &decryptor.ciphertext,
+            ]
+            .concat();
 
-            let mut cipher =
-                Aes256Ctr128BE::new(&decryptor.dk.encrypt().into(), &GenericArray::default());
-            let mut data = decryptor.data;
+            let mut cipher = Aes256Ctr128BE::new(&decryptor.dk.encrypt(), &GenericArray::default());
+            let mut data = decryptor.ciphertext;
             cipher.apply_keystream(&mut data);
 
-            format::verify_mac(
-                &decryptor.dk.mac(),
-                &input,
-                &decryptor.header_mac.as_bytes(),
-            )
-            .map_err(Error::InvalidMac)?;
+            verify_mac(&input, &decryptor.dk.mac(), &decryptor.mac)?;
 
             buf.copy_from_slice(&data);
             Ok(())
@@ -189,6 +194,6 @@ impl Decryptor {
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        self.data.len()
+        self.ciphertext.len()
     }
 }

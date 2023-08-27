@@ -75,4 +75,24 @@ mod params;
 pub use hmac::digest;
 pub use scrypt;
 
+use aes::Aes256;
+use ctr::Ctr128BE;
+use hmac::{
+    digest::{generic_array::GenericArray, typenum::U32, Output},
+    Hmac,
+};
+use sha2::Sha256;
+
 pub use crate::{decrypt::Decryptor, encrypt::Encryptor, error::Error, params::Params};
+
+/// A type alias for AES-256-CTR.
+type Aes256Ctr128BE = Ctr128BE<Aes256>;
+
+/// A type alias for HMAC-SHA-256.
+type HmacSha256 = Hmac<Sha256>;
+
+/// A type alias for output of HMAC-SHA-256.
+type HmacSha256Output = Output<HmacSha256>;
+
+/// A type alias for key of HMAC-SHA-256.
+type HmacSha256Key = GenericArray<u8, U32>;

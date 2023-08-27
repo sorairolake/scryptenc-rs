@@ -6,14 +6,44 @@
 
 use core::mem;
 
-use hmac::{digest::MacError, Hmac, Mac};
+use ctr::cipher::{self, KeySizeUser};
+use hmac::{
+    digest::{
+        typenum::{Unsigned, U32},
+        OutputSizeUser,
+    },
+    Mac,
+};
 use rand::{rngs::StdRng, Rng, SeedableRng};
+use scrypt::Params;
 use sha2::{Digest, Sha256};
 
-use crate::error::Error;
+use crate::{error::Error, Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output};
 
-/// Version of the scrypt data file.
+/// A type alias for magic number of the scrypt encrypted data format.
+type MagicNumber = [u8; 6];
+
+/// A type alias for salt of scrypt.
+type Salt = [u8; 32];
+
+/// A type alias for checksum of the scrypt encrypted data format.
+type Checksum = [u8; 16];
+
+/// A type alias for the header MAC.
+type HeaderMac = HmacSha256;
+
+/// A type alias for output of the header MAC.
+type HeaderMacOutput = HmacSha256Output;
+
+/// A type alias for key of the header MAC.
+type HeaderMacKey = HmacSha256Key;
+
+/// A type alias for key of AES-256-CTR.
+type Aes256Ctr128BEKey = cipher::Key<Aes256Ctr128BE>;
+
+/// Version of the scrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
+#[repr(u8)]
 pub enum Version {
     /// Version 0.
     V0,
@@ -28,36 +58,36 @@ impl From<Version> for u8 {
 /// Header of the scrypt encrypted data format.
 #[derive(Clone, Debug)]
 pub struct Header {
-    magic_number: [u8; 6],
+    magic_number: MagicNumber,
     version: Version,
-    params: scrypt::Params,
-    salt: [u8; 32],
-    checksum: [u8; 16],
-    mac: [u8; HeaderMac::SIZE],
+    params: Params,
+    salt: Salt,
+    checksum: Checksum,
+    mac: HeaderMacOutput,
 }
 
 impl Header {
     /// Magic number of the scrypt encrypted data format.
     ///
     /// This is the ASCII code for "scrypt".
-    const MAGIC_NUMBER: [u8; 6] = *b"scrypt";
+    const MAGIC_NUMBER: MagicNumber = *b"scrypt";
 
     /// The number of bytes of the header.
-    pub const SIZE: usize = 96;
+    pub const SIZE: usize = mem::size_of::<MagicNumber>()
+        + mem::size_of::<Version>()
+        + mem::size_of::<u8>()
+        + (mem::size_of::<u32>() * 2)
+        + mem::size_of::<Salt>()
+        + mem::size_of::<Checksum>()
+        + <HeaderMac as OutputSizeUser>::OutputSize::USIZE;
 
     /// Creates a new `Header`.
-    pub fn new(params: scrypt::Params) -> Self {
-        fn generate_salt() -> [u8; 32] {
-            StdRng::from_entropy().gen()
-        }
-
+    pub fn new(params: Params) -> Self {
         let magic_number = Self::MAGIC_NUMBER;
         let version = Version::V0;
-        let salt = generate_salt();
-
-        let checksum = Default::default();
-        let mac = Default::default();
-
+        let salt = StdRng::from_entropy().gen();
+        let checksum = Checksum::default();
+        let mac = HeaderMacOutput::default();
         Self {
             magic_number,
             version,
@@ -70,7 +100,7 @@ impl Header {
 
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self, Error> {
-        if data.len() < 128 {
+        if data.len() < Self::SIZE + <HmacSha256 as OutputSizeUser>::OutputSize::USIZE {
             return Err(Error::InvalidLength);
         }
 
@@ -95,15 +125,12 @@ impl Header {
                 .try_into()
                 .expect("size of `p` parameter should be 4 bytes"),
         );
-        let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
-            .map_err(Error::from)?;
+        let params = Params::new(log_n, r, p, Params::RECOMMENDED_LEN).map_err(Error::from)?;
         let salt = data[16..48]
             .try_into()
             .expect("size of salt should be 32 bytes");
-
-        let checksum = Default::default();
-        let mac = Default::default();
-
+        let checksum = Checksum::default();
+        let mac = HeaderMacOutput::default();
         Ok(Self {
             magic_number,
             version,
@@ -131,14 +158,19 @@ impl Header {
     }
 
     /// Gets a HMAC-SHA-256 of this header.
-    pub fn compute_mac(&mut self, key: &DerivedKey) {
-        let mac = compute_mac(&key.mac(), &self.as_bytes()[..64]);
-        self.mac.copy_from_slice(&mac);
+    pub fn compute_mac(&mut self, key: &HeaderMacKey) {
+        let mut mac =
+            HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
+        mac.update(&self.as_bytes()[..64]);
+        self.mac.copy_from_slice(&mac.finalize().into_bytes());
     }
 
     /// Verifies a HMAC-SHA-256 stored in this header.
-    pub fn verify_mac(&mut self, key: &DerivedKey, tag: &[u8]) -> Result<(), Error> {
-        verify_mac(&key.mac(), &self.as_bytes()[..64], tag).map_err(Error::InvalidHeaderMac)?;
+    pub fn verify_mac(&mut self, key: &HeaderMacKey, tag: &HeaderMacOutput) -> Result<(), Error> {
+        let mut mac =
+            HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
+        mac.update(&self.as_bytes()[..64]);
+        mac.verify(tag).map_err(Error::InvalidHeaderMac)?;
         self.mac.copy_from_slice(tag);
         Ok(())
     }
@@ -152,20 +184,18 @@ impl Header {
         header[8..12].copy_from_slice(&self.params.r().to_be_bytes());
         header[12..16].copy_from_slice(&self.params.p().to_be_bytes());
         header[16..48].copy_from_slice(&self.salt);
-
         header[48..64].copy_from_slice(&self.checksum);
         header[64..].copy_from_slice(&self.mac);
-
         header
     }
 
     /// Returns the scrypt parameters stored in this header.
-    pub const fn params(&self) -> scrypt::Params {
+    pub const fn params(&self) -> Params {
         self.params
     }
 
     /// Returns a salt stored in this header.
-    pub const fn salt(&self) -> [u8; 32] {
+    pub const fn salt(&self) -> Salt {
         self.salt
     }
 }
@@ -173,70 +203,30 @@ impl Header {
 /// Derived key.
 #[derive(Clone, Debug)]
 pub struct DerivedKey {
-    encrypt: [u8; 32],
-    mac: [u8; 32],
+    encrypt: Aes256Ctr128BEKey,
+    mac: HmacSha256Key,
 }
 
 impl DerivedKey {
+    /// The number of bytes of the derived key.
+    pub const SIZE: usize = <Aes256Ctr128BE as KeySizeUser>::KeySize::USIZE + U32::USIZE;
+
     /// Creates a new `DerivedKey`.
-    pub fn new(dk: [u8; 64]) -> Self {
-        let encrypt = dk[..32]
-            .try_into()
-            .expect("AES-256-CTR key size should be 256 bits");
-        let mac = dk[32..]
-            .try_into()
-            .expect("HMAC-SHA-256 key size should be 256 bits");
+    pub fn new(dk: [u8; Self::SIZE]) -> Self {
+        let encrypt = Aes256Ctr128BEKey::clone_from_slice(&dk[..32]);
+        let mac = HmacSha256Key::clone_from_slice(&dk[32..]);
         Self { encrypt, mac }
     }
 
     /// Returns the key for encrypted.
-    pub const fn encrypt(&self) -> [u8; 32] {
+    pub const fn encrypt(&self) -> Aes256Ctr128BEKey {
         self.encrypt
     }
 
     /// Returns the key for a MAC.
-    pub const fn mac(&self) -> [u8; 32] {
+    pub const fn mac(&self) -> HmacSha256Key {
         self.mac
     }
-}
-
-/// The MAC (authentication tag) of the header.
-#[derive(Clone, Debug)]
-pub struct HeaderMac([u8; 32]);
-
-impl HeaderMac {
-    /// The number of bytes of the MAC.
-    pub const SIZE: usize = mem::size_of::<Self>();
-
-    /// Creates a new `HeaderMac`.
-    pub const fn new(mac: [u8; Self::SIZE]) -> Self {
-        Self(mac)
-    }
-
-    /// Converts this MAC to a byte array.
-    pub const fn as_bytes(&self) -> [u8; Self::SIZE] {
-        self.0
-    }
-}
-
-/// Gets a HMAC-SHA-256.
-pub fn compute_mac(key: &[u8], data: &[u8]) -> [u8; 32] {
-    type HmacSha256 = Hmac<Sha256>;
-
-    let mut mac =
-        HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
-    mac.update(data);
-    mac.finalize().into_bytes().into()
-}
-
-/// Verifies a HMAC-SHA-256.
-pub fn verify_mac(key: &[u8], data: &[u8], tag: &[u8]) -> Result<(), MacError> {
-    type HmacSha256 = Hmac<Sha256>;
-
-    let mut mac =
-        HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
-    mac.update(data);
-    mac.verify(tag.into())
 }
 
 #[cfg(test)]
@@ -266,7 +256,7 @@ mod tests {
     }
 
     #[test]
-    fn header_mac_size() {
-        assert_eq!(HeaderMac::SIZE, 32);
+    fn derived_key_size() {
+        assert_eq!(DerivedKey::SIZE, 64);
     }
 }

@@ -6,14 +6,17 @@
 
 use alloc::vec::Vec;
 
-use aes::{
-    cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher},
-    Aes256,
+use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
+use hmac::{
+    digest::{typenum::Unsigned, OutputSizeUser},
+    Mac,
 };
-use ctr::Ctr128BE;
 use scrypt::Params;
 
-use crate::format::{self, DerivedKey, Header, HeaderMac};
+use crate::{
+    format::{DerivedKey, Header},
+    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
+};
 
 /// Encryptor for the scrypt encrypted data format.
 #[derive(Clone, Debug)]
@@ -67,13 +70,13 @@ impl Encryptor {
 
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
             // and the last 256 bits are for HMAC-SHA-256 key.
-            let mut dk = [u8::default(); 64];
+            let mut dk = [u8::default(); DerivedKey::SIZE];
             scrypt::scrypt(password, &header.salt(), &params, &mut dk)
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
             header.compute_checksum();
-            header.compute_mac(&dk);
+            header.compute_mac(&dk.mac());
 
             let data = data.to_vec();
             Self { header, dk, data }
@@ -102,20 +105,27 @@ impl Encryptor {
     /// # assert_ne!(buf, data.as_slice());
     /// ```
     pub fn encrypt(self, mut buf: impl AsMut<[u8]>) {
+        fn compute_mac(data: &[u8], key: &HmacSha256Key) -> HmacSha256Output {
+            let mut mac =
+                HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
+            mac.update(data);
+            mac.finalize().into_bytes()
+        }
+
         let inner = |encryptor: Self, buf: &mut [u8]| {
-            type Aes256Ctr128BE = Ctr128BE<Aes256>;
+            let bound = (
+                Header::SIZE,
+                encryptor.out_len() - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
+            );
 
-            let bound = (Header::SIZE, encryptor.out_len() - HeaderMac::SIZE);
-
-            let mut cipher =
-                Aes256Ctr128BE::new(&encryptor.dk.encrypt().into(), &GenericArray::default());
+            let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &GenericArray::default());
             let mut data = encryptor.data;
             cipher.apply_keystream(&mut data);
 
             buf[..bound.0].copy_from_slice(&encryptor.header.as_bytes());
             buf[bound.0..bound.1].copy_from_slice(&data);
 
-            let mac = format::compute_mac(&encryptor.dk.mac(), &buf[..bound.1]);
+            let mac = compute_mac(&buf[..bound.1], &encryptor.dk.mac());
             buf[bound.1..].copy_from_slice(&mac);
         };
         inner(self, buf.as_mut());
@@ -160,6 +170,6 @@ impl Encryptor {
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        Header::SIZE + self.data.len() + HeaderMac::SIZE
+        Header::SIZE + self.data.len() + <HmacSha256 as OutputSizeUser>::OutputSize::USIZE
     }
 }
