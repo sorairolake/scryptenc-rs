@@ -72,7 +72,7 @@ mod error;
 mod format;
 mod params;
 
-pub use hmac::digest;
+pub use hmac;
 pub use scrypt;
 
 use aes::Aes256;
