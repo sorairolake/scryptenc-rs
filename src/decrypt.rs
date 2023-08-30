@@ -35,7 +35,7 @@ impl Decryptor {
     ///
     /// This function will return an error in the following situations:
     ///
-    /// - `data` is less than 128 bytes.
+    /// - `ciphertext` is less than 128 bytes.
     /// - The magic number is not "scrypt".
     /// - The version number other than `0`.
     /// - The scrypt parameters are invalid.
@@ -48,33 +48,33 @@ impl Decryptor {
     /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
+    /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(encrypted, password).unwrap();
-    /// let decrypted = cipher.decrypt_to_vec().unwrap();
-    /// # assert_eq!(decrypted, data);
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let plaintext = cipher.decrypt_to_vec().unwrap();
+    /// # assert_eq!(plaintext, data);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let inner = |data: &[u8], password: &[u8]| -> Result<Self, Error> {
-            let mut header = Header::parse(data)?;
+    pub fn new(ciphertext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self, Error> {
+        let inner = |ciphertext: &[u8], passphrase: &[u8]| -> Result<Self, Error> {
+            let mut header = Header::parse(ciphertext)?;
 
-            header.verify_checksum(&data[48..64])?;
+            header.verify_checksum(&ciphertext[48..64])?;
 
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
             // and the last 256 bits are for HMAC-SHA-256 key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
-            scrypt::scrypt(password, &header.salt(), &header.params(), &mut dk)
+            scrypt::scrypt(passphrase, &header.salt(), &header.params(), &mut dk)
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk.mac(), data[64..Header::SIZE].into())?;
+            header.verify_mac(&dk.mac(), ciphertext[64..Header::SIZE].into())?;
 
-            let (ciphertext, mac) = data[Header::SIZE..].split_at(
-                data.len() - Header::SIZE - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
+            let (ciphertext, mac) = ciphertext[Header::SIZE..].split_at(
+                ciphertext.len() - Header::SIZE - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
             );
             let ciphertext = ciphertext.to_vec();
             let mac = HmacSha256Output::clone_from_slice(mac);
@@ -85,10 +85,10 @@ impl Decryptor {
                 mac,
             })
         };
-        inner(data.as_ref(), password.as_ref())
+        inner(ciphertext.as_ref(), passphrase.as_ref())
     }
 
-    /// Decrypts data into `buf`.
+    /// Decrypts the ciphertext into `buf`.
     ///
     /// # Errors
     ///
@@ -104,13 +104,13 @@ impl Decryptor {
     /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
+    /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(encrypted, password).unwrap();
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
     /// let mut buf = [u8::default(); 13];
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, data.as_slice());
@@ -135,18 +135,18 @@ impl Decryptor {
             .concat();
 
             let mut cipher = Aes256Ctr128BE::new(&decryptor.dk.encrypt(), &GenericArray::default());
-            let mut data = decryptor.ciphertext;
-            cipher.apply_keystream(&mut data);
+            let mut ciphertext = decryptor.ciphertext;
+            cipher.apply_keystream(&mut ciphertext);
 
             verify_mac(&input, &decryptor.dk.mac(), &decryptor.mac)?;
 
-            buf.copy_from_slice(&data);
+            buf.copy_from_slice(&ciphertext);
             Ok(())
         };
         inner(self, buf.as_mut())
     }
 
-    /// Decrypts data and into a newly allocated `Vec`.
+    /// Decrypts the ciphertext and into a newly allocated `Vec`.
     ///
     /// # Errors
     ///
@@ -158,15 +158,15 @@ impl Decryptor {
     /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
+    /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(encrypted, password).unwrap();
-    /// let decrypted = cipher.decrypt_to_vec().unwrap();
-    /// # assert_eq!(decrypted, data);
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let plaintext = cipher.decrypt_to_vec().unwrap();
+    /// # assert_eq!(plaintext, data);
     /// ```
     pub fn decrypt_to_vec(self) -> Result<Vec<u8>, Error> {
         let mut buf = vec![u8::default(); self.out_len()];
@@ -182,13 +182,13 @@ impl Decryptor {
     /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "password";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
+    /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(encrypted, password).unwrap();
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
     /// assert_eq!(cipher.out_len(), 13);
     /// ```
     #[must_use]

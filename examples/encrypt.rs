@@ -36,14 +36,14 @@ fn main() -> anyhow::Result<()> {
     let plaintext = std::fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let password = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
-        .with_prompt("Enter password")
-        .with_confirmation("Confirm password", "Passwords mismatch, try again")
+    let passphrase = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
+        .with_prompt("Enter passphrase")
+        .with_confirmation("Confirm passphrase", "Passphrases mismatch, try again")
         .interact()
-        .context("could not read password")?;
-    let cipher = scryptenc::Encryptor::new(plaintext, password);
-    let encrypted = cipher.encrypt_to_vec();
-    std::fs::write(opt.output, encrypted)
+        .context("could not read passphrase")?;
+    let cipher = scryptenc::Encryptor::new(plaintext, passphrase);
+    let ciphertext = cipher.encrypt_to_vec();
+    std::fs::write(opt.output, ciphertext)
         .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
     Ok(())
 }

@@ -16,7 +16,7 @@ use test::Bencher;
 
 use scryptenc::{scrypt::Params, Encryptor};
 
-const PASSWORD: &str = "password";
+const PASSPHRASE: &str = "password";
 const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
 
 #[bench]
@@ -24,7 +24,7 @@ fn encrypt(b: &mut Bencher) {
     b.iter(|| {
         Encryptor::with_params(
             TEST_DATA,
-            PASSWORD,
+            PASSPHRASE,
             Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
         )
         .encrypt_to_vec()
