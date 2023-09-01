@@ -19,7 +19,7 @@ const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 fn success() {
     {
         let cipher = Encryptor::with_params(
-            TEST_DATA,
+            &TEST_DATA,
             PASSPHRASE,
             Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
         );
@@ -28,7 +28,7 @@ fn success() {
         assert_ne!(buf, TEST_DATA);
         assert_eq!(buf.len(), TEST_DATA.len() + 128);
 
-        let plaintext = Decryptor::new(buf, PASSPHRASE)
+        let plaintext = Decryptor::new(&buf, PASSPHRASE)
             .and_then(Decryptor::decrypt_to_vec)
             .unwrap();
         assert_eq!(plaintext, TEST_DATA);
@@ -36,7 +36,7 @@ fn success() {
 
     {
         let ciphertext = Encryptor::with_params(
-            TEST_DATA,
+            &TEST_DATA,
             PASSPHRASE,
             Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
         )
@@ -44,7 +44,7 @@ fn success() {
         assert_ne!(ciphertext, TEST_DATA);
         assert_eq!(ciphertext.len(), TEST_DATA.len() + 128);
 
-        let plaintext = Decryptor::new(ciphertext, PASSPHRASE)
+        let plaintext = Decryptor::new(&ciphertext, PASSPHRASE)
             .and_then(Decryptor::decrypt_to_vec)
             .unwrap();
         assert_eq!(plaintext, TEST_DATA);
@@ -55,7 +55,7 @@ fn success() {
 #[should_panic(expected = "source slice length (32) does not match destination slice length (31)")]
 fn invalid_output_length() {
     let cipher = Encryptor::with_params(
-        TEST_DATA,
+        &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     );
@@ -66,7 +66,7 @@ fn invalid_output_length() {
 #[test]
 fn magic_number() {
     let ciphertext = Encryptor::with_params(
-        TEST_DATA,
+        &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
@@ -77,7 +77,7 @@ fn magic_number() {
 #[test]
 fn version() {
     let ciphertext = Encryptor::with_params(
-        TEST_DATA,
+        &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
@@ -88,7 +88,7 @@ fn version() {
 #[test]
 fn log_n() {
     let ciphertext = Encryptor::with_params(
-        TEST_DATA,
+        &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
@@ -99,7 +99,7 @@ fn log_n() {
 #[test]
 fn r() {
     let ciphertext = Encryptor::with_params(
-        TEST_DATA,
+        &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
@@ -110,7 +110,7 @@ fn r() {
 #[test]
 fn p() {
     let ciphertext = Encryptor::with_params(
-        TEST_DATA,
+        &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
@@ -121,7 +121,7 @@ fn p() {
 #[test]
 fn checksum() {
     let ciphertext = Encryptor::with_params(
-        TEST_DATA,
+        &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     )
@@ -133,7 +133,7 @@ fn checksum() {
 #[test]
 fn out_len() {
     let cipher = Encryptor::with_params(
-        TEST_DATA,
+        &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     );

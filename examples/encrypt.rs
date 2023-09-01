@@ -41,7 +41,7 @@ fn main() -> anyhow::Result<()> {
         .with_confirmation("Confirm passphrase", "Passphrases mismatch, try again")
         .interact()
         .context("could not read passphrase")?;
-    let cipher = scryptenc::Encryptor::new(plaintext, passphrase);
+    let cipher = scryptenc::Encryptor::new(&plaintext, passphrase);
     let ciphertext = cipher.encrypt_to_vec();
     std::fs::write(opt.output, ciphertext)
         .with_context(|| format!("could not write the result to {}", opt.input.display()))?;

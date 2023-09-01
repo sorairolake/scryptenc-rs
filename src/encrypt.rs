@@ -20,13 +20,13 @@ use crate::{
 
 /// Encryptor for the scrypt encrypted data format.
 #[derive(Clone, Debug)]
-pub struct Encryptor {
+pub struct Encryptor<'m> {
     header: Header,
     dk: DerivedKey,
-    plaintext: Vec<u8>,
+    plaintext: &'m [u8],
 }
 
-impl Encryptor {
+impl<'m> Encryptor<'m> {
     /// Creates a new `Encryptor`.
     ///
     /// This uses the recommended scrypt parameters created by
@@ -44,7 +44,7 @@ impl Encryptor {
     /// let ciphertext = cipher.encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     /// ```
-    pub fn new(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Self {
+    pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Self {
         Self::with_params(plaintext, passphrase, Params::recommended())
     }
 
@@ -65,11 +65,11 @@ impl Encryptor {
     /// # assert_ne!(ciphertext, data);
     /// ```
     pub fn with_params(
-        plaintext: impl AsRef<[u8]>,
+        plaintext: &'m impl AsRef<[u8]>,
         passphrase: impl AsRef<[u8]>,
         params: Params,
     ) -> Self {
-        let inner = |plaintext: &[u8], passphrase: &[u8], params: Params| -> Self {
+        let inner = |plaintext: &'m [u8], passphrase: &[u8], params: Params| -> Self {
             let mut header = Header::new(params);
 
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
@@ -82,7 +82,6 @@ impl Encryptor {
             header.compute_checksum();
             header.compute_mac(&dk.mac());
 
-            let plaintext = plaintext.to_vec();
             Self {
                 header,
                 dk,
@@ -127,11 +126,11 @@ impl Encryptor {
             );
 
             let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &GenericArray::default());
-            let mut plaintext = encryptor.plaintext;
-            cipher.apply_keystream(&mut plaintext);
+            cipher
+                .apply_keystream_b2b(encryptor.plaintext, &mut buf[bound.0..bound.1])
+                .expect("plaintext and ciphertext of the file body should have same lengths");
 
             buf[..bound.0].copy_from_slice(&encryptor.header.as_bytes());
-            buf[bound.0..bound.1].copy_from_slice(&plaintext);
 
             let mac = compute_mac(&buf[..bound.1], &encryptor.dk.mac());
             buf[bound.1..].copy_from_slice(&mac);
@@ -177,7 +176,7 @@ impl Encryptor {
     /// ```
     #[must_use]
     #[inline]
-    pub fn out_len(&self) -> usize {
+    pub const fn out_len(&self) -> usize {
         Header::SIZE + self.plaintext.len() + <HmacSha256 as OutputSizeUser>::OutputSize::USIZE
     }
 }

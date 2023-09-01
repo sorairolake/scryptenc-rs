@@ -20,14 +20,14 @@ use crate::{
 
 /// Decryptor for the scrypt encrypted data format.
 #[derive(Clone, Debug)]
-pub struct Decryptor {
+pub struct Decryptor<'c> {
     header: Header,
     dk: DerivedKey,
-    ciphertext: Vec<u8>,
+    ciphertext: &'c [u8],
     mac: HmacSha256Output,
 }
 
-impl Decryptor {
+impl<'c> Decryptor<'c> {
     #[allow(clippy::missing_panics_doc)]
     /// Creates a new `Decryptor`.
     ///
@@ -54,12 +54,15 @@ impl Decryptor {
     /// let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
-    pub fn new(ciphertext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let inner = |ciphertext: &[u8], passphrase: &[u8]| -> Result<Self, Error> {
+    pub fn new(
+        ciphertext: &'c impl AsRef<[u8]>,
+        passphrase: impl AsRef<[u8]>,
+    ) -> Result<Self, Error> {
+        let inner = |ciphertext: &'c [u8], passphrase: &[u8]| -> Result<Self, Error> {
             let mut header = Header::parse(ciphertext)?;
 
             header.verify_checksum(&ciphertext[48..64])?;
@@ -76,7 +79,6 @@ impl Decryptor {
             let (ciphertext, mac) = ciphertext[Header::SIZE..].split_at(
                 ciphertext.len() - Header::SIZE - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
             );
-            let ciphertext = ciphertext.to_vec();
             let mac = HmacSha256Output::clone_from_slice(mac);
             Ok(Self {
                 header,
@@ -110,7 +112,7 @@ impl Decryptor {
     /// let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let mut buf = [u8::default(); 13];
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, data.as_slice());
@@ -128,19 +130,15 @@ impl Decryptor {
                 mac.verify(tag).map_err(Error::InvalidMac)
             }
 
-            let input = [
-                decryptor.header.as_bytes().as_slice(),
-                &decryptor.ciphertext,
-            ]
-            .concat();
+            let input = [decryptor.header.as_bytes().as_slice(), decryptor.ciphertext].concat();
 
             let mut cipher = Aes256Ctr128BE::new(&decryptor.dk.encrypt(), &GenericArray::default());
-            let mut ciphertext = decryptor.ciphertext;
-            cipher.apply_keystream(&mut ciphertext);
+            cipher
+                .apply_keystream_b2b(decryptor.ciphertext, buf)
+                .expect("plaintext and ciphertext of the file body should have same lengths");
 
             verify_mac(&input, &decryptor.dk.mac(), &decryptor.mac)?;
 
-            buf.copy_from_slice(&ciphertext);
             Ok(())
         };
         inner(self, buf.as_mut())
@@ -164,7 +162,7 @@ impl Decryptor {
     /// let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
@@ -188,12 +186,12 @@ impl Decryptor {
     /// let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// assert_eq!(cipher.out_len(), 13);
     /// ```
     #[must_use]
     #[inline]
-    pub fn out_len(&self) -> usize {
+    pub const fn out_len(&self) -> usize {
         self.ciphertext.len()
     }
 }

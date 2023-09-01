@@ -23,7 +23,7 @@ const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
 fn encrypt(b: &mut Bencher) {
     b.iter(|| {
         Encryptor::with_params(
-            TEST_DATA,
+            &TEST_DATA,
             PASSPHRASE,
             Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
         )

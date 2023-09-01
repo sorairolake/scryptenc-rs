@@ -40,7 +40,7 @@ fn main() -> anyhow::Result<()> {
         .with_prompt("Enter passphrase")
         .interact()
         .context("could not read passphrase")?;
-    let cipher = match scryptenc::Decryptor::new(ciphertext, passphrase) {
+    let cipher = match scryptenc::Decryptor::new(&ciphertext, passphrase) {
         c @ Err(scryptenc::Error::InvalidHeaderMac(_)) => c.context("passphrase is incorrect"),
         c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
     }?;
