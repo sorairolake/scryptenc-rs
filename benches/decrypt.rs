@@ -16,7 +16,7 @@ use test::Bencher;
 
 use scryptenc::Decryptor;
 
-const PASSPHRASE: &str = "password";
+const PASSPHRASE: &str = "passphrase";
 // Generated using `scrypt` version 1.3.1.
 const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.enc");
 

@@ -15,7 +15,7 @@
 //! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 //!
 //! let data = b"Hello, world!";
-//! let passphrase = "password";
+//! let passphrase = "passphrase";
 //!
 //! // Encrypt `data` using `passphrase`.
 //! let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
@@ -35,7 +35,7 @@
 //! use scryptenc::{scrypt, Encryptor};
 //!
 //! let data = b"Hello, world!";
-//! let passphrase = "password";
+//! let passphrase = "passphrase";
 //!
 //! // Encrypt `data` using `passphrase`.
 //! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();

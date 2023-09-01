@@ -11,7 +11,7 @@
 
 use scryptenc::{hmac::digest::MacError, scrypt::errors::InvalidParams, Decryptor, Error};
 
-const PASSPHRASE: &str = "password";
+const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 // Generated using `scrypt` version 1.3.1.
 const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.enc");
@@ -43,7 +43,7 @@ fn invalid_output_length() {
 
 #[test]
 fn incorrect_passphrase() {
-    let plaintext = Decryptor::new(TEST_DATA_ENC, "passphrase")
+    let plaintext = Decryptor::new(TEST_DATA_ENC, "password")
         .and_then(Decryptor::decrypt_to_vec)
         .unwrap_err();
     assert_eq!(plaintext, Error::InvalidHeaderMac(MacError));

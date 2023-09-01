@@ -12,7 +12,7 @@
 use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 use sha2::{Digest, Sha256};
 
-const PASSPHRASE: &str = "password";
+const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
 #[test]
