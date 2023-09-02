@@ -12,6 +12,8 @@
 //! ## Encrypt and decrypt
 //!
 //! ```
+//! # #[cfg(feature = "alloc")]
+//! # {
 //! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 //!
 //! let data = b"Hello, world!";
@@ -24,29 +26,32 @@
 //!
 //! // And decrypt it back.
 //! let plaintext = Decryptor::new(&ciphertext, passphrase)
-//!     .and_then(Decryptor::decrypt_to_vec)
+//!     .and_then(|c| c.decrypt_to_vec())
 //!     .unwrap();
 //! assert_eq!(plaintext, data);
+//! # }
 //! ```
 //!
 //! ## Extract the scrypt parameters in the encrypted data
 //!
 //! ```
+//! # #[cfg(feature = "alloc")]
+//! # {
 //! use scryptenc::{scrypt, Encryptor};
 //!
 //! let data = b"Hello, world!";
 //! let passphrase = "passphrase";
 //!
 //! // Encrypt `data` using `passphrase`.
-//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-//! let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
+//! let ciphertext = Encryptor::new(data, passphrase).encrypt_to_vec();
 //!
 //! // And extract the scrypt parameters from it.
 //! let params = scryptenc::Params::new(ciphertext).unwrap();
-//! assert_eq!(params.log_n(), 10);
-//! assert_eq!(params.n(), 1024);
-//! assert_eq!(params.r(), 8);
-//! assert_eq!(params.p(), 1);
+//! assert_eq!(params.log_n(), scrypt::Params::RECOMMENDED_LOG_N);
+//! assert_eq!(params.n(), 1 << scrypt::Params::RECOMMENDED_LOG_N);
+//! assert_eq!(params.r(), scrypt::Params::RECOMMENDED_R);
+//! assert_eq!(params.p(), scrypt::Params::RECOMMENDED_P);
+//! # }
 //! ```
 //!
 //! [specification-url]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
@@ -61,6 +66,7 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
+#[cfg(feature = "alloc")]
 #[macro_use]
 extern crate alloc;
 #[cfg(feature = "std")]

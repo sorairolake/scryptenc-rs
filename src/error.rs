@@ -139,6 +139,7 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "alloc")]
     #[test]
     fn debug() {
         assert_eq!(format!("{:?}", Error::InvalidLength), "InvalidLength");
@@ -264,6 +265,7 @@ mod tests {
         assert_eq!(Error::InvalidMac(MacError), Error::InvalidMac(MacError));
     }
 
+    #[cfg(feature = "alloc")]
     #[test]
     fn display() {
         assert_eq!(

@@ -27,6 +27,11 @@ scryptenc = "0.7.1"
 
 ### Crate features
 
+#### `alloc`
+
+Enables features that require an allocator. This is enabled by default (implied
+by `std`).
+
 #### `std`
 
 Enables features that depend on the standard library. This is enabled by

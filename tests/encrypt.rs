@@ -15,40 +15,43 @@ use sha2::{Digest, Sha256};
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
+const HEADER_SIZE: usize = 96;
+const TAG_SIZE: usize = 32;
+
 #[test]
 fn success() {
-    {
-        let cipher = Encryptor::with_params(
-            &TEST_DATA,
-            PASSPHRASE,
-            Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-        );
-        let mut buf = vec![u8::default(); cipher.out_len()];
-        cipher.encrypt(&mut buf);
-        assert_ne!(buf, TEST_DATA);
-        assert_eq!(buf.len(), TEST_DATA.len() + 128);
+    let cipher = Encryptor::with_params(
+        &TEST_DATA,
+        PASSPHRASE,
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
+    );
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_ne!(buf, TEST_DATA);
+    assert_eq!(buf.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
 
-        let plaintext = Decryptor::new(&buf, PASSPHRASE)
-            .and_then(Decryptor::decrypt_to_vec)
-            .unwrap();
-        assert_eq!(plaintext, TEST_DATA);
-    }
+    let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    cipher.decrypt(&mut buf).unwrap();
+    assert_eq!(buf, TEST_DATA);
+}
 
-    {
-        let ciphertext = Encryptor::with_params(
-            &TEST_DATA,
-            PASSPHRASE,
-            Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-        )
-        .encrypt_to_vec();
-        assert_ne!(ciphertext, TEST_DATA);
-        assert_eq!(ciphertext.len(), TEST_DATA.len() + 128);
+#[cfg(feature = "alloc")]
+#[test]
+fn success_to_vec() {
+    let ciphertext = Encryptor::with_params(
+        &TEST_DATA,
+        PASSPHRASE,
+        Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
+    )
+    .encrypt_to_vec();
+    assert_ne!(ciphertext, TEST_DATA);
+    assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
 
-        let plaintext = Decryptor::new(&ciphertext, PASSPHRASE)
-            .and_then(Decryptor::decrypt_to_vec)
-            .unwrap();
-        assert_eq!(plaintext, TEST_DATA);
-    }
+    let plaintext = Decryptor::new(&ciphertext, PASSPHRASE)
+        .and_then(|c| c.decrypt_to_vec())
+        .unwrap();
+    assert_eq!(plaintext, TEST_DATA);
 }
 
 #[test]
@@ -59,75 +62,81 @@ fn invalid_output_length() {
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     );
-    let mut buf = vec![u8::default(); cipher.out_len() - 1];
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE - 1];
     cipher.encrypt(&mut buf);
 }
 
 #[test]
 fn magic_number() {
-    let ciphertext = Encryptor::with_params(
+    let cipher = Encryptor::with_params(
         &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-    )
-    .encrypt_to_vec();
-    assert_eq!(&ciphertext[..6], b"scrypt");
+    );
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(&buf[..6], b"scrypt");
 }
 
 #[test]
 fn version() {
-    let ciphertext = Encryptor::with_params(
+    let cipher = Encryptor::with_params(
         &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-    )
-    .encrypt_to_vec();
-    assert_eq!(ciphertext[6], 0);
+    );
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(buf[6], 0);
 }
 
 #[test]
 fn log_n() {
-    let ciphertext = Encryptor::with_params(
+    let cipher = Encryptor::with_params(
         &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-    )
-    .encrypt_to_vec();
-    assert_eq!(ciphertext[7], 10);
+    );
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(buf[7], 10);
 }
 
 #[test]
 fn r() {
-    let ciphertext = Encryptor::with_params(
+    let cipher = Encryptor::with_params(
         &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-    )
-    .encrypt_to_vec();
-    assert_eq!(&ciphertext[8..12], u32::to_be_bytes(8));
+    );
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(&buf[8..12], u32::to_be_bytes(8));
 }
 
 #[test]
 fn p() {
-    let ciphertext = Encryptor::with_params(
+    let cipher = Encryptor::with_params(
         &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-    )
-    .encrypt_to_vec();
-    assert_eq!(&ciphertext[12..16], u32::to_be_bytes(1));
+    );
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(&buf[12..16], u32::to_be_bytes(1));
 }
 
 #[test]
 fn checksum() {
-    let ciphertext = Encryptor::with_params(
+    let cipher = Encryptor::with_params(
         &TEST_DATA,
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-    )
-    .encrypt_to_vec();
-    let checksum = Sha256::digest(&ciphertext[..48]);
-    assert_eq!(&ciphertext[48..64], &checksum[..16]);
+    );
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    let checksum = Sha256::digest(&buf[..48]);
+    assert_eq!(&buf[48..64], &checksum[..16]);
 }
 
 #[test]
@@ -137,5 +146,5 @@ fn out_len() {
         PASSPHRASE,
         Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
     );
-    assert_eq!(cipher.out_len(), 142);
+    assert_eq!(cipher.out_len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
 }

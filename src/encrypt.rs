@@ -4,8 +4,6 @@
 
 //! Encrypts to the scrypt encrypted data format.
 
-use alloc::vec::Vec;
-
 use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
 use hmac::{
     digest::{typenum::Unsigned, OutputSizeUser},
@@ -37,12 +35,10 @@ impl<'m> Encryptor<'m> {
     /// ```
     /// # use scryptenc::Encryptor;
     /// #
-    /// let data = b"Hello, world!";
+    /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Encryptor::new(data, passphrase);
-    /// let ciphertext = cipher.encrypt_to_vec();
-    /// # assert_ne!(ciphertext, data);
     /// ```
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Self {
         Self::with_params(plaintext, passphrase, Params::recommended())
@@ -56,13 +52,11 @@ impl<'m> Encryptor<'m> {
     /// ```
     /// # use scryptenc::{scrypt::Params, Encryptor};
     /// #
-    /// let data = b"Hello, world!";
+    /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let cipher = Encryptor::with_params(data, passphrase, params);
-    /// let ciphertext = cipher.encrypt_to_vec();
-    /// # assert_ne!(ciphertext, data);
     /// ```
     pub fn with_params(
         plaintext: &'m impl AsRef<[u8]>,
@@ -102,24 +96,24 @@ impl<'m> Encryptor<'m> {
     /// ```
     /// # use scryptenc::{scrypt::Params, Encryptor};
     /// #
-    /// let data = b"Hello, world!";
+    /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let cipher = Encryptor::with_params(data, passphrase, params);
-    /// let mut buf = [u8::default(); 141];
+    /// let mut buf = [u8::default(); 142];
     /// cipher.encrypt(&mut buf);
     /// # assert_ne!(buf, data.as_slice());
     /// ```
-    pub fn encrypt(self, mut buf: impl AsMut<[u8]>) {
-        fn compute_mac(data: &[u8], key: &HmacSha256Key) -> HmacSha256Output {
-            let mut mac =
-                HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
-            mac.update(data);
-            mac.finalize().into_bytes()
-        }
+    pub fn encrypt(&self, mut buf: impl AsMut<[u8]>) {
+        let inner = |encryptor: &Self, buf: &mut [u8]| {
+            fn compute_mac(data: &[u8], key: &HmacSha256Key) -> HmacSha256Output {
+                let mut mac = HmacSha256::new_from_slice(key)
+                    .expect("HMAC-SHA-256 key size should be 256 bits");
+                mac.update(data);
+                mac.finalize().into_bytes()
+            }
 
-        let inner = |encryptor: Self, buf: &mut [u8]| {
             let bound = (
                 Header::SIZE,
                 encryptor.out_len() - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
@@ -145,7 +139,7 @@ impl<'m> Encryptor<'m> {
     /// ```
     /// # use scryptenc::{scrypt::Params, Encryptor};
     /// #
-    /// let data = b"Hello, world!";
+    /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
@@ -153,8 +147,9 @@ impl<'m> Encryptor<'m> {
     /// let ciphertext = cipher.encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     /// ```
+    #[cfg(feature = "alloc")]
     #[must_use]
-    pub fn encrypt_to_vec(self) -> Vec<u8> {
+    pub fn encrypt_to_vec(&self) -> alloc::vec::Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.encrypt(&mut buf);
         buf
@@ -167,12 +162,12 @@ impl<'m> Encryptor<'m> {
     /// ```
     /// # use scryptenc::{scrypt::Params, Encryptor};
     /// #
-    /// let data = b"Hello, world!";
+    /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let cipher = Encryptor::with_params(data, passphrase, params);
-    /// assert_eq!(cipher.out_len(), 141);
+    /// assert_eq!(cipher.out_len(), 142);
     /// ```
     #[must_use]
     #[inline]

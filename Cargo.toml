@@ -44,7 +44,8 @@ dialoguer = { version = "0.10.4", default-features = false, features = ["passwor
 
 [features]
 default = ["std"]
-std = ["hmac/std"]
+alloc = []
+std = ["alloc", "hmac/std"]
 
 [package.metadata.docs.rs]
 all-features = true
