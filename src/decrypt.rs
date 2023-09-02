@@ -11,7 +11,7 @@ use hmac::{
 };
 
 use crate::{
-    error::Error,
+    error::{Error, Result},
     format::{DerivedKey, Header},
     Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
 };
@@ -50,11 +50,8 @@ impl<'c> Decryptor<'c> {
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// ```
-    pub fn new(
-        ciphertext: &'c impl AsRef<[u8]>,
-        passphrase: impl AsRef<[u8]>,
-    ) -> Result<Self, Error> {
-        let inner = |ciphertext: &'c [u8], passphrase: &[u8]| -> Result<Self, Error> {
+    pub fn new(ciphertext: &'c impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
+        let inner = |ciphertext: &'c [u8], passphrase: &[u8]| -> Result<Self> {
             let mut header = Header::parse(ciphertext)?;
 
             header.verify_checksum(&ciphertext[48..64])?;
@@ -106,13 +103,9 @@ impl<'c> Decryptor<'c> {
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, data.as_slice());
     /// ```
-    pub fn decrypt(&self, mut buf: impl AsMut<[u8]>) -> Result<(), Error> {
-        let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<(), Error> {
-            fn verify_mac(
-                data: &[u8],
-                key: &HmacSha256Key,
-                tag: &HmacSha256Output,
-            ) -> Result<(), Error> {
+    pub fn decrypt(&self, mut buf: impl AsMut<[u8]>) -> Result<()> {
+        let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
+            fn verify_mac(data: &[u8], key: &HmacSha256Key, tag: &HmacSha256Output) -> Result<()> {
                 let mut mac = HmacSha256::new_from_slice(key)
                     .expect("HMAC-SHA-256 key size should be 256 bits");
                 mac.update(data);
@@ -153,7 +146,7 @@ impl<'c> Decryptor<'c> {
     /// # assert_eq!(plaintext, data);
     /// ```
     #[cfg(feature = "alloc")]
-    pub fn decrypt_to_vec(&self) -> Result<alloc::vec::Vec<u8>, Error> {
+    pub fn decrypt_to_vec(&self) -> Result<alloc::vec::Vec<u8>> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.decrypt(&mut buf)?;
         Ok(buf)

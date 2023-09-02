@@ -4,7 +4,7 @@
 
 //! The scrypt parameters.
 
-use crate::{error::Error, format::Header};
+use crate::{error::Result, format::Header};
 
 /// The scrypt parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
@@ -31,7 +31,7 @@ impl Params {
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
-    pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self, Error> {
+    pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
         let params = Header::parse(ciphertext.as_ref()).map(|h| h.params())?;
         Ok(Self(params))
     }

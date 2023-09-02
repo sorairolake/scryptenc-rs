@@ -18,7 +18,10 @@ use rand::{rngs::StdRng, Rng, SeedableRng};
 use scrypt::Params;
 use sha2::{Digest, Sha256};
 
-use crate::{error::Error, Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output};
+use crate::{
+    error::{Error, Result},
+    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
+};
 
 /// A type alias for magic number of the scrypt encrypted data format.
 type MagicNumber = [u8; 6];
@@ -99,7 +102,7 @@ impl Header {
     }
 
     /// Parses `data` into the header.
-    pub fn parse(data: &[u8]) -> Result<Self, Error> {
+    pub fn parse(data: &[u8]) -> Result<Self> {
         if data.len() < Self::SIZE + <HmacSha256 as OutputSizeUser>::OutputSize::USIZE {
             return Err(Error::InvalidLength);
         }
@@ -148,7 +151,7 @@ impl Header {
     }
 
     /// Verifies a SHA-256 checksum stored in this header.
-    pub fn verify_checksum(&mut self, checksum: &[u8]) -> Result<(), Error> {
+    pub fn verify_checksum(&mut self, checksum: &[u8]) -> Result<()> {
         self.compute_checksum();
         if self.checksum == checksum {
             Ok(())
@@ -166,7 +169,7 @@ impl Header {
     }
 
     /// Verifies a HMAC-SHA-256 stored in this header.
-    pub fn verify_mac(&mut self, key: &HeaderMacKey, tag: &HeaderMacOutput) -> Result<(), Error> {
+    pub fn verify_mac(&mut self, key: &HeaderMacKey, tag: &HeaderMacOutput) -> Result<()> {
         let mut mac =
             HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
         mac.update(&self.as_bytes()[..64]);

@@ -89,7 +89,12 @@ use hmac::{
 };
 use sha2::Sha256;
 
-pub use crate::{decrypt::Decryptor, encrypt::Encryptor, error::Error, params::Params};
+pub use crate::{
+    decrypt::Decryptor,
+    encrypt::Encryptor,
+    error::{Error, Result},
+    params::Params,
+};
 
 /// A type alias for AES-256-CTR.
 type Aes256Ctr128BE = Ctr128BE<Aes256>;
