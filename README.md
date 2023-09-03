@@ -22,10 +22,15 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.7.1"
+scryptenc = "0.8.0"
 ```
 
 ### Crate features
+
+#### `alloc`
+
+Enables features that require an allocator. This is enabled by default (implied
+by `std`).
 
 #### `std`
 

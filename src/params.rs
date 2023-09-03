@@ -4,39 +4,35 @@
 
 //! The scrypt parameters.
 
-use crate::{error::Error, format::Header};
+use crate::{error::Result, format::Header};
 
 /// The scrypt parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
 pub struct Params(scrypt::Params);
 
 impl Params {
-    /// Creates a new instance of the scrypt parameters from `data`.
+    /// Creates a new instance of the scrypt parameters from `ciphertext`.
     ///
     /// # Errors
     ///
-    /// This function will return an error in the following situations:
+    /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `data` is less than 128 bytes.
-    /// - The magic number is not "scrypt".
-    /// - The version number other than `0`.
+    /// - `ciphertext` is shorter than 128 bytes.
+    /// - The magic number is invalid.
+    /// - The version number is the unrecognized scrypt version number.
     /// - The scrypt parameters are invalid.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use scryptenc::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    ///
-    /// assert!(Params::new(encrypted).is_ok());
+    /// assert!(Params::new(ciphertext).is_ok());
     /// ```
-    pub fn new(data: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let params = Header::parse(data.as_ref()).map(|h| h.params())?;
+    pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
+        let params = Header::parse(ciphertext.as_ref()).map(|h| h.params())?;
         Ok(Self(params))
     }
 
@@ -45,15 +41,11 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use scryptenc::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
+    /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.log_n(), 10);
     /// ```
     #[must_use]
@@ -67,15 +59,11 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use scryptenc::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
+    /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.n(), 1024);
     /// ```
     #[must_use]
@@ -89,15 +77,11 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use scryptenc::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
+    /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.r(), 8);
     /// ```
     #[must_use]
@@ -111,15 +95,11 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use scryptenc::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
+    /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.p(), 1);
     /// ```
     #[must_use]

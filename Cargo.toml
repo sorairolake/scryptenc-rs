@@ -4,7 +4,7 @@
 
 [package]
 name = "scryptenc"
-version = "0.7.1"
+version = "0.8.0"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
 rust-version = "1.60.0"
@@ -44,7 +44,8 @@ dialoguer = { version = "0.10.4", default-features = false, features = ["passwor
 
 [features]
 default = ["std"]
-std = ["hmac/std"]
+alloc = []
+std = ["alloc", "hmac/std"]
 
 [package.metadata.docs.rs]
 all-features = true

@@ -12,46 +12,76 @@
 //! ## Encrypt and decrypt
 //!
 //! ```
+//! # #[cfg(feature = "alloc")]
+//! # {
 //! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 //!
-//! let data = b"Hello, world!";
-//! let password = "password";
+//! let data = b"Hello, world!\n";
+//! let passphrase = "passphrase";
 //!
-//! // Encrypt `data` using `password`.
+//! // Encrypt `data` using `passphrase`.
 //! let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-//! let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-//! assert_ne!(encrypted, data);
+//! let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
+//! assert_ne!(ciphertext, data);
 //!
 //! // And decrypt it back.
-//! let decrypted = Decryptor::new(encrypted, password)
-//!     .and_then(Decryptor::decrypt_to_vec)
+//! let plaintext = Decryptor::new(&ciphertext, passphrase)
+//!     .and_then(|c| c.decrypt_to_vec())
 //!     .unwrap();
-//! assert_eq!(decrypted, data);
+//! assert_eq!(plaintext, data);
+//! # }
+//! ```
+//!
+//! ### `no_std` support
+//!
+//! This crate supports `no_std` mode and can be used without the `alloc` crate
+//! and the `std` crate. Disables the `default` feature to enable this.
+//!
+//! ```
+//! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+//!
+//! let data = b"Hello, world!\n";
+//! let passphrase = "passphrase";
+//!
+//! // Encrypt `data` using `passphrase`.
+//! let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+//! let cipher = Encryptor::with_params(data, passphrase, params);
+//! let mut buf = [u8::default(); 142];
+//! cipher.encrypt(&mut buf);
+//! assert_ne!(buf, data.as_slice());
+//!
+//! // And decrypt it back.
+//! let cipher = Decryptor::new(&buf, passphrase).unwrap();
+//! let mut buf = [u8::default(); 14];
+//! cipher.decrypt(&mut buf).unwrap();
+//! assert_eq!(buf, data.as_slice());
 //! ```
 //!
 //! ## Extract the scrypt parameters in the encrypted data
 //!
 //! ```
+//! # #[cfg(feature = "alloc")]
+//! # {
 //! use scryptenc::{scrypt, Encryptor};
 //!
-//! let data = b"Hello, world!";
-//! let password = "password";
+//! let data = b"Hello, world!\n";
+//! let passphrase = "passphrase";
 //!
-//! // Encrypt `data` using `password`.
-//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-//! let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+//! // Encrypt `data` using `passphrase`.
+//! let ciphertext = Encryptor::new(data, passphrase).encrypt_to_vec();
 //!
 //! // And extract the scrypt parameters from it.
-//! let params = scryptenc::Params::new(encrypted).unwrap();
-//! assert_eq!(params.log_n(), 10);
-//! assert_eq!(params.n(), 1024);
-//! assert_eq!(params.r(), 8);
-//! assert_eq!(params.p(), 1);
+//! let params = scryptenc::Params::new(ciphertext).unwrap();
+//! assert_eq!(params.log_n(), scrypt::Params::RECOMMENDED_LOG_N);
+//! assert_eq!(params.n(), 1 << scrypt::Params::RECOMMENDED_LOG_N);
+//! assert_eq!(params.r(), scrypt::Params::RECOMMENDED_R);
+//! assert_eq!(params.p(), scrypt::Params::RECOMMENDED_P);
+//! # }
 //! ```
 //!
 //! [specification-url]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.7.1/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.8.0/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
@@ -61,6 +91,7 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
+#[cfg(feature = "alloc")]
 #[macro_use]
 extern crate alloc;
 #[cfg(feature = "std")]
@@ -72,7 +103,38 @@ mod error;
 mod format;
 mod params;
 
-pub use hmac::digest;
+pub use hmac;
 pub use scrypt;
 
-pub use crate::{decrypt::Decryptor, encrypt::Encryptor, error::Error, params::Params};
+use aes::Aes256;
+use ctr::Ctr128BE;
+use hmac::{
+    digest::{generic_array::GenericArray, typenum::U32, Output},
+    Hmac,
+};
+use sha2::Sha256;
+
+pub use crate::{
+    decrypt::Decryptor,
+    encrypt::Encryptor,
+    error::{Error, Result},
+    params::Params,
+};
+
+#[cfg(feature = "alloc")]
+pub use crate::{
+    decrypt::decrypt,
+    encrypt::{encrypt, encrypt_with_params},
+};
+
+/// A type alias for AES-256-CTR.
+type Aes256Ctr128BE = Ctr128BE<Aes256>;
+
+/// A type alias for HMAC-SHA-256.
+type HmacSha256 = Hmac<Sha256>;
+
+/// A type alias for output of HMAC-SHA-256.
+type HmacSha256Output = Output<HmacSha256>;
+
+/// A type alias for key of HMAC-SHA-256.
+type HmacSha256Key = GenericArray<u8, U32>;

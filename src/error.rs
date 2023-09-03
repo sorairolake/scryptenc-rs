@@ -4,7 +4,7 @@
 
 //! Error types for this crate.
 
-use core::fmt;
+use core::{fmt, result};
 
 use hmac::digest::MacError;
 use scrypt::errors::InvalidParams;
@@ -66,6 +66,36 @@ impl From<InvalidParams> for Error {
         Self::InvalidParams(source)
     }
 }
+
+/// A specialized [`Result`](result::Result) type for read and write operations
+/// for the scrypt encrypted data format.
+///
+/// # Examples
+///
+/// ```
+/// # #[cfg(feature = "alloc")]
+/// # {
+/// use scryptenc::{Decryptor, Encryptor};
+///
+/// fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Vec<u8> {
+///     Encryptor::new(&plaintext, passphrase).encrypt_to_vec()
+/// }
+///
+/// fn decrypt(ciphertext: &[u8], passphrase: &[u8]) -> scryptenc::Result<Vec<u8>> {
+///     Decryptor::new(&ciphertext, passphrase).and_then(|c| c.decrypt_to_vec())
+/// }
+///
+/// let data = b"Hello, world!\n";
+/// let passphrase = b"passphrase";
+///
+/// let ciphertext = encrypt(data, passphrase);
+/// assert_ne!(ciphertext, data);
+///
+/// let plaintext = decrypt(&ciphertext, passphrase).unwrap();
+/// assert_eq!(plaintext, data);
+/// # }
+/// ```
+pub type Result<T> = result::Result<T, Error>;
 
 #[cfg(test)]
 mod tests {
@@ -139,6 +169,7 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "alloc")]
     #[test]
     fn debug() {
         assert_eq!(format!("{:?}", Error::InvalidLength), "InvalidLength");
@@ -264,6 +295,7 @@ mod tests {
         assert_eq!(Error::InvalidMac(MacError), Error::InvalidMac(MacError));
     }
 
+    #[cfg(feature = "alloc")]
     #[test]
     fn display() {
         assert_eq!(
@@ -315,6 +347,20 @@ mod tests {
         assert_eq!(
             Error::from(InvalidParams),
             Error::InvalidParams(InvalidParams)
+        );
+    }
+
+    #[test]
+    fn result_type() {
+        use core::any;
+
+        assert_eq!(
+            any::type_name::<Result<()>>(),
+            any::type_name::<result::Result<(), Error>>()
+        );
+        assert_eq!(
+            any::type_name::<Result<u8>>(),
+            any::type_name::<result::Result<u8, Error>>()
         );
     }
 }
