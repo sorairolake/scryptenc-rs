@@ -15,11 +15,11 @@ impl Params {
     ///
     /// # Errors
     ///
-    /// This function will return an error in the following situations:
+    /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `ciphertext` is less than 128 bytes.
-    /// - The magic number is not "scrypt".
-    /// - The version number other than `0`.
+    /// - `ciphertext` is shorter than 128 bytes.
+    /// - The magic number is invalid.
+    /// - The version number is the unrecognized scrypt version number.
     /// - The scrypt parameters are invalid.
     ///
     /// # Examples

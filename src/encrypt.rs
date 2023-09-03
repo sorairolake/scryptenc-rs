@@ -132,7 +132,8 @@ impl<'m> Encryptor<'m> {
         inner(self, buf.as_mut());
     }
 
-    /// Encrypts the plaintext and into a newly allocated `Vec`.
+    /// Encrypts the plaintext and into a newly allocated
+    /// [`Vec`](alloc::vec::Vec).
     ///
     /// # Examples
     ///
@@ -174,4 +175,54 @@ impl<'m> Encryptor<'m> {
     pub const fn out_len(&self) -> usize {
         Header::SIZE + self.plaintext.len() + <HmacSha256 as OutputSizeUser>::OutputSize::USIZE
     }
+}
+
+/// Encrypts `plaintext` and into a newly allocated [`Vec`](alloc::vec::Vec).
+///
+/// This uses the recommended scrypt parameters created by
+/// [`Params::recommended`] which are sufficient for most use-cases.
+///
+/// This is a convenience function for using [`Encryptor::new`] and
+/// [`Encryptor::encrypt_to_vec`].
+///
+/// # Examples
+///
+/// ```
+/// let data = b"Hello, world!\n";
+/// let passphrase = "passphrase";
+///
+/// let ciphertext = scryptenc::encrypt(data, passphrase);
+/// # assert_ne!(ciphertext, data);
+/// ```
+#[cfg(feature = "alloc")]
+pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> alloc::vec::Vec<u8> {
+    Encryptor::new(&plaintext, passphrase).encrypt_to_vec()
+}
+
+#[allow(clippy::module_name_repetitions)]
+/// Encrypts `plaintext` with the specified [`Params`] and into a newly
+/// allocated [`Vec`](alloc::vec::Vec).
+///
+/// This is a convenience function for using [`Encryptor::with_params`] and
+/// [`Encryptor::encrypt_to_vec`].
+///
+/// # Examples
+///
+/// ```
+/// # use scryptenc::scrypt::Params;
+/// #
+/// let data = b"Hello, world!\n";
+/// let passphrase = "passphrase";
+///
+/// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+/// let ciphertext = scryptenc::encrypt_with_params(data, passphrase, params);
+/// # assert_ne!(ciphertext, data);
+/// ```
+#[cfg(feature = "alloc")]
+pub fn encrypt_with_params(
+    plaintext: impl AsRef<[u8]>,
+    passphrase: impl AsRef<[u8]>,
+    params: Params,
+) -> alloc::vec::Vec<u8> {
+    Encryptor::with_params(&plaintext, passphrase, params).encrypt_to_vec()
 }

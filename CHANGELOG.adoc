@@ -20,6 +20,8 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 * Add a specialized `Result` type for read and write operations for the scrypt
   encrypted data format ({pull-request-url}/56[#56])
+* Add convenience functions for using `Encryptor` and `Decryptor`
+  ({pull-request-url}/57[#57])
 
 === Changed
 

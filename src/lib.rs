@@ -96,6 +96,12 @@ pub use crate::{
     params::Params,
 };
 
+#[cfg(feature = "alloc")]
+pub use crate::{
+    decrypt::decrypt,
+    encrypt::{encrypt, encrypt_with_params},
+};
+
 /// A type alias for AES-256-CTR.
 type Aes256Ctr128BE = Ctr128BE<Aes256>;
 

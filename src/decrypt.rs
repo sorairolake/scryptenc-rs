@@ -31,14 +31,14 @@ impl<'c> Decryptor<'c> {
     ///
     /// # Errors
     ///
-    /// This function will return an error in the following situations:
+    /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `ciphertext` is less than 128 bytes.
-    /// - The magic number is not "scrypt".
-    /// - The version number other than `0`.
+    /// - `ciphertext` is shorter than 128 bytes.
+    /// - The magic number is invalid.
+    /// - The version number is the unrecognized scrypt version number.
     /// - The scrypt parameters are invalid.
-    /// - SHA-256 checksum of the header mismatch.
-    /// - HMAC-SHA-256 of the header is invalid.
+    /// - The checksum of the header mismatch.
+    /// - The MAC (authentication tag) of the header is invalid.
     ///
     /// # Examples
     ///
@@ -83,7 +83,7 @@ impl<'c> Decryptor<'c> {
     ///
     /// # Errors
     ///
-    /// Returns `Err` if HMAC-SHA-256 at EOF is invalid.
+    /// Returns [`Err`] if the MAC (authentication tag) at EOF is invalid.
     ///
     /// # Panics
     ///
@@ -126,11 +126,12 @@ impl<'c> Decryptor<'c> {
         inner(self, buf.as_mut())
     }
 
-    /// Decrypts the ciphertext and into a newly allocated `Vec`.
+    /// Decrypts the ciphertext and into a newly allocated
+    /// [`Vec`](alloc::vec::Vec).
     ///
     /// # Errors
     ///
-    /// Returns `Err` if HMAC-SHA-256 at EOF is invalid.
+    /// Returns [`Err`] if the MAC (authentication tag) at EOF is invalid.
     ///
     /// # Examples
     ///
@@ -170,4 +171,39 @@ impl<'c> Decryptor<'c> {
     pub const fn out_len(&self) -> usize {
         self.ciphertext.len()
     }
+}
+
+/// Decrypts `ciphertext` and into a newly allocated [`Vec`](alloc::vec::Vec).
+///
+/// This is a convenience function for using [`Decryptor::new`] and
+/// [`Decryptor::decrypt_to_vec`].
+///
+/// # Errors
+///
+/// Returns [`Err`] if any of the following are true:
+///
+/// - `ciphertext` is shorter than 128 bytes.
+/// - The magic number is invalid.
+/// - The version number is the unrecognized scrypt version number.
+/// - The scrypt parameters are invalid.
+/// - The checksum of the header mismatch.
+/// - The MAC (authentication tag) of the header is invalid.
+/// - The MAC (authentication tag) at EOF is invalid.
+///
+/// # Examples
+///
+/// ```
+/// let data = b"Hello, world!\n";
+/// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+/// let passphrase = "passphrase";
+///
+/// let plaintext = scryptenc::decrypt(ciphertext, passphrase).unwrap();
+/// # assert_eq!(plaintext, data);
+/// ```
+#[cfg(feature = "alloc")]
+pub fn decrypt(
+    ciphertext: impl AsRef<[u8]>,
+    passphrase: impl AsRef<[u8]>,
+) -> Result<alloc::vec::Vec<u8>> {
+    Decryptor::new(&ciphertext, passphrase).and_then(|c| c.decrypt_to_vec())
 }
