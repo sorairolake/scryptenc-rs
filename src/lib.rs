@@ -16,7 +16,7 @@
 //! # {
 //! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 //!
-//! let data = b"Hello, world!";
+//! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";
 //!
 //! // Encrypt `data` using `passphrase`.
@@ -32,6 +32,31 @@
 //! # }
 //! ```
 //!
+//! ### `no_std` support
+//!
+//! This crate supports `no_std` mode and can be used without the `alloc` crate
+//! and the `std` crate. Disables the `default` feature to enable this.
+//!
+//! ```
+//! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+//!
+//! let data = b"Hello, world!\n";
+//! let passphrase = "passphrase";
+//!
+//! // Encrypt `data` using `passphrase`.
+//! let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+//! let cipher = Encryptor::with_params(data, passphrase, params);
+//! let mut buf = [u8::default(); 142];
+//! cipher.encrypt(&mut buf);
+//! assert_ne!(buf, data.as_slice());
+//!
+//! // And decrypt it back.
+//! let cipher = Decryptor::new(&buf, passphrase).unwrap();
+//! let mut buf = [u8::default(); 14];
+//! cipher.decrypt(&mut buf).unwrap();
+//! assert_eq!(buf, data.as_slice());
+//! ```
+//!
 //! ## Extract the scrypt parameters in the encrypted data
 //!
 //! ```
@@ -39,7 +64,7 @@
 //! # {
 //! use scryptenc::{scrypt, Encryptor};
 //!
-//! let data = b"Hello, world!";
+//! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";
 //!
 //! // Encrypt `data` using `passphrase`.
