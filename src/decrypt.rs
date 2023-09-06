@@ -45,7 +45,7 @@ impl<'c> Decryptor<'c> {
     /// ```
     /// # use scryptenc::Decryptor;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -95,7 +95,7 @@ impl<'c> Decryptor<'c> {
     /// # use scryptenc::Decryptor;
     /// #
     /// let data = b"Hello, world!\n";
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -139,7 +139,7 @@ impl<'c> Decryptor<'c> {
     /// # use scryptenc::Decryptor;
     /// #
     /// let data = b"Hello, world!\n";
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -160,7 +160,7 @@ impl<'c> Decryptor<'c> {
     /// ```
     /// # use scryptenc::Decryptor;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -194,7 +194,7 @@ impl<'c> Decryptor<'c> {
 ///
 /// ```
 /// let data = b"Hello, world!\n";
-/// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+/// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
 /// let passphrase = "passphrase";
 ///
 /// let plaintext = scryptenc::decrypt(ciphertext, passphrase).unwrap();

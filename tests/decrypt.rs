@@ -14,7 +14,7 @@ use scryptenc::{hmac::digest::MacError, scrypt::errors::InvalidParams, Decryptor
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 // Generated using `scrypt` version 1.3.1.
-const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.enc");
+const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.scrypt");
 
 #[test]
 fn success() {

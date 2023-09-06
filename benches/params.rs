@@ -17,7 +17,7 @@ use test::Bencher;
 use scryptenc::Params;
 
 // Generated using `scrypt` version 1.3.1.
-const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.enc");
+const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.scrypt");
 
 #[bench]
 fn params(b: &mut Bencher) {

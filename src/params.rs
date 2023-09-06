@@ -27,7 +27,7 @@ impl Params {
     /// ```
     /// # use scryptenc::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
@@ -43,7 +43,7 @@ impl Params {
     /// ```
     /// # use scryptenc::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.log_n(), 10);
@@ -61,7 +61,7 @@ impl Params {
     /// ```
     /// # use scryptenc::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.n(), 1024);
@@ -79,7 +79,7 @@ impl Params {
     /// ```
     /// # use scryptenc::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.r(), 8);
@@ -97,7 +97,7 @@ impl Params {
     /// ```
     /// # use scryptenc::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.p(), 1);
