@@ -11,6 +11,7 @@ rust-version = "1.60.0"
 description = "An implementation of the scrypt encrypted data format"
 documentation = "https://docs.rs/scryptenc"
 readme = "README.md"
+homepage = "https://github.com/sorairolake/scryptenc-rs"
 repository = "https://github.com/sorairolake/scryptenc-rs"
 license = "Apache-2.0 OR MIT"
 keywords = ["crypto", "scrypt"]
