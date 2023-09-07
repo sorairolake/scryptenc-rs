@@ -4,7 +4,7 @@
 
 [package]
 name = "scryptenc"
-version = "0.8.0"
+version = "0.8.1"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
 rust-version = "1.60.0"
@@ -39,7 +39,7 @@ sha2 = { version = "0.10.7", default-features = false }
 
 [dev-dependencies]
 anyhow = "1.0.75"
-clap = { version = "3.2.25", features = ["derive"] }
+clap = { version = "4.0.26", features = ["derive"] }
 dialoguer = { version = "0.10.4", default-features = false, features = ["password"] }
 
 [features]
