@@ -14,6 +14,13 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/v0.8.0\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump `clap` from 3 to 4 ({pull-request-url}/62[#62])
+* Bump `actions/checkout` from 3 to 4 ({pull-request-url}/63[#63])
+
 == {compare-url}/v0.7.1\...v0.8.0[0.8.0] - 2023-09-03
 
 === Added
