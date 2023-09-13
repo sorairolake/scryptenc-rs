@@ -9,7 +9,7 @@
 //!
 //! # Examples
 //!
-//! ## Encrypt and decrypt
+//! ## Encryption and decryption
 //!
 //! ```
 //! # #[cfg(feature = "alloc")]
@@ -57,7 +57,7 @@
 //! assert_eq!(buf, data.as_slice());
 //! ```
 //!
-//! ## Extract the scrypt parameters in the encrypted data
+//! ## Extracting the scrypt parameters in the encrypted data
 //!
 //! ```
 //! # #[cfg(feature = "alloc")]
