@@ -15,12 +15,11 @@ use hmac::{
     Mac,
 };
 use rand::{rngs::StdRng, Rng, SeedableRng};
-use scrypt::Params;
 use sha2::{Digest, Sha256};
 
 use crate::{
     error::{Error, Result},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
+    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, Params,
 };
 
 /// A type alias for magic number of the scrypt encrypted data format.
@@ -78,16 +77,16 @@ impl Header {
     /// The number of bytes of the header.
     pub const SIZE: usize = mem::size_of::<MagicNumber>()
         + mem::size_of::<Version>()
-        + mem::size_of::<u8>()
-        + (mem::size_of::<u32>() * 2)
+        + (mem::size_of::<Params>() - (mem::align_of::<Params>() - mem::size_of::<u8>()))
         + mem::size_of::<Salt>()
         + mem::size_of::<Checksum>()
         + <HeaderMac as OutputSizeUser>::OutputSize::USIZE;
 
     /// Creates a new `Header`.
-    pub fn new(params: Params) -> Self {
+    pub fn new(params: scrypt::Params) -> Self {
         let magic_number = Self::MAGIC_NUMBER;
         let version = Version::V0;
+        let params = params.into();
         let salt = StdRng::from_entropy().gen();
         let checksum = Checksum::default();
         let mac = HeaderMacOutput::default();
@@ -128,7 +127,9 @@ impl Header {
                 .try_into()
                 .expect("size of `p` parameter should be 4 bytes"),
         );
-        let params = Params::new(log_n, r, p, Params::RECOMMENDED_LEN).map_err(Error::from)?;
+        let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
+            .map(Params::from)
+            .map_err(Error::from)?;
         let salt = data[16..48]
             .try_into()
             .expect("size of salt should be 32 bytes");

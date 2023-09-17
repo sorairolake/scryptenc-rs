@@ -59,7 +59,7 @@ impl<'c> Decryptor<'c> {
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
             // and the last 256 bits are for HMAC-SHA-256 key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
-            scrypt::scrypt(passphrase, &header.salt(), &header.params(), &mut dk)
+            scrypt::scrypt(passphrase, &header.salt(), &header.params().into(), &mut dk)
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 

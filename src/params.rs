@@ -8,7 +8,11 @@ use crate::{error::Result, format::Header};
 
 /// The scrypt parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
-pub struct Params(scrypt::Params);
+pub struct Params {
+    log_n: u8,
+    r: u32,
+    p: u32,
+}
 
 impl Params {
     /// Creates a new instance of the scrypt parameters from `ciphertext`.
@@ -33,7 +37,7 @@ impl Params {
     /// ```
     pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
         let params = Header::parse(ciphertext.as_ref()).map(|h| h.params())?;
-        Ok(Self(params))
+        Ok(params)
     }
 
     /// Gets log2 of the scrypt parameter `N`.
@@ -50,8 +54,8 @@ impl Params {
     /// ```
     #[must_use]
     #[inline]
-    pub fn log_n(&self) -> u8 {
-        self.0.log_n()
+    pub const fn log_n(&self) -> u8 {
+        self.log_n
     }
 
     /// Gets `N` parameter.
@@ -68,8 +72,8 @@ impl Params {
     /// ```
     #[must_use]
     #[inline]
-    pub fn n(&self) -> u64 {
-        1 << self.0.log_n()
+    pub const fn n(&self) -> u64 {
+        1 << self.log_n
     }
 
     /// Gets `r` parameter.
@@ -86,8 +90,8 @@ impl Params {
     /// ```
     #[must_use]
     #[inline]
-    pub fn r(&self) -> u32 {
-        self.0.r()
+    pub const fn r(&self) -> u32 {
+        self.r
     }
 
     /// Gets `p` parameter.
@@ -104,7 +108,37 @@ impl Params {
     /// ```
     #[must_use]
     #[inline]
-    pub fn p(&self) -> u32 {
-        self.0.p()
+    pub const fn p(&self) -> u32 {
+        self.p
+    }
+}
+
+impl Default for Params {
+    fn default() -> Self {
+        let (log_n, r, p) = (
+            scrypt::Params::RECOMMENDED_LOG_N,
+            scrypt::Params::RECOMMENDED_R,
+            scrypt::Params::RECOMMENDED_P,
+        );
+        Self { log_n, r, p }
+    }
+}
+
+impl From<Params> for scrypt::Params {
+    fn from(params: Params) -> Self {
+        Self::new(
+            params.log_n(),
+            params.r(),
+            params.p(),
+            Self::RECOMMENDED_LEN,
+        )
+        .expect("`Params` should be valid as `scrypt::Params`")
+    }
+}
+
+impl From<scrypt::Params> for Params {
+    fn from(params: scrypt::Params) -> Self {
+        let (log_n, r, p) = (params.log_n(), params.r(), params.p());
+        Self { log_n, r, p }
     }
 }
