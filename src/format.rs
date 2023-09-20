@@ -46,7 +46,8 @@ type Aes256Ctr128BEKey = cipher::Key<Aes256Ctr128BE>;
 /// The number of bytes of the header.
 pub const HEADER_SIZE: usize = Header::SIZE;
 
-/// The number of bytes of the MAC (authentication tag) at EOF.
+/// The number of bytes of the MAC (authentication tag) of the scrypt encrypted
+/// data format.
 pub const TAG_SIZE: usize = <HmacSha256 as OutputSizeUser>::OutputSize::USIZE;
 
 /// Version of the scrypt encrypted data format.

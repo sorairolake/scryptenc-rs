@@ -30,7 +30,8 @@ pub enum Error {
     /// The MAC (authentication tag) of the header was invalid.
     InvalidHeaderMac(MacError),
 
-    /// The MAC (authentication tag) at EOF was invalid.
+    /// The MAC (authentication tag) of the scrypt encrypted data format was
+    /// invalid.
     InvalidMac(MacError),
 }
 

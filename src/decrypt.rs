@@ -79,7 +79,8 @@ impl<'c> Decryptor<'c> {
     ///
     /// # Errors
     ///
-    /// Returns [`Err`] if the MAC (authentication tag) at EOF is invalid.
+    /// Returns [`Err`] if the MAC (authentication tag) of the scrypt encrypted
+    /// data format is invalid.
     ///
     /// # Panics
     ///
@@ -127,7 +128,8 @@ impl<'c> Decryptor<'c> {
     ///
     /// # Errors
     ///
-    /// Returns [`Err`] if the MAC (authentication tag) at EOF is invalid.
+    /// Returns [`Err`] if the MAC (authentication tag) of the scrypt encrypted
+    /// data format is invalid.
     ///
     /// # Examples
     ///
@@ -184,7 +186,8 @@ impl<'c> Decryptor<'c> {
 /// - The scrypt parameters are invalid.
 /// - The checksum of the header mismatch.
 /// - The MAC (authentication tag) of the header is invalid.
-/// - The MAC (authentication tag) at EOF is invalid.
+/// - The MAC (authentication tag) of the scrypt encrypted data format is
+///   invalid.
 ///
 /// # Examples
 ///
