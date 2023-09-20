@@ -9,7 +9,9 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-use scryptenc::{hmac::digest::MacError, scrypt::errors::InvalidParams, Decryptor, Error};
+use scryptenc::{
+    hmac::digest::MacError, scrypt::errors::InvalidParams, Decryptor, Error, HEADER_SIZE, TAG_SIZE,
+};
 
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
@@ -48,15 +50,15 @@ fn incorrect_passphrase() {
 }
 
 #[test]
-fn invalid_length() {
+fn invalid_input_length() {
     {
-        let data = [u8::default(); 127];
+        let data = [u8::default(); (HEADER_SIZE + TAG_SIZE) - 1];
         let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
         assert_eq!(err, Error::InvalidLength);
     }
 
     {
-        let data = [u8::default(); 128];
+        let data = [u8::default(); HEADER_SIZE + TAG_SIZE];
         let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
         assert_eq!(err, Error::InvalidMagicNumber);
     }
@@ -124,9 +126,9 @@ fn invalid_header_mac() {
 #[test]
 fn invalid_mac() {
     let data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
-    let start_mac = data.len() - 32;
+    let start_mac = data.len() - TAG_SIZE;
     let mut data = data;
-    let mut mac: [u8; 32] = data[start_mac..].try_into().unwrap();
+    let mut mac: [u8; TAG_SIZE] = data[start_mac..].try_into().unwrap();
     mac.reverse();
     data[start_mac..].copy_from_slice(&mac);
     let cipher = Decryptor::new(&data, PASSPHRASE).unwrap();

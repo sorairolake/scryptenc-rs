@@ -9,14 +9,11 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+use scryptenc::{scrypt::Params, Decryptor, Encryptor, HEADER_SIZE, TAG_SIZE};
 use sha2::{Digest, Sha256};
 
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
-
-const HEADER_SIZE: usize = 96;
-const TAG_SIZE: usize = 32;
 
 #[test]
 fn success() {

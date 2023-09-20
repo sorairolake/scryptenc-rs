@@ -5,15 +5,12 @@
 //! Decrypts from the scrypt encrypted data format.
 
 use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
-use hmac::{
-    digest::{typenum::Unsigned, OutputSizeUser},
-    Mac,
-};
+use hmac::Mac;
 
 use crate::{
     error::{Error, Result},
     format::{DerivedKey, Header},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
+    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Decryptor for the scrypt encrypted data format.
@@ -59,15 +56,14 @@ impl<'c> Decryptor<'c> {
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
             // and the last 256 bits are for HMAC-SHA-256 key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
-            scrypt::scrypt(passphrase, &header.salt(), &header.params(), &mut dk)
+            scrypt::scrypt(passphrase, &header.salt(), &header.params().into(), &mut dk)
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk.mac(), ciphertext[64..Header::SIZE].into())?;
+            header.verify_mac(&dk.mac(), ciphertext[64..HEADER_SIZE].into())?;
 
-            let (ciphertext, mac) = ciphertext[Header::SIZE..].split_at(
-                ciphertext.len() - Header::SIZE - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
-            );
+            let (ciphertext, mac) =
+                ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
             let mac = HmacSha256Output::clone_from_slice(mac);
             Ok(Self {
                 header,
@@ -83,7 +79,8 @@ impl<'c> Decryptor<'c> {
     ///
     /// # Errors
     ///
-    /// Returns [`Err`] if the MAC (authentication tag) at EOF is invalid.
+    /// Returns [`Err`] if the MAC (authentication tag) of the scrypt encrypted
+    /// data format is invalid.
     ///
     /// # Panics
     ///
@@ -131,7 +128,8 @@ impl<'c> Decryptor<'c> {
     ///
     /// # Errors
     ///
-    /// Returns [`Err`] if the MAC (authentication tag) at EOF is invalid.
+    /// Returns [`Err`] if the MAC (authentication tag) of the scrypt encrypted
+    /// data format is invalid.
     ///
     /// # Examples
     ///
@@ -188,7 +186,8 @@ impl<'c> Decryptor<'c> {
 /// - The scrypt parameters are invalid.
 /// - The checksum of the header mismatch.
 /// - The MAC (authentication tag) of the header is invalid.
-/// - The MAC (authentication tag) at EOF is invalid.
+/// - The MAC (authentication tag) of the scrypt encrypted data format is
+///   invalid.
 ///
 /// # Examples
 ///

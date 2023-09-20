@@ -15,12 +15,11 @@ use hmac::{
     Mac,
 };
 use rand::{rngs::StdRng, Rng, SeedableRng};
-use scrypt::Params;
 use sha2::{Digest, Sha256};
 
 use crate::{
     error::{Error, Result},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
+    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, Params,
 };
 
 /// A type alias for magic number of the scrypt encrypted data format.
@@ -43,6 +42,13 @@ type HeaderMacKey = HmacSha256Key;
 
 /// A type alias for key of AES-256-CTR.
 type Aes256Ctr128BEKey = cipher::Key<Aes256Ctr128BE>;
+
+/// The number of bytes of the header.
+pub const HEADER_SIZE: usize = Header::SIZE;
+
+/// The number of bytes of the MAC (authentication tag) of the scrypt encrypted
+/// data format.
+pub const TAG_SIZE: usize = <HmacSha256 as OutputSizeUser>::OutputSize::USIZE;
 
 /// Version of the scrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
@@ -76,18 +82,18 @@ impl Header {
     const MAGIC_NUMBER: MagicNumber = *b"scrypt";
 
     /// The number of bytes of the header.
-    pub const SIZE: usize = mem::size_of::<MagicNumber>()
+    const SIZE: usize = mem::size_of::<MagicNumber>()
         + mem::size_of::<Version>()
-        + mem::size_of::<u8>()
-        + (mem::size_of::<u32>() * 2)
+        + (mem::size_of::<Params>() - (mem::align_of::<Params>() - mem::size_of::<u8>()))
         + mem::size_of::<Salt>()
         + mem::size_of::<Checksum>()
         + <HeaderMac as OutputSizeUser>::OutputSize::USIZE;
 
     /// Creates a new `Header`.
-    pub fn new(params: Params) -> Self {
+    pub fn new(params: scrypt::Params) -> Self {
         let magic_number = Self::MAGIC_NUMBER;
         let version = Version::V0;
+        let params = params.into();
         let salt = StdRng::from_entropy().gen();
         let checksum = Checksum::default();
         let mac = HeaderMacOutput::default();
@@ -103,7 +109,7 @@ impl Header {
 
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self> {
-        if data.len() < Self::SIZE + <HmacSha256 as OutputSizeUser>::OutputSize::USIZE {
+        if data.len() < Self::SIZE + TAG_SIZE {
             return Err(Error::InvalidLength);
         }
 
@@ -128,7 +134,9 @@ impl Header {
                 .try_into()
                 .expect("size of `p` parameter should be 4 bytes"),
         );
-        let params = Params::new(log_n, r, p, Params::RECOMMENDED_LEN).map_err(Error::from)?;
+        let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
+            .map(Params::from)
+            .map_err(Error::from)?;
         let salt = data[16..48]
             .try_into()
             .expect("size of salt should be 32 bytes");
@@ -239,6 +247,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn header_size() {
+        assert_eq!(HEADER_SIZE, 96);
+        assert_eq!(HEADER_SIZE, Header::SIZE);
+    }
+
+    #[test]
+    fn tag_size() {
+        assert_eq!(TAG_SIZE, 32);
+        assert_eq!(TAG_SIZE, <HmacSha256 as OutputSizeUser>::OutputSize::USIZE);
+    }
+
+    #[test]
     fn version() {
         assert_eq!(Version::V0 as u8, 0);
     }
@@ -251,11 +271,6 @@ mod tests {
     #[test]
     fn magic_number() {
         assert_eq!(str::from_utf8(&Header::MAGIC_NUMBER).unwrap(), "scrypt");
-    }
-
-    #[test]
-    fn header_size() {
-        assert_eq!(Header::SIZE, 96);
     }
 
     #[test]

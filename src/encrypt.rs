@@ -5,15 +5,12 @@
 //! Encrypts to the scrypt encrypted data format.
 
 use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
-use hmac::{
-    digest::{typenum::Unsigned, OutputSizeUser},
-    Mac,
-};
+use hmac::Mac;
 use scrypt::Params;
 
 use crate::{
     format::{DerivedKey, Header},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
+    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Encryptor for the scrypt encrypted data format.
@@ -69,7 +66,7 @@ impl<'m> Encryptor<'m> {
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
             // and the last 256 bits are for HMAC-SHA-256 key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
-            scrypt::scrypt(passphrase, &header.salt(), &params, &mut dk)
+            scrypt::scrypt(passphrase, &header.salt(), &header.params().into(), &mut dk)
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
@@ -114,10 +111,7 @@ impl<'m> Encryptor<'m> {
                 mac.finalize().into_bytes()
             }
 
-            let bound = (
-                Header::SIZE,
-                encryptor.out_len() - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
-            );
+            let bound = (HEADER_SIZE, encryptor.out_len() - TAG_SIZE);
 
             let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &GenericArray::default());
             cipher
@@ -156,6 +150,7 @@ impl<'m> Encryptor<'m> {
         buf
     }
 
+    #[allow(clippy::missing_panics_doc)]
     /// Returns the number of output bytes of the encrypted data.
     ///
     /// # Examples
@@ -173,7 +168,8 @@ impl<'m> Encryptor<'m> {
     #[must_use]
     #[inline]
     pub const fn out_len(&self) -> usize {
-        Header::SIZE + self.plaintext.len() + <HmacSha256 as OutputSizeUser>::OutputSize::USIZE
+        assert!(self.plaintext.len() <= (usize::MAX - HEADER_SIZE - TAG_SIZE));
+        HEADER_SIZE + self.plaintext.len() + TAG_SIZE
     }
 }
 

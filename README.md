@@ -22,7 +22,27 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.8.1"
+scryptenc = "0.8.2"
+```
+
+### Example
+
+```rust
+use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+
+let data = b"Hello, world!\n";
+let passphrase = "passphrase";
+
+// Encrypt `data` using `passphrase`.
+let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
+let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
+assert_ne!(ciphertext, data);
+
+// And decrypt it back.
+let plaintext = Decryptor::new(&ciphertext, passphrase)
+    .and_then(|c| c.decrypt_to_vec())
+    .unwrap();
+assert_eq!(plaintext, data);
 ```
 
 ### Crate features
