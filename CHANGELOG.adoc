@@ -16,6 +16,10 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 == {compare-url}/v0.8.1\...HEAD[Unreleased]
 
+=== Added
+
+* Add constants to represent header and tag sizes ({pull-request-url}/72[#72])
+
 === Changed
 
 * Change the structure of `Params` ({pull-request-url}/70[#70])

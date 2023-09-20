@@ -43,6 +43,12 @@ type HeaderMacKey = HmacSha256Key;
 /// A type alias for key of AES-256-CTR.
 type Aes256Ctr128BEKey = cipher::Key<Aes256Ctr128BE>;
 
+/// The number of bytes of the header.
+pub const HEADER_SIZE: usize = Header::SIZE;
+
+/// The number of bytes of the MAC (authentication tag) at EOF.
+pub const TAG_SIZE: usize = <HmacSha256 as OutputSizeUser>::OutputSize::USIZE;
+
 /// Version of the scrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
 #[repr(u8)]
@@ -75,7 +81,7 @@ impl Header {
     const MAGIC_NUMBER: MagicNumber = *b"scrypt";
 
     /// The number of bytes of the header.
-    pub const SIZE: usize = mem::size_of::<MagicNumber>()
+    const SIZE: usize = mem::size_of::<MagicNumber>()
         + mem::size_of::<Version>()
         + (mem::size_of::<Params>() - (mem::align_of::<Params>() - mem::size_of::<u8>()))
         + mem::size_of::<Salt>()
@@ -102,7 +108,7 @@ impl Header {
 
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self> {
-        if data.len() < Self::SIZE + <HmacSha256 as OutputSizeUser>::OutputSize::USIZE {
+        if data.len() < Self::SIZE + TAG_SIZE {
             return Err(Error::InvalidLength);
         }
 
@@ -240,6 +246,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn header_size() {
+        assert_eq!(HEADER_SIZE, 96);
+        assert_eq!(HEADER_SIZE, Header::SIZE);
+    }
+
+    #[test]
+    fn tag_size() {
+        assert_eq!(TAG_SIZE, 32);
+        assert_eq!(TAG_SIZE, <HmacSha256 as OutputSizeUser>::OutputSize::USIZE);
+    }
+
+    #[test]
     fn version() {
         assert_eq!(Version::V0 as u8, 0);
     }
@@ -252,11 +270,6 @@ mod tests {
     #[test]
     fn magic_number() {
         assert_eq!(str::from_utf8(&Header::MAGIC_NUMBER).unwrap(), "scrypt");
-    }
-
-    #[test]
-    fn header_size() {
-        assert_eq!(Header::SIZE, 96);
     }
 
     #[test]

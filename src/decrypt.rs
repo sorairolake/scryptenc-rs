@@ -5,15 +5,12 @@
 //! Decrypts from the scrypt encrypted data format.
 
 use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
-use hmac::{
-    digest::{typenum::Unsigned, OutputSizeUser},
-    Mac,
-};
+use hmac::Mac;
 
 use crate::{
     error::{Error, Result},
     format::{DerivedKey, Header},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output,
+    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Decryptor for the scrypt encrypted data format.
@@ -63,11 +60,10 @@ impl<'c> Decryptor<'c> {
                 .expect("derived key size should be 64 bytes");
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk.mac(), ciphertext[64..Header::SIZE].into())?;
+            header.verify_mac(&dk.mac(), ciphertext[64..HEADER_SIZE].into())?;
 
-            let (ciphertext, mac) = ciphertext[Header::SIZE..].split_at(
-                ciphertext.len() - Header::SIZE - <HmacSha256 as OutputSizeUser>::OutputSize::USIZE,
-            );
+            let (ciphertext, mac) =
+                ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
             let mac = HmacSha256Output::clone_from_slice(mac);
             Ok(Self {
                 header,
