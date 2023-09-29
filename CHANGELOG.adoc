@@ -14,7 +14,13 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/v0.8.1\...v0.8.2[0.8.2] - 2023-09-20
+== {compare-url}/v0.8.2\...v0.8.3[0.8.3] - 2023-09-29
+
+=== Removed
+
+* Remove `Params::default` ({pull-request-url}/76[#76])
+
+== {compare-url}/v0.8.1\...v0.8.2[0.8.2] - 2023-09-20 [YANKED]
 
 === Added
 

@@ -113,17 +113,6 @@ impl Params {
     }
 }
 
-impl Default for Params {
-    fn default() -> Self {
-        let (log_n, r, p) = (
-            scrypt::Params::RECOMMENDED_LOG_N,
-            scrypt::Params::RECOMMENDED_R,
-            scrypt::Params::RECOMMENDED_P,
-        );
-        Self { log_n, r, p }
-    }
-}
-
 impl From<Params> for scrypt::Params {
     fn from(params: Params) -> Self {
         Self::new(

@@ -49,8 +49,6 @@ jobs:
           key: ${{ matrix.target }}
       - name: Run tests
         run: cargo test --target ${{ matrix.target }}
-      - name: Run tests (all features)
-        run: cargo test --target ${{ matrix.target }} --all-features
       - name: Run tests (no default features)
         run: cargo test --target ${{ matrix.target }} --no-default-features
       - name: Run tests (`alloc` feature)
@@ -87,8 +85,6 @@ jobs:
         uses: Swatinem/rust-cache@v2.7.0
       - name: Check no lint warnings
         run: cargo clippy -- -D warnings
-      - name: Check no lint warnings (all features)
-        run: cargo clippy --all-features -- -D warnings
       - name: Check no lint warnings (no default features)
         run: cargo clippy --no-default-features -- -D warnings
 
@@ -105,7 +101,7 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.7.0
       - name: Check no `rustdoc` lint warnings
-        run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --document-private-items --all-features
+        run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --document-private-items
 
   benchmark:
     name: Benchmark
