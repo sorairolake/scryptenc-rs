@@ -14,7 +14,7 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 **scryptenc-rs** ([`scryptenc`][version-url]) is an implementation of the
 scrypt encrypted data format.
 
-The format is defined [here][specification-url].
+The format is defined [here].
 
 ## Usage
 
@@ -71,20 +71,20 @@ The minimum supported Rust version (MSRV) of this library is v1.60.0.
 
 ## Changelog
 
-Please see [CHANGELOG.adoc](CHANGELOG.adoc).
+Please see [CHANGELOG.adoc].
 
 ## Contributing
 
-Please see [CONTRIBUTING.adoc](CONTRIBUTING.adoc).
+Please see [CONTRIBUTING.adoc].
 
 ## License
 
-Copyright &copy; 2022&ndash;2023 Shun Sakai (see [AUTHORS.adoc](AUTHORS.adoc))
+Copyright &copy; 2022&ndash;2023 Shun Sakai (see [AUTHORS.adoc])
 
 This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
 
-See [COPYING](COPYING) for more details.
+See [COPYING] for more details.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=branch%3Adevelop+workflow%3ACI++
@@ -93,4 +93,8 @@ See [COPYING](COPYING) for more details.
 [docs-badge]: https://img.shields.io/docsrs/scryptenc?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/scryptenc
 [license-badge]: https://img.shields.io/crates/l/scryptenc?style=for-the-badge
-[specification-url]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+[here]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+[CHANGELOG.adoc]: CHANGELOG.adoc
+[CONTRIBUTING.adoc]: CONTRIBUTING.adoc
+[AUTHORS.adoc]: AUTHORS.adoc
+[COPYING]: COPYING

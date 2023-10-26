@@ -5,7 +5,7 @@
 //! The `scryptenc` crate is an implementation of the scrypt encrypted data
 //! format.
 //!
-//! The format is defined [here][specification-url].
+//! The format is defined [here].
 //!
 //! # Examples
 //!
@@ -79,7 +79,7 @@
 //! # }
 //! ```
 //!
-//! [specification-url]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+//! [here]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 
 #![doc(html_root_url = "https://docs.rs/scryptenc/0.8.3/")]
 #![no_std]
