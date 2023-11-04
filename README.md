@@ -22,7 +22,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.8.3"
+scryptenc = "0.8.4"
 ```
 
 ### Example
