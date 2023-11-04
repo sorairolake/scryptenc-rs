@@ -43,3 +43,36 @@ fn p() {
     let params = Params::new(TEST_DATA_ENC).unwrap();
     assert_eq!(params.p(), 1);
 }
+
+#[cfg(feature = "serde")]
+#[test]
+fn serialize() {
+    use serde_test::{assert_ser_tokens, Token};
+
+    assert_ser_tokens(
+        &Params::new(TEST_DATA_ENC).unwrap(),
+        &[
+            Token::Struct {
+                name: "Params",
+                len: 3,
+            },
+            Token::Str("logN"),
+            Token::U8(10),
+            Token::Str("r"),
+            Token::U32(8),
+            Token::Str("p"),
+            Token::U32(1),
+            Token::StructEnd,
+        ],
+    );
+}
+
+#[cfg(feature = "serde")]
+#[test]
+fn serialize_json() {
+    let params = Params::new(TEST_DATA_ENC).unwrap();
+    assert_eq!(
+        serde_json::to_string(&params).unwrap(),
+        r#"{"logN":10,"r":8,"p":1}"#
+    );
+}
