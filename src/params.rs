@@ -8,7 +8,9 @@ use crate::{error::Result, format::Header};
 
 /// The scrypt parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Params {
+    #[cfg_attr(feature = "serde", serde(rename = "logN"))]
     log_n: u8,
     r: u32,
     p: u32,
