@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/v0.8.4\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump MSRV to 1.70.0 ({pull-request-url}/90[#90])
+
 == {compare-url}/v0.8.3\...v0.8.4[0.8.4] - 2023-11-04
 
 === Added
