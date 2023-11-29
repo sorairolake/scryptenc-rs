@@ -48,7 +48,7 @@ serde_test = "1.0.176"
 [features]
 default = ["std"]
 alloc = []
-std = ["alloc", "hmac/std"]
+std = ["alloc", "hmac/std", "scrypt/std"]
 serde = ["dep:serde"]
 
 [package.metadata.docs.rs]

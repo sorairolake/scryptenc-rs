@@ -12,29 +12,37 @@
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
 #[cfg(feature = "std")]
-use anyhow::Context;
-#[cfg(feature = "std")]
-use clap::Parser;
-
-#[cfg(feature = "std")]
-#[derive(Debug, Parser)]
+#[derive(Debug, clap::Parser)]
 #[command(version, about)]
 struct Opt {
-    /// File to encrypt.
-    #[arg(value_name("INFILE"))]
-    input: std::path::PathBuf,
+    /// Set the work parameter N to 2^<VALUE>.
+    #[arg(long, default_value("17"), value_name("VALUE"))]
+    log_n: u8,
 
-    /// File to write the result to.
-    #[arg(value_name("OUTFILE"))]
-    output: std::path::PathBuf,
+    /// Set the work parameter r.
+    #[arg(short, default_value("8"), value_name("VALUE"))]
+    r: u32,
+
+    /// Set the work parameter p.
+    #[arg(short, default_value("1"), value_name("VALUE"))]
+    p: u32,
+
+    /// Input file.
+    #[arg(value_name("FILE"))]
+    input: std::path::PathBuf,
 }
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
-    use std::fs;
+    use std::{
+        fs,
+        io::{self, Write},
+    };
 
+    use anyhow::Context;
+    use clap::Parser;
     use dialoguer::{theme::ColorfulTheme, Password};
-    use scryptenc::Encryptor;
+    use scryptenc::scrypt::Params;
 
     let opt = Opt::parse();
 
@@ -46,10 +54,12 @@ fn main() -> anyhow::Result<()> {
         .with_confirmation("Confirm passphrase", "Passphrases mismatch, try again")
         .interact()
         .context("could not read passphrase")?;
-    let cipher = Encryptor::new(&plaintext, passphrase);
-    let ciphertext = cipher.encrypt_to_vec();
-    fs::write(opt.output, ciphertext)
-        .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
+    let params = Params::new(opt.log_n, opt.r, opt.p, Params::RECOMMENDED_LEN)?;
+    let ciphertext = scryptenc::encrypt_with_params(plaintext, passphrase, params);
+
+    io::stdout()
+        .write_all(&ciphertext)
+        .context("could not write data to stdout")?;
     Ok(())
 }
 
