@@ -12,32 +12,28 @@
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
 #[cfg(feature = "std")]
-use anyhow::Context;
-#[cfg(feature = "std")]
-use clap::Parser;
-
-#[cfg(feature = "std")]
-#[derive(Debug, Parser)]
+#[derive(Debug, clap::Parser)]
 #[command(version, about)]
 struct Opt {
-    /// File to print the scrypt parameters.
+    /// Input file.
     #[arg(value_name("FILE"))]
     input: std::path::PathBuf,
 }
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
+    use std::fs;
+
+    use anyhow::Context;
+    use clap::Parser;
+    use scryptenc::Params;
+
     let opt = Opt::parse();
 
-    let contents = std::fs::read(&opt.input)
+    let ciphertext = fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let params = scryptenc::Params::new(contents).with_context(|| {
-        format!(
-            "{} is not a valid scrypt encrypted file",
-            opt.input.display()
-        )
-    })?;
+    let params = Params::new(ciphertext).context("data is not a valid scrypt encrypted file")?;
     println!(
         "Parameters used: N = {}; r = {}; p = {};",
         params.n(),

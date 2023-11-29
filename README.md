@@ -22,7 +22,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.8.4"
+scryptenc = "0.8.5"
 ```
 
 ### Example
@@ -71,7 +71,7 @@ See the [documentation][docs-url] for more details.
 
 ## Minimum supported Rust version
 
-The minimum supported Rust version (MSRV) of this library is v1.60.0.
+The minimum supported Rust version (MSRV) of this library is v1.70.0.
 
 ## Changelog
 
@@ -89,8 +89,8 @@ This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
 
 This project is compliant with version 3.0 of the [_REUSE Specification_]. See
-[COPYING] and copyright notices of individual files for more details on
-copyright and licensing information.
+copyright notices of individual files for more details on copyright and
+licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=branch%3Adevelop+workflow%3ACI++
@@ -104,4 +104,3 @@ copyright and licensing information.
 [CONTRIBUTING.adoc]: CONTRIBUTING.adoc
 [AUTHORS.adoc]: AUTHORS.adoc
 [_REUSE Specification_]: https://reuse.software/spec/
-[COPYING]: COPYING

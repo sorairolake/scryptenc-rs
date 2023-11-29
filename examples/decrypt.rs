@@ -12,43 +12,46 @@
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
 #[cfg(feature = "std")]
-use anyhow::Context;
-#[cfg(feature = "std")]
-use clap::Parser;
-
-#[cfg(feature = "std")]
-#[derive(Debug, Parser)]
+#[derive(Debug, clap::Parser)]
 #[command(version, about)]
 struct Opt {
-    /// File to decrypt.
-    #[arg(value_name("INFILE"))]
+    /// Input file.
+    #[arg(value_name("FILE"))]
     input: std::path::PathBuf,
-
-    /// File to write the result to.
-    #[arg(value_name("OUTFILE"))]
-    output: std::path::PathBuf,
 }
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
+    use std::{
+        fs,
+        io::{self, Write},
+    };
+
+    use anyhow::Context;
+    use clap::Parser;
+    use dialoguer::{theme::ColorfulTheme, Password};
+    use scryptenc::{Decryptor, Error};
+
     let opt = Opt::parse();
 
-    let ciphertext = std::fs::read(&opt.input)
+    let ciphertext = fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let passphrase = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
+    let passphrase = Password::with_theme(&ColorfulTheme::default())
         .with_prompt("Enter passphrase")
         .interact()
         .context("could not read passphrase")?;
-    let cipher = match scryptenc::Decryptor::new(&ciphertext, passphrase) {
-        c @ Err(scryptenc::Error::InvalidHeaderMac(_)) => c.context("passphrase is incorrect"),
-        c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
+    let cipher = match Decryptor::new(&ciphertext, passphrase) {
+        c @ Err(Error::InvalidHeaderMac(_)) => c.context("passphrase is incorrect"),
+        c => c.context("the header in the encrypted data is invalid"),
     }?;
     let plaintext = cipher
         .decrypt_to_vec()
-        .with_context(|| format!("{} is corrupted", opt.input.display()))?;
-    std::fs::write(opt.output, plaintext)
-        .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
+        .context("the encrypted data is corrupted")?;
+
+    io::stdout()
+        .write_all(&plaintext)
+        .context("could not write data to stdout")?;
     Ok(())
 }
 
