@@ -15,6 +15,10 @@
 #[derive(Debug, clap::Parser)]
 #[command(version, about)]
 struct Opt {
+    /// Output the result to a file.
+    #[arg(short, long, value_name("FILE"))]
+    output: Option<std::path::PathBuf>,
+
     /// Set the work parameter N to 2^<VALUE>.
     #[arg(long, default_value("17"), value_name("VALUE"))]
     log_n: u8,
@@ -28,15 +32,17 @@ struct Opt {
     p: u32,
 
     /// Input file.
+    ///
+    /// If [FILE] is not specified, data will be read from stdin.
     #[arg(value_name("FILE"))]
-    input: std::path::PathBuf,
+    input: Option<std::path::PathBuf>,
 }
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
     use std::{
         fs,
-        io::{self, Write},
+        io::{self, Read, Write},
     };
 
     use anyhow::Context;
@@ -46,8 +52,15 @@ fn main() -> anyhow::Result<()> {
 
     let opt = Opt::parse();
 
-    let plaintext = fs::read(&opt.input)
-        .with_context(|| format!("could not read data from {}", opt.input.display()))?;
+    let plaintext = if let Some(file) = opt.input {
+        fs::read(&file).with_context(|| format!("could not read data from {}", file.display()))
+    } else {
+        let mut buf = Vec::new();
+        io::stdin()
+            .read_to_end(&mut buf)
+            .context("could not read data from stdin")?;
+        Ok(buf)
+    }?;
 
     let passphrase = Password::with_theme(&ColorfulTheme::default())
         .with_prompt("Enter passphrase")
@@ -57,10 +70,14 @@ fn main() -> anyhow::Result<()> {
     let params = Params::new(opt.log_n, opt.r, opt.p, Params::RECOMMENDED_LEN)?;
     let ciphertext = scryptenc::encrypt_with_params(plaintext, passphrase, params);
 
-    io::stdout()
-        .write_all(&ciphertext)
-        .context("could not write data to stdout")?;
-    Ok(())
+    if let Some(file) = opt.output {
+        fs::write(&file, ciphertext)
+            .with_context(|| format!("could not write data to {}", file.display()))
+    } else {
+        io::stdout()
+            .write_all(&ciphertext)
+            .context("could not write data to stdout")
+    }
 }
 
 #[cfg(not(feature = "std"))]

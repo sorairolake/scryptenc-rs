@@ -4,7 +4,7 @@
 
 [package]
 name = "scryptenc"
-version = "0.8.5"
+version = "0.8.6"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
 rust-version = "1.70.0"
@@ -15,17 +15,7 @@ repository = "https://github.com/sorairolake/scryptenc-rs"
 license = "Apache-2.0 OR MIT"
 keywords = ["crypto", "scrypt"]
 categories = ["cryptography", "no-std"]
-exclude = [
-  "/.bumpversion.cfg",
-  "/.bumpversion.cfg.license",
-  "/.github",
-  "/benches",
-  "/clippy.toml",
-  "/examples",
-  "/justfile",
-  "/rustfmt.toml",
-  "/tests",
-]
+include = ["/LICENSES", "/README.md", "/src"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -40,7 +30,7 @@ sha2 = { version = "0.10.8", default-features = false }
 
 [dev-dependencies]
 anyhow = "1.0.75"
-clap = { version = "4.4.10", features = ["derive"] }
+clap = { version = "4.4.11", features = ["derive"] }
 dialoguer = { version = "0.11.0", default-features = false, features = ["password"] }
 serde_json = "1.0.108"
 serde_test = "1.0.176"
