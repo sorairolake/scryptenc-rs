@@ -32,7 +32,7 @@ sha2 = { version = "0.10.8", default-features = false }
 anyhow = "1.0.79"
 clap = { version = "4.4.12", features = ["derive"] }
 dialoguer = { version = "0.11.0", default-features = false, features = ["password"] }
-serde_json = "1.0.109"
+serde_json = "1.0.110"
 serde_test = "1.0.176"
 
 [features]
