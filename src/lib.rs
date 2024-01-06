@@ -114,18 +114,17 @@ use hmac::{
 };
 use sha2::Sha256;
 
+#[cfg(feature = "alloc")]
+pub use crate::{
+    decrypt::decrypt,
+    encrypt::{encrypt, encrypt_with_params},
+};
 pub use crate::{
     decrypt::Decryptor,
     encrypt::Encryptor,
     error::{Error, Result},
     format::{HEADER_SIZE, TAG_SIZE},
     params::Params,
-};
-
-#[cfg(feature = "alloc")]
-pub use crate::{
-    decrypt::decrypt,
-    encrypt::{encrypt, encrypt_with_params},
 };
 
 /// A type alias for AES-256-CTR.
