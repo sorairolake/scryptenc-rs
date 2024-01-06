@@ -121,7 +121,6 @@ pub use crate::{
     format::{HEADER_SIZE, TAG_SIZE},
     params::Params,
 };
-
 #[cfg(feature = "alloc")]
 pub use crate::{
     decrypt::decrypt,
