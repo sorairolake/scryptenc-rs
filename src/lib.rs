@@ -81,7 +81,7 @@
 //!
 //! [here]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.8.6/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.8.7/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
@@ -114,18 +114,17 @@ use hmac::{
 };
 use sha2::Sha256;
 
+#[cfg(feature = "alloc")]
+pub use crate::{
+    decrypt::decrypt,
+    encrypt::{encrypt, encrypt_with_params},
+};
 pub use crate::{
     decrypt::Decryptor,
     encrypt::Encryptor,
     error::{Error, Result},
     format::{HEADER_SIZE, TAG_SIZE},
     params::Params,
-};
-
-#[cfg(feature = "alloc")]
-pub use crate::{
-    decrypt::decrypt,
-    encrypt::{encrypt, encrypt_with_params},
 };
 
 /// A type alias for AES-256-CTR.
