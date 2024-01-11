@@ -54,9 +54,10 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {
     #[inline]
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::InvalidHeaderMac(err) | Self::InvalidMac(err) => Some(err),
-            _ => None,
+        if let Self::InvalidHeaderMac(err) | Self::InvalidMac(err) = self {
+            Some(err)
+        } else {
+            None
         }
     }
 }
