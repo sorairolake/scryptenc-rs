@@ -54,10 +54,10 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {
     #[inline]
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        if let Self::InvalidHeaderMac(err) | Self::InvalidMac(err) = self {
-            Some(err)
-        } else {
-            None
+        match self {
+            Self::InvalidParams(err) => Some(err),
+            Self::InvalidHeaderMac(err) | Self::InvalidMac(err) => Some(err),
+            _ => None,
         }
     }
 }
@@ -325,7 +325,10 @@ mod tests {
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
-        assert!(Error::InvalidParams(InvalidParams).source().is_none());
+        assert!(Error::InvalidParams(InvalidParams)
+            .source()
+            .unwrap()
+            .is::<InvalidParams>());
         assert!(Error::InvalidChecksum.source().is_none());
         assert!(Error::InvalidHeaderMac(MacError)
             .source()
