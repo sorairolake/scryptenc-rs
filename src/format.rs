@@ -138,7 +138,7 @@ impl Header {
         );
         let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
             .map(Params::from)
-            .map_err(Error::from)?;
+            .map_err(Error::InvalidParams)?;
         let salt = data[16..48]
             .try_into()
             .expect("size of salt should be 32 bytes");
