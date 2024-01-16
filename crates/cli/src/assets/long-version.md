@@ -6,4 +6,4 @@ v3.0 or later.
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
 
-Report bugs to <https://github.com/sorairolake/rscrypt/issues>.
+Report bugs to <https://github.com/sorairolake/scryptenc-rs/issues>.

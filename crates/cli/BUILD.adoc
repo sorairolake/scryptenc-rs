@@ -17,8 +17,8 @@
 .To clone the repository
 [source,shell]
 ----
-git clone https://github.com/sorairolake/rscrypt.git
-cd rscrypt
+git clone https://github.com/sorairolake/scryptenc-rs.git
+cd scryptenc-rs
 ----
 
 .To build a package

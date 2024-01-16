@@ -6,4 +6,4 @@
 
 Report bugs to:{blank}::
 
-  https://github.com/sorairolake/rscrypt/issues
+  https://github.com/sorairolake/scryptenc-rs/issues

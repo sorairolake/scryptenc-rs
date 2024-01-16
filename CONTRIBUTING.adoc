@@ -27,7 +27,9 @@ Please see the {commit-messages-guide-url}[Commit messages guide].
   https://reuse.software/spec/[_REUSE Specification_].
   https://github.com/fsfe/reuse-tool[`reuse`] is useful for updating the
   copyright information.
-. Please update the link:CHANGELOG.adoc[Changelog] if possible.
+. Please update the following applicable Changelog if possible.
+.. link:crates/scryptenc/CHANGELOG.adoc[].
+.. link:crates/cli/CHANGELOG.adoc[].
 . Please read and agree to follow the link:CODE_OF_CONDUCT.md[Code of Conduct].
 
 == Development
