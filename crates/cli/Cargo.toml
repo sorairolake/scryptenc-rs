@@ -5,13 +5,13 @@
 [package]
 name = "scryptenc-cli"
 version = "0.7.7"
-authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
-edition = "2021"
-rust-version = "1.70.0"
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
 description = "An utility for encrypt and decrypt files"
 readme = "README.md"
-homepage = "https://sorairolake.github.io/rscrypt/"
-repository = "https://github.com/sorairolake/rscrypt"
+homepage.workspace = true
+repository.workspace = true
 license = "GPL-3.0-or-later"
 keywords = ["scrypt"]
 categories = ["command-line-utilities"]
@@ -24,16 +24,16 @@ name = "rscrypt"
 path = "src/main.rs"
 
 [dependencies]
-anyhow = "1.0.79"
+anyhow.workspace = true
 byte-unit = "5.1.3"
-clap = { version = "4.4.17", features = ["derive", "wrap_help"] }
+clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.4.6"
 clap_complete_nushell = "4.4.2"
-dialoguer = { version = "0.11.0", default-features = false, features = ["password"] }
+dialoguer.workspace = true
 fraction = { version = "0.15.0", default-features = false }
 humantime = "2.1.0"
 once_cell = "1.19.0"
-scryptenc = "0.8.7"
+scryptenc = { version = "0.8.7", path = "../scryptenc" }
 serde = { version = "1.0.195", features = ["derive"], optional = true }
 serde_json = { version = "1.0.111", optional = true }
 sysexits = "0.7.10"
@@ -47,9 +47,3 @@ predicates = "3.0.4"
 [features]
 default = ["json"]
 json = ["dep:serde", "dep:serde_json"]
-
-[profile.release]
-codegen-units = 1
-lto = true
-panic = "abort"
-strip = true
