@@ -35,11 +35,15 @@ body:
     validations:
       required: true
 
-  - type: input
+  - type: textarea
     attributes:
       label: scryptenc-rs version
-      description: Can be found in `Cargo.toml` of your project.
-      placeholder: 0.1.0
+      description: |
+        The versions of crates where it happens. This can be found in `Cargo.toml` of
+        your project or in the output of `rscrypt -V`.
+      placeholder: |
+        - `scryptenc`: 0.1.0
+        - `scryptenc-cli`: 0.1.0
     validations:
       required: true
 

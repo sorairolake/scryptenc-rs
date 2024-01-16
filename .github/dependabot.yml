@@ -8,9 +8,15 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    open-pull-requests-limit: 15
+    open-pull-requests-limit: 30
 
   - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 15
+
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
