@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2023 Shun Sakai
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+name: book
+title: rscrypt
+version: ~
+nav:
+  - modules/ROOT/nav.adoc

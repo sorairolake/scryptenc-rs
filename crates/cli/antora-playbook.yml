@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2023 Shun Sakai
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+site:
+  title: rscrypt Documentation
+  url: https://sorairolake.github.io/rscrypt/
+  start_page: book::index.adoc
+
+content:
+  sources:
+    - url: .
+      start_path: docs/book
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+
+runtime:
+  log:
+    failure_level: warn
