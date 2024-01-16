@@ -25,6 +25,7 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 * Change the error message when decryption fails
   ({old-pull-request-url}/408[sorairolake/rscrypt#408])
+* Merge into repository of `scryptenc` crate ({pull-request-url}/115[#115])
 
 == {old-compare-url}/v0.7.6\...v0.7.7[0.7.7] - 2024-01-07
 

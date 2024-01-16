@@ -20,6 +20,7 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 * Change `Error::source` to return `Some` when the error is
   `Error::InvalidParams` ({pull-request-url}/110[#110])
+* Merge `scryptenc-cli` crate ({pull-request-url}/115[#115])
 
 === Removed
 
