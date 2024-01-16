@@ -1,17 +1,17 @@
 {
   "private": true,
-  "name": "rscrypt",
+  "name": "scryptenc-rs",
   "version": "1.0.0",
   "description": "An utility for encrypt and decrypt files",
   "license": "CC-BY-4.0",
   "author": "Shun Sakai <sorairolake@protonmail.ch>",
-  "homepage": "https://github.com/sorairolake/rscrypt#readme",
+  "homepage": "https://github.com/sorairolake/scryptenc-rs#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sorairolake/rscrypt.git"
+    "url": "git+https://github.com/sorairolake/scryptenc-rs.git"
   },
   "bugs": {
-    "url": "https://github.com/sorairolake/rscrypt/issues"
+    "url": "https://github.com/sorairolake/scryptenc-rs/issues"
   },
   "devDependencies": {
     "@antora/cli": "^3.1.7",
