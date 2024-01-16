@@ -8,17 +8,17 @@ alias lint := clippy
 # Run default recipe
 default: build
 
-# Build a package
+# Build packages
 @build:
-    cargo build
+    cargo build --workspace
 
 # Remove generated artifacts
 @clean:
     cargo clean
 
-# Check a package
+# Check packages
 @check:
-    cargo check
+    cargo check --workspace
 
 # Run tests
 @test:
@@ -26,19 +26,19 @@ default: build
 
 # Run the formatter
 @fmt:
-    cargo fmt
+    cargo fmt --all
 
 # Run the formatter with options
 @fmt-with-options:
-    cargo fmt -- --config "format_code_in_doc_comments=true,wrap_comments=true"
+    cargo fmt --all -- --config "format_code_in_doc_comments=true,wrap_comments=true"
 
 # Run the linter
 @clippy:
-    cargo clippy -- -D warnings
+    cargo clippy --workspace -- -D warnings
 
 # Apply lint suggestions
 @clippy-fix:
-    cargo clippy --fix --allow-dirty --allow-staged --lib --tests --examples -- -D warnings
+    cargo clippy --workspace --fix --allow-dirty --allow-staged --lib --tests --examples -- -D warnings
 
 # Run the linter for GitHub Actions workflow files
 @lint-github-actions:
@@ -46,9 +46,17 @@ default: build
 
 # Run the formatter for the README
 @fmt-readme:
-    npx prettier -w README.md
+    npx prettier -w crates/*/README.md
 
-# Increment the version
-@bump part:
-    bump-my-version bump {{part}}
-    cargo set-version --bump {{part}}
+# Build the book
+@build-book:
+    npx antora antora-playbook.yml
+
+# Increment the version of the library
+@bump-lib part:
+    bump-my-version bump --config-file .bumpversion-lib.toml {{part}}
+    cargo set-version --bump {{part}} -p scryptenc
+
+# Increment the version of the command-line utility
+@bump-cli part:
+    cargo set-version --bump {{part}} -p scryptenc-cli

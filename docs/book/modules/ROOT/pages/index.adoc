@@ -1,0 +1,36 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= scryptenc-rs
+:project-url: https://github.com/sorairolake/scryptenc-rs
+:shields-url: https://img.shields.io
+:crates-io-url: https://crates.io
+:crates-io-crates: {crates-io-url}/crates
+:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
+:ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
+:scryptenc-badge: {shields-url}/crates/v/scryptenc?style=for-the-badge
+:scryptenc-crates-io: {crates-io-crates}/scryptenc
+:scryptenc-cli-badge: {shields-url}/crates/v/scryptenc-cli?style=for-the-badge
+:scryptenc-cli-crates-io: {crates-io-crates}/scryptenc-cli
+
+image:{ci-badge}[CI,link={ci-url}]
+
+*scryptenc-rs* is a file encryption tool and Rust library which implements the
+scrypt encrypted data format.
+
+image::screenshot.webp[Screenshot of rscrypt]
+
+== Crates
+
+|===
+|Name |Version |Description
+
+|xref:lib:index.adoc[`scryptenc`]
+|image:{scryptenc-badge}[Version,link={scryptenc-crates-io}]
+|An implementation of the scrypt encrypted data format.
+
+|xref:cli:index.adoc[`scryptenc-cli`]
+|image:{scryptenc-cli-badge}[Version,link={scryptenc-cli-crates-io}]
+|File encryption tool using the scrypt encrypted data format.
+|===

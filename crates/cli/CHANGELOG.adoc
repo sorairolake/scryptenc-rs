@@ -1,0 +1,265 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+= Changelog
+:toc: preamble
+:github-url: https://github.com
+:project-url: {github-url}/sorairolake/scryptenc-rs
+:compare-url: {project-url}/compare
+:issue-url: {project-url}/issues
+:pull-request-url: {project-url}/pull
+:old-project-url: {github-url}/sorairolake/rscrypt
+:old-compare-url: {old-project-url}/compare
+:old-issue-url: {old-project-url}/issues
+:old-pull-request-url: {old-project-url}/pull
+
+All notable changes to this project will be documented in this file.
+
+The format is based on https://keepachangelog.com/[Keep a Changelog], and this
+project adheres to https://semver.org/[Semantic Versioning].
+
+== {project-url}[Unreleased]
+
+=== Changed
+
+* Change the error message when decryption fails
+  ({old-pull-request-url}/408[sorairolake/rscrypt#408])
+* Merge into repository of `scryptenc` crate ({pull-request-url}/115[#115])
+
+== {old-compare-url}/v0.7.6\...v0.7.7[0.7.7] - 2024-01-07
+
+=== Changed
+
+* Reduce the target architecture and the archive format for pre-built binaries
+  ({old-pull-request-url}/386[sorairolake/rscrypt#386])
+
+== {old-compare-url}/v0.7.5\...v0.7.6[0.7.6] - 2023-12-22
+
+=== Changed
+
+* Update screenshot ({old-pull-request-url}/370[sorairolake/rscrypt#370])
+
+== {old-compare-url}/v0.7.4\...v0.7.5[0.7.5] - 2023-12-20
+
+=== Changed
+
+* Replace demo video with screenshot
+  ({old-pull-request-url}/365[sorairolake/rscrypt#365])
+
+== {old-compare-url}/v0.7.3\...v0.7.4[0.7.4] - 2023-12-07
+
+=== Changed
+
+* Update documentation ({old-pull-request-url}/350[sorairolake/rscrypt#350])
+
+== {old-compare-url}/v0.7.2\...v0.7.3[0.7.3] - 2023-12-05
+
+=== Changed
+
+* Change `--help` and `--version` to print additional information
+  ({old-pull-request-url}/346[sorairolake/rscrypt#346])
+* Change precision of resource limits when printing
+  ({old-pull-request-url}/348[sorairolake/rscrypt#348])
+
+== {old-compare-url}/v0.7.1\...v0.7.2[0.7.2] - 2023-12-03
+
+=== Changed
+
+* Change settings for the release profile
+  ({old-pull-request-url}/344[sorairolake/rscrypt#344])
+
+== {old-compare-url}/v0.7.0\...v0.7.1[0.7.1] - 2023-11-29
+
+=== Changed
+
+* Update dependencies
+
+== {old-compare-url}/v0.6.3\...v0.7.0[0.7.0] - 2023-11-04
+
+=== Added
+
+* Add Code of Conduct ({old-pull-request-url}/303[sorairolake/rscrypt#303])
+
+=== Changed
+
+* Reduce the output format of the encryption parameters to JSON only
+  ({old-pull-request-url}/315[sorairolake/rscrypt#315])
+
+== {old-compare-url}/v0.6.2\...v0.6.3[0.6.3] - 2023-10-03
+
+=== Removed
+
+* Remove version from the book
+  ({old-pull-request-url}/287[sorairolake/rscrypt#287])
+
+== {old-compare-url}/v0.6.1\...v0.6.2[0.6.2] - 2023-09-30
+
+=== Added
+
+* Add the usage to the book
+  ({old-pull-request-url}/265[sorairolake/rscrypt#265])
+
+== {old-compare-url}/v0.6.0\...v0.6.1[0.6.1] - 2023-09-12
+
+=== Changed
+
+* Rewrite the book with Antora
+  ({old-pull-request-url}/262[sorairolake/rscrypt#262])
+
+== {old-compare-url}/v0.5.10\...v0.6.0[0.6.0] - 2023-09-07
+
+=== Changed
+
+* Bump MSRV to 1.70.0 ({old-pull-request-url}/248[sorairolake/rscrypt#248])
+
+== {old-compare-url}/v0.5.9\...v0.5.10[0.5.10] - 2023-09-03
+
+=== Changed
+
+* Update dependencies
+
+== {old-compare-url}/v0.5.8\...v0.5.9[0.5.9] - 2023-08-18
+
+=== Changed
+
+* Change `SPDX-FileCopyrightText` of each file to include only the year of
+  initial publication ({old-pull-request-url}/218[sorairolake/rscrypt#218])
+* Remove unnecessary newline after period
+  ({old-pull-request-url}/219[sorairolake/rscrypt#219])
+
+== {old-compare-url}/v0.5.7\...v0.5.8[0.5.8] - 2023-08-11
+
+=== Changed
+
+* Make the display of information about the encryption parameters similar to
+  the reference implementation
+  ({old-pull-request-url}/213[sorairolake/rscrypt#213])
+
+== {old-compare-url}/v0.5.6\...v0.5.7[0.5.7] - 2023-08-09
+
+=== Changed
+
+* Rename value of `--max-memory` option
+  ({old-pull-request-url}/199[sorairolake/rscrypt#199])
+* Use LZMA instead of LZMA2 in 7z format for pre-built binary
+  ({old-pull-request-url}/200[sorairolake/rscrypt#200])
+
+== {old-compare-url}/v0.5.5\...v0.5.6[0.5.6] - 2023-08-03
+
+=== Changed
+
+* Change the comment header to the format recommended by the REUSE
+  Specification ({old-pull-request-url}/180[sorairolake/rscrypt#180])
+* Make this project REUSE compliant
+  ({old-pull-request-url}/181[sorairolake/rscrypt#181])
+
+== {old-compare-url}/v0.5.4\...v0.5.5[0.5.5] - 2023-07-21
+
+=== Added
+
+* Add `homepage` field to `Cargo.toml`
+
+== {old-compare-url}/v0.5.3\...v0.5.4[0.5.4] - 2023-07-18
+
+=== Changed
+
+* Change license for `demo.gif`
+
+=== Fixed
+
+* Fix broken include directives
+  ({old-pull-request-url}/174[sorairolake/rscrypt#174])
+
+== {old-compare-url}/v0.5.2\...v0.5.3[0.5.3] - 2023-07-17
+
+=== Added
+
+* Add feature to generate Nushell completions
+  ({old-pull-request-url}/161[sorairolake/rscrypt#161])
+* Add man page for `help` subcommand
+
+== {old-compare-url}/v0.5.1\...v0.5.2[0.5.2] - 2023-07-12
+
+=== Changed
+
+* Change license of documents to CC BY 4.0
+  ({old-pull-request-url}/158[sorairolake/rscrypt#158])
+
+== {old-compare-url}/v0.5.0\...v0.5.1[0.5.1] - 2023-06-12
+
+=== Changed
+
+* Update dependencies
+
+== {old-compare-url}/v0.4.2\...v0.5.0[0.5.0] - 2023-05-16
+
+=== Changed
+
+* Update dependencies
+* Bump MSRV to 1.65.0
+
+== {old-compare-url}/v0.4.1\...v0.4.2[0.4.2] - 2023-04-02
+
+=== Fixed
+
+* Fix the exit code when EOF signature is mismatched
+
+== {old-compare-url}/v0.4.0\...v0.4.1[0.4.1] - 2023-01-30
+
+=== Fixed
+
+* Fix missing the `lang` attribute in the book
+
+== {old-compare-url}/v0.3.0\...v0.4.0[0.4.0] - 2023-01-28
+
+=== Changed
+
+* Bump sysexits to v0.4
+* Bump MSRV to 1.64.0
+
+== {old-compare-url}/v0.2.0\...v0.3.0[0.3.0] - 2022-12-18
+
+=== Added
+
+* Add MessagePack to output format
+
+=== Changed
+
+* Change the minimum value of `--max-memory` to 1 MiB
+* Change value of `--max-time` to be human-friendly
+
+=== Fixed
+
+* Fix create a package for Windows in CD
+
+== {old-compare-url}/v0.1.1\...v0.2.0[0.2.0] - 2022-12-10
+
+=== Added
+
+* Add options related to resources
+* Add option to output the encryption parameters as data exchange formats
+
+=== Changed
+
+* Change to allow empty password
+
+=== Fixed
+
+* Fix to remove trailing newline from password
+
+== {old-compare-url}/v0.1.0\...v0.1.1[0.1.1] - 2022-11-24
+
+=== Changed
+
+* Move common code into functions
+
+=== Fixed
+
+* Change to not read both passphrase and input data from stdin at the same time
+
+== {old-project-url}/releases/tag/v0.1.0[0.1.0] - 2022-11-18
+
+=== Added
+
+* Initial release
