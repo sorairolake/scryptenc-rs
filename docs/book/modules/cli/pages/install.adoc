@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 = Installation
-:release-page-url: https://github.com/sorairolake/rscrypt/releases
+:release-page-url: https://github.com/sorairolake/scryptenc-rs/releases
 
 == From source
 

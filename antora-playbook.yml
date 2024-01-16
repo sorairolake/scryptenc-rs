@@ -1,10 +1,10 @@
 # SPDX-FileCopyrightText: 2023 Shun Sakai
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 
 site:
-  title: rscrypt Documentation
-  url: https://sorairolake.github.io/rscrypt/
+  title: scryptenc-rs Documentation
+  url: https://sorairolake.github.io/scryptenc-rs/
   start_page: book::index.adoc
 
 content:

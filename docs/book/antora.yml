@@ -1,9 +1,11 @@
 # SPDX-FileCopyrightText: 2023 Shun Sakai
 #
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 
 name: book
-title: rscrypt
+title: scryptenc-rs
 version: ~
 nav:
+  - modules/lib/nav.adoc
+  - modules/cli/nav.adoc
   - modules/ROOT/nav.adoc

@@ -1,0 +1,1 @@
+../../../../../crates/scryptenc/CHANGELOG.adoc
