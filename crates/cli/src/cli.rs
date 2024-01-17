@@ -21,17 +21,27 @@ use fraction::{Fraction, Zero};
 
 const LONG_VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
-    "\n",
-    include_str!("assets/long-version.md")
+    "
+Copyright (C) 2022-2024 Shun Sakai
+
+This program is distributed under the terms of the GNU General Public License
+v3.0 or later.
+
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+
+Report bugs to <https://github.com/sorairolake/scryptenc-rs/issues>."
 );
 
-const AFTER_LONG_HELP: &str = include_str!("assets/after-long-help.md");
+const AFTER_LONG_HELP: &str = "See `rscrypt(1)` for more details.";
 
-const ENC_AFTER_LONG_HELP: &str = include_str!("assets/enc-after-long-help.md");
+const ENC_AFTER_LONG_HELP: &str = "See `rscrypt-enc(1)` for more details.";
 
-const DEC_AFTER_LONG_HELP: &str = include_str!("assets/dec-after-long-help.md");
+const DEC_AFTER_LONG_HELP: &str = "See `rscrypt-dec(1)` for more details.";
 
-const INFO_AFTER_LONG_HELP: &str = include_str!("assets/info-after-long-help.md");
+const INFO_AFTER_LONG_HELP: &str = "The result will be write to stdout.
+
+See `rscrypt-info(1)` for more details.";
 
 #[derive(Debug, Parser)]
 #[command(

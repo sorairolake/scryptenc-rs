@@ -51,7 +51,7 @@ fn long_version() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -62,7 +62,7 @@ fn after_long_help() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/after-long-help.md"
+            "assets/after-long-help.md"
         )));
 }
 
@@ -486,7 +486,7 @@ fn long_version_for_encrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -498,7 +498,7 @@ fn after_long_help_for_encrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/enc-after-long-help.md"
+            "assets/enc-after-long-help.md"
         )));
 }
 
@@ -749,7 +749,7 @@ fn long_version_for_decrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -761,7 +761,7 @@ fn after_long_help_for_decrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/dec-after-long-help.md"
+            "assets/dec-after-long-help.md"
         )));
 }
 
@@ -810,7 +810,7 @@ fn long_version_for_information_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -822,6 +822,6 @@ fn after_long_help_for_information_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/info-after-long-help.md"
+            "assets/info-after-long-help.md"
         )));
 }
