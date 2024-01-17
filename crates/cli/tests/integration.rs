@@ -27,21 +27,30 @@ fn generate_completion_conflicts_with_subcommands() {
         .arg("enc")
         .assert()
         .failure()
-        .code(2);
+        .code(2)
+        .stderr(predicate::str::contains(
+            "the subcommand 'enc' cannot be used with '--generate-completion <SHELL>'",
+        ));
     command()
         .arg("--generate-completion")
         .arg("bash")
         .arg("dec")
         .assert()
         .failure()
-        .code(2);
+        .code(2)
+        .stderr(predicate::str::contains(
+            "the subcommand 'dec' cannot be used with '--generate-completion <SHELL>'",
+        ));
     command()
         .arg("--generate-completion")
         .arg("bash")
         .arg("info")
         .assert()
         .failure()
-        .code(2);
+        .code(2)
+        .stderr(predicate::str::contains(
+            "the subcommand 'info' cannot be used with '--generate-completion <SHELL>'",
+        ));
 }
 
 #[test]
