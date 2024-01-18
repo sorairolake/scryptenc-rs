@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>rscrypt-info(1) :: scryptenc-rs Documentation</title>
+    <link rel="canonical" href="https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-info.1.html">
+    <meta name="generator" content="Antora 3.1.7">
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://sorairolake.github.io/scryptenc-rs">scryptenc-rs Documentation</a>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="book" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../../../index.html">scryptenc-rs</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Library</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../lib/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../lib/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../lib/examples.html">Examples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://docs.rs/scryptenc">API Reference</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../lib/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Command-line Utility</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../build.html">How to Build</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <span class="nav-text">Manual pages</span>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="rscrypt.1.html"><code>rscrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="rscrypt-enc.1.html"><code>rscrypt-enc(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="rscrypt-dec.1.html"><code>rscrypt-dec(1)</code></a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="rscrypt-info.1.html"><code>rscrypt-info(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="rscrypt-help.1.html"><code>rscrypt-help(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Resources</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../contributing.html">Contribution Guide</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../authors.html">List of Authors</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">scryptenc-rs</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../../../index.html">scryptenc-rs</a>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../../index.html">scryptenc-rs</a></li>
+    <li>Command-line Utility</li>
+    <li><a href="rscrypt-info.1.html"><code>rscrypt-info(1)</code></a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/sorairolake/scryptenc-rs/edit/HEAD/docs/book/modules/cli/pages/man/man1/rscrypt-info.1.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">rscrypt-info(1)</h1>
+<h2 id="_name">NAME</h2>
+<div class="sectionbody">
+<p>rscrypt-info - provides information about the encryption parameters</p>
+</div>
+<div class="sect1">
+<h2 id="_synopsis"><a class="anchor" href="#_synopsis"></a>SYNOPSIS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>rscrypt info</strong> [<em>OPTION</em>]&#8230;&#8203; <em>FILE</em></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>DESCRIPTION</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This command provides information about the encryption parameters. The result
+will be write to stdout.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_positional_arguments"><a class="anchor" href="#_positional_arguments"></a>POSITIONAL ARGUMENTS</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><em>FILE</em></dt>
+<dd>
+<p>Input file. If "-" is specified, data will be read from stdin.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_options"><a class="anchor" href="#_options"></a>OPTIONS</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>-j</strong>, <strong>--json</strong></dt>
+<dd>
+<p>Output the encryption parameters as JSON.</p>
+</dd>
+<dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Print help information.</p>
+</dd>
+<dt class="hdlist1"><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version information.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exit_status"><a class="anchor" href="#_exit_status"></a>EXIT STATUS</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>0</strong></dt>
+<dd>
+<p>Successful program execution.</p>
+</dd>
+<dt class="hdlist1"><strong>1</strong></dt>
+<dd>
+<p>An error occurred.</p>
+</dd>
+<dt class="hdlist1"><strong>2</strong></dt>
+<dd>
+<p>An error occurred while parsing command-line arguments.</p>
+</dd>
+<dt class="hdlist1"><strong>7</strong></dt>
+<dd>
+<p>Data was not a valid scrypt-encrypted block.</p>
+</dd>
+<dt class="hdlist1"><strong>8</strong></dt>
+<dd>
+<p>The version was the unrecognized scrypt version number.</p>
+</dd>
+<dt class="hdlist1"><strong>9</strong></dt>
+<dd>
+<p>Decrypting files takes too much memory.</p>
+</dd>
+<dt class="hdlist1"><strong>10</strong></dt>
+<dd>
+<p>Decrypting files takes too much CPU time.</p>
+</dd>
+<dt class="hdlist1"><strong>11</strong></dt>
+<dd>
+<p>Passphrase is incorrect.</p>
+</dd>
+<dt class="hdlist1"><strong>14</strong></dt>
+<dd>
+<p>The scrypt parameters were invalid.</p>
+</dd>
+<dt class="hdlist1"><strong>15</strong></dt>
+<dd>
+<p>Decrypting files takes too much resources.</p>
+</dd>
+<dt class="hdlist1"><strong>66</strong></dt>
+<dd>
+<p>An input file did not exist or was not readable.</p>
+</dd>
+<dt class="hdlist1"><strong>77</strong></dt>
+<dd>
+<p>You did not have sufficient permission to perform the operation.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_notes"><a class="anchor" href="#_notes"></a>NOTES</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Source repository:</dt>
+<dd>
+<p><a href="https://github.com/sorairolake/scryptenc-rs" class="bare">https://github.com/sorairolake/scryptenc-rs</a></p>
+</dd>
+<dt class="hdlist1">The scrypt key derivation function and encryption utility:</dt>
+<dd>
+<p><a href="https://www.tarsnap.com/scrypt.html" class="bare">https://www.tarsnap.com/scrypt.html</a></p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reporting_bugs"><a class="anchor" href="#_reporting_bugs"></a>REPORTING BUGS</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Report bugs to:</dt>
+<dd>
+<p><a href="https://github.com/sorairolake/scryptenc-rs/issues" class="bare">https://github.com/sorairolake/scryptenc-rs/issues</a></p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copyright"><a class="anchor" href="#_copyright"></a>COPYRIGHT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copyright &#169; 2022-2024 Shun Sakai</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>This program is distributed under the terms of the GNU General Public License
+v3.0 or later.</p>
+</li>
+<li>
+<p>This manual page is distributed under the terms of the Creative Commons
+Attribution 4.0 International Public License.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_see_also"><a class="anchor" href="#_see_also"></a>SEE ALSO</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>rscrypt</strong>(1), <strong>rscrypt-dec</strong>(1), <strong>rscrypt-enc</strong>(1), <strong>rscrypt-help</strong>(1), <strong>scrypt</strong>(1)</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../../_/js/site.js" data-ui-root-path="../../../../_"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
