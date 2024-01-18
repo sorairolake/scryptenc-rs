@@ -1,0 +1,67 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Usage
+
+== Basic usage
+
+.Encrypt a file
+[source,shell]
+----
+rscrypt enc data.txt data.txt.scrypt
+----
+
+.Decrypt a file
+[source,shell]
+----
+rscrypt dec data.txt.scrypt data.txt
+----
+
+== Provides information about the encryption parameters
+
+.Output as a human-readable string
+[source,shell]
+----
+rscrypt info data.txt.scrypt
+----
+
+.Output
+....
+Parameters used: N = 1024; r = 8; p = 1;
+    Decrypting this file requires at least 1 MiB of memory.
+....
+
+.Output as JSON
+[source,shell]
+----
+rscrypt info -j data.txt.scrypt | jq
+----
+
+.Output
+[source,json]
+----
+{
+  "N": 1024,
+  "r": 8,
+  "p": 1
+}
+----
+
+== Generate shell completion
+
+`--generate-completion` option generates shell completions to stdout.
+
+.The following shells are supported
+* `bash`
+* `elvish`
+* `fish`
+* `nushell`
+* `powershell`
+* `zsh`
+
+.Example
+[source,shell]
+----
+rscrypt --generate-completion bash > rscrypt.bash
+----

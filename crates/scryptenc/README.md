@@ -22,7 +22,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.8.7"
+scryptenc = "0.9.0"
 ```
 
 ### Example
@@ -101,6 +101,6 @@ licensing information.
 [license-badge]: https://img.shields.io/crates/l/scryptenc?style=for-the-badge
 [here]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 [CHANGELOG.adoc]: CHANGELOG.adoc
-[CONTRIBUTING.adoc]: CONTRIBUTING.adoc
-[AUTHORS.adoc]: AUTHORS.adoc
+[CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
+[AUTHORS.adoc]: ../../AUTHORS.adoc
 [_REUSE Specification_]: https://reuse.software/spec/

@@ -1,0 +1,32 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Usage
+
+.Add this to your `Cargo.toml`
+[source,toml]
+----
+[dependencies]
+scryptenc = "0.9.0"
+----
+
+== Crate features
+
+`alloc`::
+
+  Enables features that require an allocator. This is enabled by default
+  (implied by `std`).
+
+`std`::
+
+  Enables features that depend on the standard library. This is enabled by
+  default.
+
+`serde`::
+
+  Enables serialization support for `Params`.
+
+== `no_std` support
+
+This supports `no_std` mode. Disables the `default` feature to enable this.

@@ -1,0 +1,58 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= rscrypt-info(1)
+// Specify in UTC.
+:docdate: 2023-12-04
+:doctype: manpage
+ifdef::revnumber[:mansource: rscrypt {revnumber}]
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+rscrypt-info - provides information about the encryption parameters
+
+== SYNOPSIS
+
+*rscrypt info* [_OPTION_]... _FILE_
+
+== DESCRIPTION
+
+This command provides information about the encryption parameters. The result
+will be write to stdout.
+
+== POSITIONAL ARGUMENTS
+
+_FILE_::
+
+  Input file. If "-" is specified, data will be read from stdin.
+
+== OPTIONS
+
+ifdef::json,env-github,site-gen-antora[]
+*-j*, *--json*::
+
+  Output the encryption parameters as JSON.
+endif::[]
+
+*-h*, *--help*::
+
+  Print help information.
+
+*-V*, *--version*::
+
+  Print version information.
+
+include::{includedir}/section-exit-status.adoc[]
+
+include::{includedir}/section-notes.adoc[]
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*rscrypt*(1), *rscrypt-dec*(1), *rscrypt-enc*(1), *rscrypt-help*(1), *scrypt*(1)

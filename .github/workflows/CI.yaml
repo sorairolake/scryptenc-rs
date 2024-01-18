@@ -47,7 +47,7 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.1
+        uses: Swatinem/rust-cache@v2.7.3
         with:
           key: ${{ matrix.target }}
       - name: Run tests
@@ -55,11 +55,11 @@ jobs:
       - name: Run tests (no default features)
         run: cargo test --target ${{ matrix.target }} --no-default-features
       - name: Run tests (`alloc` feature)
-        run: cargo test --target ${{ matrix.target }} --no-default-features --features alloc
+        run: cargo test -p scryptenc --target ${{ matrix.target }} --no-default-features -F alloc
       - name: Run tests (`serde` feature)
-        run: cargo test --target ${{ matrix.target }} --features serde
+        run: cargo test -p scryptenc --target ${{ matrix.target }} -F serde
       - name: Run tests (`serde` feature with no default features)
-        run: cargo test --target ${{ matrix.target }} --no-default-features --features serde
+        run: cargo test -p scryptenc --target ${{ matrix.target }} --no-default-features -F serde
 
   rustfmt:
     name: Rustfmt
@@ -73,9 +73,9 @@ jobs:
           toolchain: stable
           components: rustfmt
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.1
+        uses: Swatinem/rust-cache@v2.7.3
       - name: Check code formatted
-        run: cargo fmt -- --check
+        run: cargo fmt --all -- --check
 
   clippy:
     name: Clippy
@@ -89,11 +89,11 @@ jobs:
           toolchain: stable
           components: clippy
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.1
+        uses: Swatinem/rust-cache@v2.7.3
       - name: Check no lint warnings
-        run: cargo clippy -- -D warnings
+        run: cargo clippy --workspace -- -D warnings
       - name: Check no lint warnings (no default features)
-        run: cargo clippy --no-default-features -- -D warnings
+        run: cargo clippy --workspace --no-default-features -- -D warnings
 
   doc:
     name: Documentation
@@ -106,9 +106,9 @@ jobs:
         with:
           toolchain: stable
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.1
+        uses: Swatinem/rust-cache@v2.7.3
       - name: Check no `rustdoc` lint warnings
-        run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --document-private-items
+        run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude scryptenc-cli --no-deps --document-private-items
 
   benchmark:
     name: Benchmark
@@ -121,9 +121,9 @@ jobs:
         with:
           toolchain: nightly
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.1
+        uses: Swatinem/rust-cache@v2.7.3
       - name: Run benchmarks
-        run: cargo bench
+        run: cargo bench -p scryptenc
 
   semver:
     name: Semantic Versioning

@@ -42,7 +42,7 @@ impl fmt::Display for Error {
             Self::InvalidLength => write!(f, "encrypted data is shorter than 128 bytes"),
             Self::InvalidMagicNumber => write!(f, "invalid magic number"),
             Self::UnknownVersion(version) => write!(f, "unknown version number `{version}`"),
-            Self::InvalidParams(err) => write!(f, "{err}"),
+            Self::InvalidParams(err) => err.fmt(f),
             Self::InvalidChecksum => write!(f, "checksum mismatch"),
             Self::InvalidHeaderMac(_) => write!(f, "invalid header MAC"),
             Self::InvalidMac(_) => write!(f, "invalid MAC"),
@@ -55,16 +55,10 @@ impl std::error::Error for Error {
     #[inline]
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
+            Self::InvalidParams(err) => Some(err),
             Self::InvalidHeaderMac(err) | Self::InvalidMac(err) => Some(err),
             _ => None,
         }
-    }
-}
-
-impl From<InvalidParams> for Error {
-    #[inline]
-    fn from(source: InvalidParams) -> Self {
-        Self::InvalidParams(source)
     }
 }
 
@@ -331,7 +325,10 @@ mod tests {
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
-        assert!(Error::InvalidParams(InvalidParams).source().is_none());
+        assert!(Error::InvalidParams(InvalidParams)
+            .source()
+            .unwrap()
+            .is::<InvalidParams>());
         assert!(Error::InvalidChecksum.source().is_none());
         assert!(Error::InvalidHeaderMac(MacError)
             .source()
@@ -341,14 +338,6 @@ mod tests {
             .source()
             .unwrap()
             .is::<MacError>());
-    }
-
-    #[test]
-    fn from_invalid_params_to_error() {
-        assert_eq!(
-            Error::from(InvalidParams),
-            Error::InvalidParams(InvalidParams)
-        );
     }
 
     #[test]

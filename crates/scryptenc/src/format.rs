@@ -51,10 +51,16 @@ pub const HEADER_SIZE: usize = Header::SIZE;
 pub const TAG_SIZE: usize = <HmacSha256 as OutputSizeUser>::OutputSize::USIZE;
 
 /// Version of the scrypt encrypted data format.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[non_exhaustive]
 pub enum Version {
     /// Version 0.
+    #[default]
     V0,
+
+    /// Version 1.
+    #[doc(hidden)]
+    V1,
 }
 
 impl From<Version> for u8 {
@@ -82,7 +88,7 @@ impl Header {
 
     /// The number of bytes of the header.
     const SIZE: usize = mem::size_of::<MagicNumber>()
-        + mem::size_of::<u8>()
+        + mem::size_of::<Version>()
         + (mem::size_of::<Params>() - (mem::align_of::<Params>() - mem::size_of::<u8>()))
         + mem::size_of::<Salt>()
         + mem::size_of::<Checksum>()
@@ -91,7 +97,7 @@ impl Header {
     /// Creates a new `Header`.
     pub fn new(params: scrypt::Params) -> Self {
         let magic_number = Self::MAGIC_NUMBER;
-        let version = Version::V0;
+        let version = Version::default();
         let params = params.into();
         let salt = StdRng::from_entropy().gen();
         let checksum = Checksum::default();
@@ -112,16 +118,13 @@ impl Header {
             return Err(Error::InvalidLength);
         }
 
-        let magic_number = if data[..6] == Self::MAGIC_NUMBER {
-            Ok(Self::MAGIC_NUMBER)
-        } else {
-            Err(Error::InvalidMagicNumber)
-        }?;
-        let version = if data[6] == Version::V0.into() {
-            Ok(Version::V0)
-        } else {
-            Err(Error::UnknownVersion(data[6]))
-        }?;
+        let Some(magic_number) = Some(Self::MAGIC_NUMBER).filter(|mn| &data[..6] == mn) else {
+            return Err(Error::InvalidMagicNumber);
+        };
+        let version = match data[6] {
+            0 => Version::V0,
+            v => return Err(Error::UnknownVersion(v)),
+        };
         let log_n = data[7];
         let r = u32::from_be_bytes(
             data[8..12]
@@ -135,7 +138,7 @@ impl Header {
         );
         let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
             .map(Params::from)
-            .map_err(Error::from)?;
+            .map_err(Error::InvalidParams)?;
         let salt = data[16..48]
             .try_into()
             .expect("size of salt should be 32 bytes");
@@ -260,11 +263,59 @@ mod tests {
     #[test]
     fn version() {
         assert_eq!(Version::V0 as u8, 0);
+        assert_eq!(Version::V1 as u8, 1);
+    }
+
+    #[test]
+    fn size_of_version() {
+        assert_eq!(mem::size_of::<Version>(), mem::size_of::<u8>());
+    }
+
+    #[test]
+    fn clone_version() {
+        assert_eq!(Version::V0.clone(), Version::V0);
+        assert_eq!(Version::V1.clone(), Version::V1);
+    }
+
+    #[test]
+    fn copy_version() {
+        {
+            let a = Version::V0;
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Version::V1;
+            let b = a;
+            assert_eq!(a, b);
+        }
+    }
+
+    #[cfg(feature = "alloc")]
+    #[test]
+    fn debug_version() {
+        assert_eq!(format!("{:?}", Version::V0), "V0");
+        assert_eq!(format!("{:?}", Version::V1), "V1");
+    }
+
+    #[test]
+    fn default_version() {
+        assert_eq!(Version::default(), Version::V0);
+    }
+
+    #[test]
+    fn version_equality() {
+        assert_eq!(Version::V0, Version::V0);
+        assert_ne!(Version::V0, Version::V1);
+        assert_ne!(Version::V1, Version::V0);
+        assert_eq!(Version::V1, Version::V1);
     }
 
     #[test]
     fn from_version_to_u8() {
         assert_eq!(u8::from(Version::V0), 0);
+        assert_eq!(u8::from(Version::V1), 1);
     }
 
     #[test]
