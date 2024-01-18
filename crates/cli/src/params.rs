@@ -2,10 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use std::{
-    path::Path,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 use anyhow::Context;
 use byte_unit::UnitType;
@@ -41,9 +38,8 @@ pub enum Error {
 }
 
 /// Gets the encryption parameters.
-pub fn get(data: &[u8], path: &Path) -> anyhow::Result<scryptenc::Params> {
-    scryptenc::Params::new(data)
-        .with_context(|| format!("{} is not a valid scrypt encrypted file", path.display()))
+pub fn get(data: &[u8]) -> anyhow::Result<scryptenc::Params> {
+    scryptenc::Params::new(data).context("data is not a valid scrypt encrypted file")
 }
 
 /// Prints the encryption parameters.

@@ -112,7 +112,7 @@ pub fn run() -> anyhow::Result<()> {
                     _ => passphrase::read_passphrase_from_tty_once(),
                 }?;
 
-                let params = params::get(&input, &arg.input)?;
+                let params = params::get(&input)?;
                 if arg.verbose {
                     if arg.force {
                         params::displayln_without_resources(params.log_n(), params.r(), params.p());
@@ -158,7 +158,7 @@ pub fn run() -> anyhow::Result<()> {
             Command::Information(arg) => {
                 let input = input::read(&arg.input)?;
 
-                let params = params::get(&input, &arg.input)?;
+                let params = params::get(&input)?;
                 #[cfg(feature = "json")]
                 if arg.json {
                     let params = params::Params::new(params);

@@ -93,6 +93,50 @@ fn basic_encrypt() {
 }
 
 #[test]
+fn encrypt_if_non_existent_input_file() {
+    let command = command()
+        .arg("enc")
+        .arg("--passphrase-from-stdin")
+        .arg("non_existent.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(66)
+        .stderr(predicate::str::contains(
+            "could not read data from non_existent.txt",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains(
+            "The system cannot find the file specified. (os error 2)",
+        ));
+    } else {
+        command.stderr(predicate::str::contains(
+            "No such file or directory (os error 2)",
+        ));
+    }
+}
+
+#[test]
+fn encrypt_if_output_is_directory() {
+    let command = command()
+        .arg("enc")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .arg("data/dummy")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "could not write data to data/dummy",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains("Access is denied. (os error 5)"));
+    } else {
+        command.stderr(predicate::str::contains("Is a directory (os error 21)"));
+    }
+}
+
+#[test]
 fn encrypt_with_max_memory() {
     command()
         .arg("enc")
@@ -524,6 +568,50 @@ fn basic_decrypt() {
 }
 
 #[test]
+fn decrypt_if_non_existent_input_file() {
+    let command = command()
+        .arg("dec")
+        .arg("--passphrase-from-stdin")
+        .arg("non_existent.txt.scrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(66)
+        .stderr(predicate::str::contains(
+            "could not read data from non_existent.txt.scrypt",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains(
+            "The system cannot find the file specified. (os error 2)",
+        ));
+    } else {
+        command.stderr(predicate::str::contains(
+            "No such file or directory (os error 2)",
+        ));
+    }
+}
+
+#[test]
+fn decrypt_if_output_is_directory() {
+    let command = command()
+        .arg("dec")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt.scrypt")
+        .arg("data/dummy")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "could not write data to data/dummy",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains("Access is denied. (os error 5)"));
+    } else {
+        command.stderr(predicate::str::contains("Is a directory (os error 21)"));
+    }
+}
+
+#[test]
 fn decrypt_with_max_memory() {
     command()
         .arg("dec")
@@ -735,6 +823,39 @@ fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
 }
 
 #[test]
+fn decrypt_if_input_file_is_invalid() {
+    command()
+        .arg("dec")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(7)
+        .stderr(predicate::str::contains(
+            "data is not a valid scrypt encrypted file",
+        ))
+        .stderr(predicate::str::contains(
+            "encrypted data is shorter than 128 bytes",
+        ));
+}
+
+#[test]
+fn decrypt_if_passphrase_is_incorrect() {
+    command()
+        .arg("dec")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt.scrypt")
+        .write_stdin("password")
+        .assert()
+        .failure()
+        .code(11)
+        .stderr(predicate::str::contains("passphrase is incorrect"))
+        .stderr(predicate::str::contains("invalid header MAC"))
+        .stderr(predicate::str::contains("MAC tag mismatch"));
+}
+
+#[test]
 fn decrypt_verbose() {
     command()
         .arg("dec")
@@ -786,6 +907,28 @@ fn basic_information() {
         ));
 }
 
+#[test]
+fn information_if_non_existent_input_file() {
+    let command = command()
+        .arg("info")
+        .arg("non_existent.txt.scrypt")
+        .assert()
+        .failure()
+        .code(66)
+        .stderr(predicate::str::contains(
+            "could not read data from non_existent.txt.scrypt",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains(
+            "The system cannot find the file specified. (os error 2)",
+        ));
+    } else {
+        command.stderr(predicate::str::contains(
+            "No such file or directory (os error 2)",
+        ));
+    }
+}
+
 #[cfg(not(feature = "json"))]
 #[test]
 fn information_command_without_default_feature() {
@@ -809,6 +952,22 @@ fn information_as_json() {
         .assert()
         .success()
         .stdout(predicate::eq(concat!(r#"{"N":1024,"r":8,"p":1}"#, '\n')));
+}
+
+#[test]
+fn information_if_input_file_is_invalid() {
+    command()
+        .arg("info")
+        .arg("data/data.txt")
+        .assert()
+        .failure()
+        .code(7)
+        .stderr(predicate::str::contains(
+            "data is not a valid scrypt encrypted file",
+        ))
+        .stderr(predicate::str::contains(
+            "encrypted data is shorter than 128 bytes",
+        ));
 }
 
 #[test]
