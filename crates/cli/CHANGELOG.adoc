@@ -19,6 +19,13 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/scryptenc-cli-v0.7.8\...HEAD[Unreleased]
+
+=== Changed
+
+* Add description about behavior of `-h`, `--help` and `--version` in man pages
+  ({pull-request-url}/127[#127])
+
 == {project-url}/releases/tag/scryptenc-cli-v0.7.8[0.7.8] - 2024-01-18
 
 === Changed
