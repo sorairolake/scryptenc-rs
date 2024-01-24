@@ -60,3 +60,8 @@ default: build
 # Increment the version of the command-line utility
 @bump-cli part:
     cargo set-version --bump {{part}} -p scryptenc-cli
+
+# Increment the version of the Wasm bindings
+@bump-wasm part:
+    bump-my-version bump --config-file .bumpversion-wasm.toml {{part}}
+    cargo set-version --bump {{part}} -p scryptenc-wasm
