@@ -13,6 +13,8 @@
 :scryptenc-crates-io: {crates-io-crates}/scryptenc
 :scryptenc-cli-badge: {shields-url}/crates/v/scryptenc-cli?style=for-the-badge
 :scryptenc-cli-crates-io: {crates-io-crates}/scryptenc-cli
+:scryptenc-wasm-badge: {shields-url}/crates/v/scryptenc-wasm?style=for-the-badge
+:scryptenc-wasm-crates-io: {crates-io-crates}/scryptenc-wasm
 
 image:{ci-badge}[CI,link={ci-url}]
 
@@ -33,4 +35,8 @@ image::screenshot.webp[Screenshot of rscrypt]
 |xref:cli:index.adoc[`scryptenc-cli`]
 |image:{scryptenc-cli-badge}[Version,link={scryptenc-cli-crates-io}]
 |File encryption tool using the scrypt encrypted data format.
+
+|xref:wasm:index.adoc[`scryptenc-wasm`]
+|image:{scryptenc-wasm-badge}[Version,link={scryptenc-wasm-crates-io}]
+|Wasm bindings for scryptenc.
 |===
