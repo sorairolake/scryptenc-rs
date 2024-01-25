@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 = Wasm Bindings for scryptenc
-:project-url: https://github.com/sorairolake/scryptenc
+:project-url: https://github.com/sorairolake/scryptenc-rs
 :shields-url: https://img.shields.io
-:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
+:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :version-badge: {shields-url}/crates/v/scryptenc-wasm?style=for-the-badge
 :version-url: https://crates.io/crates/scryptenc-wasm
