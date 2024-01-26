@@ -9,8 +9,8 @@ use wasm_bindgen::{prelude::wasm_bindgen, JsError};
 
 /// Encrypts `plaintext` and into a newly allocated `Uint8Array`.
 ///
-/// This uses the recommended scrypt parameters created by
-/// [`Params::recommended`] which are sufficient for most use-cases.
+/// This uses the recommended scrypt parameters which are sufficient for most
+/// use-cases.
 #[must_use]
 #[wasm_bindgen]
 pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Vec<u8> {
