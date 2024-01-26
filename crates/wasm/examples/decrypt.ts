@@ -9,7 +9,7 @@ import * as scryptenc from "../pkg/scryptenc_wasm.js";
 const ciphertext = Deno.readFileSync(Deno.args[0]);
 
 const passphrase = new TextEncoder().encode(
-  cli.promptSecret("Enter passphrase: "),
+  cli.promptSecret("Enter passphrase: ") as string,
 );
 const plaintext = scryptenc.decrypt(ciphertext, passphrase);
 
