@@ -7,13 +7,13 @@
 == Basic usage
 
 .Encrypt a file
-[source,shell]
+[source,sh]
 ----
 rscrypt enc data.txt data.txt.scrypt
 ----
 
 .Decrypt a file
-[source,shell]
+[source,sh]
 ----
 rscrypt dec data.txt.scrypt data.txt
 ----
@@ -21,7 +21,7 @@ rscrypt dec data.txt.scrypt data.txt
 == Provides information about the encryption parameters
 
 .Output as a human-readable string
-[source,shell]
+[source,sh]
 ----
 rscrypt info data.txt.scrypt
 ----
@@ -33,7 +33,7 @@ Parameters used: N = 1024; r = 8; p = 1;
 ....
 
 .Output as JSON
-[source,shell]
+[source,sh]
 ----
 rscrypt info -j data.txt.scrypt | jq
 ----
@@ -61,7 +61,7 @@ rscrypt info -j data.txt.scrypt | jq
 * `zsh`
 
 .Example
-[source,shell]
+[source,sh]
 ----
 rscrypt --generate-completion bash > rscrypt.bash
 ----
