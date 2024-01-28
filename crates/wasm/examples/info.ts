@@ -6,7 +6,7 @@ import * as scryptenc from "../pkg/scryptenc_wasm.js";
 
 const ciphertext = Deno.readFileSync(Deno.args[0]);
 
-const params = scryptenc.Params.new(ciphertext);
+const params = new scryptenc.Params(ciphertext);
 console.log(
   `Parameters used: N = ${params.n}; r = ${params.r}; p = ${params.p};`,
 );
