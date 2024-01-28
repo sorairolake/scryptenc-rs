@@ -3,10 +3,35 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 = Usage
+:wasm-pack-url: https://rustwasm.github.io/wasm-pack/
 
 == Build
 
-[source,shell]
+You will need {wasm-pack-url}[`wasm-pack`] to build this crate.
+
+[source,sh]
 ----
 wasm-pack build
+----
+
+This will generate build artifacts in the `pkg` directory.
+
+== Example
+
+[source,ts]
+----
+import * as assert from "https://deno.land/std@0.213.0/assert/mod.ts";
+
+import * as scryptenc from "./pkg/scryptenc_wasm.js";
+
+const data = new TextEncoder().encode("Hello, world!\n");
+const passphrase = new TextEncoder().encode("passphrase");
+
+// Encrypt `data` using `passphrase`.
+const ciphertext = scryptenc.encrypt_with_params(data, passphrase, 10, 8, 1);
+assert.assertNotEquals(ciphertext, data);
+
+// And decrypt it back.
+const plaintext = scryptenc.decrypt(ciphertext, passphrase);
+assert.assertEquals(plaintext, data);
 ----

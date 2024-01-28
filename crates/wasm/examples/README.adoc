@@ -1,0 +1,33 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+= Examples
+
+link:encrypt.ts[]::
+
+  An example of encrypting to the scrypt encrypted data format.
+
+link:decrypt.ts[]::
+
+  An example of decrypting from the scrypt encrypted data format.
+
+link:info.ts[]::
+
+  An example of reading the scrypt parameters.
+
+== How to run the example
+
+These programs are expected to be run using https://deno.com/[Deno].
+
+[source,sh]
+----
+deno run --allow-read --allow-write encrypt.ts data.txt data.txt.scrypt
+# or
+deno run --allow-read --allow-write decrypt.ts data.txt.scrypt data.txt
+# or
+deno run --allow-read info.ts data.txt.scrypt
+----
+
+IMPORTANT: You must run `wasm-pack build -t deno crates/wasm` in the project
+root directory before running the example.

@@ -7,7 +7,7 @@
 == Encryption and decryption
 
 .When the `alloc` feature is enabled
-[source,rust]
+[source,rs]
 ----
 use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 
@@ -27,7 +27,7 @@ assert_eq!(plaintext, data);
 ----
 
 .When the `alloc` feature is disabled
-[source,rust]
+[source,rs]
 ----
 use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 
@@ -50,7 +50,7 @@ assert_eq!(buf, data.as_slice());
 
 == Extracting the scrypt parameters in the encrypted data
 
-[source,rust]
+[source,rs]
 ----
 use scryptenc::{scrypt, Encryptor};
 
