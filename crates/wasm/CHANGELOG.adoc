@@ -19,6 +19,7 @@ project adheres to https://semver.org/[Semantic Versioning].
 === Changed
 
 * Change `Params::new` to `constructor` ({pull-request-url}/146[#146])
+* Rename exported identifiers ({pull-request-url}/150[#150])
 
 == {compare-url}/scryptenc-wasm-v0.1.1\...scryptenc-wasm-v0.1.2[0.1.2] - 2024-01-28
 

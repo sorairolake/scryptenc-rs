@@ -35,7 +35,7 @@ impl Params {
     /// Gets log2 of the scrypt parameter `N`.
     #[must_use]
     #[inline]
-    #[wasm_bindgen(getter)]
+    #[wasm_bindgen(js_name = logN, getter)]
     pub fn log_n(&self) -> u8 {
         self.0.log_n()
     }

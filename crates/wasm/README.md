@@ -37,7 +37,7 @@ const data = new TextEncoder().encode("Hello, world!\n");
 const passphrase = new TextEncoder().encode("passphrase");
 
 // Encrypt `data` using `passphrase`.
-const ciphertext = scryptenc.encrypt_with_params(data, passphrase, 10, 8, 1);
+const ciphertext = scryptenc.encryptWithParams(data, passphrase, 10, 8, 1);
 assert.assertNotEquals(ciphertext, data);
 
 // And decrypt it back.
