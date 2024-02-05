@@ -1,24 +1,41 @@
+#!/usr/bin/env -S deno run --allow-read --allow-write
+
 // SPDX-FileCopyrightText: 2024 Shun Sakai
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-import * as cli from "https://deno.land/std@0.213.0/cli/mod.ts";
+import { cli, command, scryptenc } from "./deps.ts";
 
-import * as scryptenc from "../pkg/scryptenc_wasm.js";
+import { VERSION } from "./version.ts";
 
-const opt = cli.parseArgs(Deno.args);
+const { args, options } = await new command.Command()
+  .name("encrypt")
+  .version(VERSION)
+  .description("An example of encrypting to the scrypt encrypted data format.")
+  .option("--log-n <VALUE:integer>", "Set the work parameter N to 2^<VALUE>.", {
+    default: 17,
+  })
+  .option("-r, --block-size <VALUE:integer>", "Set the work parameter r.", {
+    default: 8,
+  })
+  .option(
+    "-p, --parallelization <VALUE:integer>",
+    "Set the work parameter p.",
+    { default: 1 },
+  )
+  .arguments("<INFILE:file> <OUTFILE:file>")
+  .parse();
 
-const plaintext = Deno.readFileSync(opt._[0].toString());
+const plaintext = Deno.readFileSync(args[0]);
 
-const passphrase = new TextEncoder().encode(
-  cli.promptSecret("Enter passphrase: ")!,
-);
-const ciphertext = scryptenc.encrypt_with_params(
+const passphrase = new TextEncoder()
+  .encode(cli.promptSecret("Enter passphrase: ")!);
+const ciphertext = scryptenc.encryptWithParams(
   plaintext,
   passphrase,
-  opt["log-n"] ?? 17,
-  opt.r ?? 8,
-  opt.p ?? 1,
+  options.logN,
+  options.blockSize,
+  options.parallelization,
 );
 
-Deno.writeFileSync(opt._[1].toString(), ciphertext);
+Deno.writeFileSync(args[1], ciphertext);
