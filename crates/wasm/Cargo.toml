@@ -26,7 +26,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 getrandom = { version = "0.2.12", features = ["js"] }
 scryptenc = { version = "0.9.0", path = "../scryptenc" }
-wasm-bindgen = "0.2.90"
+wasm-bindgen = "0.2.91"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.40"
