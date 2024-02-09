@@ -28,7 +28,7 @@ anyhow.workspace = true
 byte-unit = "5.1.4"
 clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.5.0"
-clap_complete_nushell = "4.4.2"
+clap_complete_nushell = "4.5.0"
 dialoguer.workspace = true
 fraction = { version = "0.15.0", default-features = false }
 humantime = "2.1.0"
