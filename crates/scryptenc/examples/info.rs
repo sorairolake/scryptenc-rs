@@ -11,28 +11,31 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-#[cfg(feature = "std")]
-#[derive(Debug, clap::Parser)]
+use std::{
+    fs,
+    io::{self, Read},
+    path::PathBuf,
+};
+
+use anyhow::Context;
+use clap::Parser;
+use scryptenc::Params;
+
+#[derive(Debug, Parser)]
 #[command(version, about)]
 struct Opt {
+    /// Output the encryption parameters as JSON.
+    #[arg(short, long)]
+    json: bool,
+
     /// Input file.
     ///
     /// If [FILE] is not specified, data will be read from stdin.
     #[arg(value_name("FILE"))]
-    input: Option<std::path::PathBuf>,
+    input: Option<PathBuf>,
 }
 
-#[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
-    use std::{
-        fs,
-        io::{self, Read},
-    };
-
-    use anyhow::Context;
-    use clap::Parser;
-    use scryptenc::Params;
-
     let opt = Opt::parse();
 
     let ciphertext = if let Some(file) = opt.input {
@@ -46,16 +49,16 @@ fn main() -> anyhow::Result<()> {
     }?;
 
     let params = Params::new(ciphertext).context("data is not a valid scrypt encrypted file")?;
-    println!(
-        "Parameters used: N = {}; r = {}; p = {};",
-        params.n(),
-        params.r(),
-        params.p()
-    );
+    if opt.json {
+        let output = serde_json::to_string(&params).context("could not serialize as JSON")?;
+        println!("{output}");
+    } else {
+        println!(
+            "Parameters used: logN = {}; r = {}; p = {};",
+            params.log_n(),
+            params.r(),
+            params.p()
+        );
+    }
     Ok(())
-}
-
-#[cfg(not(feature = "std"))]
-fn main() -> anyhow::Result<()> {
-    anyhow::bail!("`std` feature is required");
 }
