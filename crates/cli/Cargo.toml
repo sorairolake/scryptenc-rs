@@ -38,7 +38,7 @@ serde = { version = "1.0.196", features = ["derive"], optional = true }
 serde_json = { version = "1.0.113", optional = true }
 sysexits = "0.7.11"
 sysinfo = "0.30.5"
-thiserror = "1.0.56"
+thiserror = "1.0.57"
 
 [dev-dependencies]
 assert_cmd = "2.0.13"
