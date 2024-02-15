@@ -38,7 +38,7 @@ fn success() {
 
 #[wasm_bindgen_test]
 fn success_with_params() {
-    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 10, 8, 1)
+    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 4, 10, 16)
         .map_err(JsValue::from)
         .unwrap();
     assert_ne!(ciphertext, TEST_DATA);
@@ -48,9 +48,9 @@ fn success_with_params() {
     );
 
     let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
-    assert_eq!(params.log_n(), 10);
-    assert_eq!(params.r(), 8);
-    assert_eq!(params.p(), 1);
+    assert_eq!(params.log_n(), 4);
+    assert_eq!(params.r(), 10);
+    assert_eq!(params.p(), 16);
 
     let plaintext = scryptenc_wasm::decrypt(&ciphertext, PASSPHRASE)
         .map_err(JsValue::from)
@@ -60,7 +60,7 @@ fn success_with_params() {
 
 #[wasm_bindgen_test]
 fn magic_number() {
-    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 10, 8, 1)
+    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 4, 10, 16)
         .map_err(JsValue::from)
         .unwrap();
     assert_eq!(&ciphertext[..6], b"scrypt");
@@ -68,7 +68,7 @@ fn magic_number() {
 
 #[wasm_bindgen_test]
 fn version() {
-    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 10, 8, 1)
+    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 4, 10, 16)
         .map_err(JsValue::from)
         .unwrap();
     assert_eq!(ciphertext[6], 0);
@@ -76,24 +76,24 @@ fn version() {
 
 #[wasm_bindgen_test]
 fn log_n() {
-    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 10, 8, 1)
+    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 4, 10, 16)
         .map_err(JsValue::from)
         .unwrap();
-    assert_eq!(ciphertext[7], 10);
+    assert_eq!(ciphertext[7], 4);
 }
 
 #[wasm_bindgen_test]
 fn r() {
-    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 10, 8, 1)
+    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 4, 10, 16)
         .map_err(JsValue::from)
         .unwrap();
-    assert_eq!(&ciphertext[8..12], u32::to_be_bytes(8));
+    assert_eq!(&ciphertext[8..12], u32::to_be_bytes(10));
 }
 
 #[wasm_bindgen_test]
 fn p() {
-    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 10, 8, 1)
+    let ciphertext = scryptenc_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 4, 10, 16)
         .map_err(JsValue::from)
         .unwrap();
-    assert_eq!(&ciphertext[12..16], u32::to_be_bytes(1));
+    assert_eq!(&ciphertext[12..16], u32::to_be_bytes(16));
 }
