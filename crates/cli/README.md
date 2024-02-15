@@ -140,7 +140,7 @@ licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=branch%3Adevelop+workflow%3ACI++
-[version-badge]: https://img.shields.io/crates/v/scryptenc-cli?style=for-the-badge
+[version-badge]: https://img.shields.io/crates/v/scryptenc-cli?logo=rust&style=for-the-badge
 [version-url]: https://crates.io/crates/scryptenc-cli
 [license-badge]: https://img.shields.io/crates/l/scryptenc-cli?style=for-the-badge
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
