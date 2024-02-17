@@ -10,13 +10,13 @@
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :scryptenc-repo-url: {project-url}/tree/develop/crates/scryptenc
-:scryptenc-badge: {shields-url}/crates/v/scryptenc?style=for-the-badge
+:scryptenc-badge: {shields-url}/crates/v/scryptenc?logo=rust&style=for-the-badge
 :scryptenc-crates-io: {crates-io-crates}/scryptenc
 :scryptenc-cli-repo-url: {project-url}/tree/develop/crates/cli
-:scryptenc-cli-badge: {shields-url}/crates/v/scryptenc-cli?style=for-the-badge
+:scryptenc-cli-badge: {shields-url}/crates/v/scryptenc-cli?logo=rust&style=for-the-badge
 :scryptenc-cli-crates-io: {crates-io-crates}/scryptenc-cli
 :scryptenc-wasm-repo-url: {project-url}/tree/develop/crates/wasm
-:scryptenc-wasm-badge: {shields-url}/crates/v/scryptenc-wasm?style=for-the-badge
+:scryptenc-wasm-badge: {shields-url}/crates/v/scryptenc-wasm?logo=rust&style=for-the-badge
 :scryptenc-wasm-crates-io: {crates-io-crates}/scryptenc-wasm
 :reuse-spec-url: https://reuse.software/spec/
 
