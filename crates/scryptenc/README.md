@@ -27,7 +27,7 @@ scryptenc = "0.9.2"
 
 ### Example
 
-```rs
+```rust
 use scryptenc::{scrypt::Params, Decryptor, Encryptor};
 
 let data = b"Hello, world!\n";
