@@ -7,14 +7,22 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 # Wasm Bindings for scryptenc
 
 [![CI][ci-badge]][ci-url]
-[![Version][version-badge]][version-url]
+[![npm Version][npm-version-badge]][npm-version-url]
+[![crates.io Version][crates-version-badge]][crates-version-url]
 [![Docs][docs-badge]][docs-url]
 ![License][license-badge]
 
-This crate ([`scryptenc-wasm`][version-url]) is the Wasm bindings for the
-[`scryptenc`] crate.
+**scryptenc-wasm** is the Wasm bindings for the [`scryptenc`] crate.
 
 ## Usage
+
+### Installation
+
+To install this library:
+
+```sh
+npm install @sorairolake/scryptenc-wasm
+```
 
 ### Build
 
@@ -74,14 +82,16 @@ licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 [ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=branch%3Adevelop+workflow%3ACI++
-[version-badge]: https://img.shields.io/crates/v/scryptenc-wasm?style=for-the-badge&logo=rust
-[version-url]: https://crates.io/crates/scryptenc-wasm
+[npm-version-badge]: https://img.shields.io/npm/v/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge&logo=npm
+[npm-version-url]: https://www.npmjs.com/package/@sorairolake/scryptenc-wasm
+[crates-version-badge]: https://img.shields.io/crates/v/scryptenc-wasm?style=for-the-badge&logo=rust
+[crates-version-url]: https://crates.io/crates/scryptenc-wasm
 [docs-badge]: https://img.shields.io/docsrs/scryptenc-wasm?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 [docs-url]: https://docs.rs/scryptenc-wasm
 [license-badge]: https://img.shields.io/crates/l/scryptenc-wasm?style=for-the-badge
 [`scryptenc`]: https://crates.io/crates/scryptenc
 [`wasm-pack`]: https://rustwasm.github.io/wasm-pack/
-[CHANGELOG.adoc]: CHANGELOG.adoc
-[CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
-[AUTHORS.adoc]: ../../AUTHORS.adoc
+[CHANGELOG.adoc]: https://github.com/sorairolake/scryptenc-rs/blob/develop/crates/wasm/CHANGELOG.adoc
+[CONTRIBUTING.adoc]: https://github.com/sorairolake/scryptenc-rs/blob/develop/CONTRIBUTING.adoc
+[AUTHORS.adoc]: https://github.com/sorairolake/scryptenc-rs/blob/develop/AUTHORS.adoc
 [_REUSE Specification_]: https://reuse.software/spec/

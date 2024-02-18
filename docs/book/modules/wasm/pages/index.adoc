@@ -7,16 +7,19 @@
 :shields-url: https://img.shields.io
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
-:version-badge: {shields-url}/crates/v/scryptenc-wasm?style=for-the-badge&logo=rust
-:version-url: https://crates.io/crates/scryptenc-wasm
+:npm-version-badge: {shields-url}/npm/v/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge&logo=npm
+:npm-version-url: https://www.npmjs.com/package/@sorairolake/scryptenc-wasm
+:crates-version-badge: {shields-url}/crates/v/scryptenc-wasm?style=for-the-badge&logo=rust
+:crates-version-url: https://crates.io/crates/scryptenc-wasm
 :docs-badge: {shields-url}/docsrs/scryptenc-wasm?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 :docs-url: https://docs.rs/scryptenc-wasm
 :license-badge: {shields-url}/crates/l/scryptenc-wasm?style=for-the-badge
 
 image:{ci-badge}[CI,link={ci-url}]
-image:{version-badge}[Version,link={version-url}]
+image:{npm-version-badge}[npm Version,link={npm-version-url}]
+image:{crates-version-badge}[crates.io Version,link={crates-version-url}]
 image:{docs-badge}[Docs,link={docs-url}]
 image:{license-badge}[License]
 
-This crate ({version-url}[`scryptenc-wasm`]) is the Wasm bindings for the
-xref:lib:index.adoc[`scryptenc`] crate.
+*scryptenc-wasm* is the Wasm bindings for the xref:lib:index.adoc[`scryptenc`]
+crate.

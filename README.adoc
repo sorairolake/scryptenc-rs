@@ -7,6 +7,8 @@
 :shields-url: https://img.shields.io
 :crates-io-url: https://crates.io
 :crates-io-crates: {crates-io-url}/crates
+:npm-url: https://www.npmjs.com
+:npm-package: {npm-url}/package
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :scryptenc-repo-url: {project-url}/tree/develop/crates/scryptenc
@@ -16,8 +18,8 @@
 :scryptenc-cli-badge: {shields-url}/crates/v/scryptenc-cli?style=for-the-badge&logo=rust
 :scryptenc-cli-crates-io: {crates-io-crates}/scryptenc-cli
 :scryptenc-wasm-repo-url: {project-url}/tree/develop/crates/wasm
-:scryptenc-wasm-badge: {shields-url}/crates/v/scryptenc-wasm?style=for-the-badge&logo=rust
-:scryptenc-wasm-crates-io: {crates-io-crates}/scryptenc-wasm
+:scryptenc-wasm-badge: {shields-url}/npm/v/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge&logo=npm
+:scryptenc-wasm-npm: {npm-package}/@sorairolake/scryptenc-wasm
 :reuse-spec-url: https://reuse.software/spec/
 
 image:{ci-badge}[CI,link={ci-url}]
@@ -41,7 +43,7 @@ image::crates/cli/assets/screenshot.webp[Screenshot of rscrypt]
 |File encryption tool using the scrypt encrypted data format.
 
 |{scryptenc-wasm-repo-url}[`scryptenc-wasm`]
-|image:{scryptenc-wasm-badge}[Version,link={scryptenc-wasm-crates-io}]
+|image:{scryptenc-wasm-badge}[Version,link={scryptenc-wasm-npm}]
 |Wasm bindings for scryptenc.
 |===
 
