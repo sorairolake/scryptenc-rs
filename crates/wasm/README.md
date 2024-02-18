@@ -37,7 +37,7 @@ This will generate build artifacts in the `pkg` directory.
 ### Example
 
 ```ts
-import * as assert from "https://deno.land/std@0.214.0/assert/mod.ts";
+import * as assert from "https://deno.land/std@0.216.0/assert/mod.ts";
 
 import * as scryptenc from "./pkg/scryptenc_wasm.js";
 
@@ -45,8 +45,15 @@ const data = new TextEncoder().encode("Hello, world!\n");
 const passphrase = new TextEncoder().encode("passphrase");
 
 // Encrypt `data` using `passphrase`.
-const ciphertext = scryptenc.encryptWithParams(data, passphrase, 10, 8, 1);
+const ciphertext = scryptenc.encrypt(data, passphrase);
 assert.assertNotEquals(ciphertext, data);
+
+// And extract the scrypt parameters from it.
+const params = new scryptenc.Params(ciphertext);
+assert.assertEquals(params.logN, 17);
+assert.assertEquals(params.n, BigInt(2 ** 17));
+assert.assertEquals(params.r, 8);
+assert.assertEquals(params.p, 1);
 
 // And decrypt it back.
 const plaintext = scryptenc.decrypt(ciphertext, passphrase);
