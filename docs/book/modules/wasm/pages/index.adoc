@@ -5,11 +5,11 @@
 = Wasm Bindings for scryptenc
 :project-url: https://github.com/sorairolake/scryptenc-rs
 :shields-url: https://img.shields.io
-:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
+:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
-:version-badge: {shields-url}/crates/v/scryptenc-wasm?logo=rust&style=for-the-badge
+:version-badge: {shields-url}/crates/v/scryptenc-wasm?style=for-the-badge&logo=rust
 :version-url: https://crates.io/crates/scryptenc-wasm
-:docs-badge: {shields-url}/docsrs/scryptenc-wasm?label=Docs.rs&logo=docsdotrs&style=for-the-badge
+:docs-badge: {shields-url}/docsrs/scryptenc-wasm?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 :docs-url: https://docs.rs/scryptenc-wasm
 :license-badge: {shields-url}/crates/l/scryptenc-wasm?style=for-the-badge
 
