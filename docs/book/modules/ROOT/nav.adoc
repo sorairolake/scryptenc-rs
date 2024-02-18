@@ -3,5 +3,6 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 .Resources
+* xref:contributing.adoc[]
 * xref:authors.adoc[]
 * xref:license.adoc[]
