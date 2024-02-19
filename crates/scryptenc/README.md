@@ -28,20 +28,24 @@ scryptenc = "0.9.3"
 ### Example
 
 ```rust
-use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+use scryptenc::Params;
 
 let data = b"Hello, world!\n";
 let passphrase = "passphrase";
 
 // Encrypt `data` using `passphrase`.
-let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-let ciphertext = Encryptor::with_params(data, passphrase, params).encrypt_to_vec();
+let ciphertext = scryptenc::encrypt(data, passphrase);
 assert_ne!(ciphertext, data);
 
+// And extract the scrypt parameters from it.
+let params = Params::new(&ciphertext).unwrap();
+assert_eq!(params.log_n(), 17);
+assert_eq!(params.n(), u64::pow(2, 17));
+assert_eq!(params.r(), 8);
+assert_eq!(params.p(), 1);
+
 // And decrypt it back.
-let plaintext = Decryptor::new(&ciphertext, passphrase)
-    .and_then(|c| c.decrypt_to_vec())
-    .unwrap();
+let plaintext = scryptenc::decrypt(ciphertext, passphrase).unwrap();
 assert_eq!(plaintext, data);
 ```
 
