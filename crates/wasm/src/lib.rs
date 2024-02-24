@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! The `scryptenc-wasm` crate is the Wasm bindings for the [`scryptenc`] crate.
+//! The `scryptenc-wasm` crate is the Wasm bindings for the `scryptenc` crate.
 
 #![doc(html_root_url = "https://docs.rs/scryptenc-wasm/0.2.2/")]
 // Lint levels of rustc.
