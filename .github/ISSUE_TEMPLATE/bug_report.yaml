@@ -44,6 +44,7 @@ body:
       placeholder: |
         - `scryptenc`: 0.1.0
         - `scryptenc-cli`: 0.1.0
+        - `scryptenc-wasm`: 0.1.0
     validations:
       required: true
 
