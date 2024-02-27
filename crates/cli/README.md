@@ -8,6 +8,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 [![CI][ci-badge]][ci-url]
 [![Version][version-badge]][version-url]
+![MSRV][msrv-badge]
 ![License][license-badge]
 
 **rscrypt** ([`scryptenc-cli`][version-url]) is a command-line utility for
@@ -142,6 +143,7 @@ licensing information.
 [ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=branch%3Adevelop+workflow%3ACI++
 [version-badge]: https://img.shields.io/crates/v/scryptenc-cli?style=for-the-badge&logo=rust
 [version-url]: https://crates.io/crates/scryptenc-cli
+[msrv-badge]: https://img.shields.io/crates/msrv/scryptenc-cli?style=for-the-badge&logo=rust
 [license-badge]: https://img.shields.io/crates/l/scryptenc-cli?style=for-the-badge
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/scryptenc-rs/releases
