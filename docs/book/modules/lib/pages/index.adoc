@@ -10,6 +10,7 @@
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :version-badge: {shields-url}/crates/v/scryptenc?style=for-the-badge&logo=rust
 :version-url: https://crates.io/crates/scryptenc
+:msrv-badge: {shields-url}/crates/msrv/scryptenc?style=for-the-badge&logo=rust
 :docs-badge: {shields-url}/docsrs/scryptenc?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 :docs-url: https://docs.rs/scryptenc
 :license-badge: {shields-url}/crates/l/scryptenc?style=for-the-badge
@@ -17,6 +18,7 @@
 
 image:{ci-badge}[CI,link={ci-url}]
 image:{version-badge}[Version,link={version-url}]
+image:{msrv-badge}[MSRV]
 image:{docs-badge}[Docs,link={docs-url}]
 image:{license-badge}[License]
 

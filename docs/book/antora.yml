@@ -7,6 +7,6 @@ title: scryptenc-rs
 version: ~
 nav:
   - modules/lib/nav.adoc
-  - modules/wasm/nav.adoc
   - modules/cli/nav.adoc
+  - modules/wasm/nav.adoc
   - modules/ROOT/nav.adoc

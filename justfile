@@ -69,7 +69,7 @@ default: build
     npx antora antora-playbook.yml
 
 # Build the Wasm bindings
-build-wasm:
+build-wasm $CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1" $CARGO_PROFILE_RELEASE_STRIP="true":
     #!/usr/bin/env bash
     cd crates/wasm
     wasm-pack build -s sorairolake -t nodejs --release

@@ -23,7 +23,7 @@ pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Vec<u8> {
 ///
 /// # Errors
 ///
-/// Returns [`Err`] if the scrypt parameters is invalid.
+/// Returns an error if the scrypt parameters is invalid.
 #[wasm_bindgen(js_name = encryptWithParams)]
 pub fn encrypt_with_params(
     plaintext: &[u8],
