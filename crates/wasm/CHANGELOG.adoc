@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/scryptenc-wasm-v0.2.2\...scryptenc-wasm-v0.2.3[0.2.3] - 2024-02-28
+
+=== Changed
+
+* Reduce package size
+
 == {compare-url}/scryptenc-wasm-v0.2.1\...scryptenc-wasm-v0.2.2[0.2.2] - 2024-02-18
 
 === Changed
