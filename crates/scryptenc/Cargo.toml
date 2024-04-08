@@ -4,7 +4,7 @@
 
 [package]
 name = "scryptenc"
-version = "0.9.3"
+version = "0.9.4"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -17,6 +17,10 @@ license = "Apache-2.0 OR MIT"
 keywords = ["crypto", "scrypt"]
 categories = ["cryptography", "no-std"]
 include = ["/LICENSES", "/README.md", "/src"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "doc_cfg"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -48,7 +52,7 @@ sha2 = { version = "0.10.8", default-features = false }
 anyhow.workspace = true
 clap.workspace = true
 dialoguer.workspace = true
-serde_json = "1.0.114"
+serde_json = "1.0.115"
 serde_test = "1.0.176"
 
 [features]
@@ -56,7 +60,3 @@ default = ["std"]
 alloc = []
 std = ["alloc", "hmac/std", "scrypt/std"]
 serde = ["dep:serde"]
-
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "doc_cfg"]
