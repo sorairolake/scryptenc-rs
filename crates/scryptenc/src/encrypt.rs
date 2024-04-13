@@ -24,7 +24,7 @@ pub struct Encryptor<'m> {
 impl<'m> Encryptor<'m> {
     /// Creates a new `Encryptor`.
     ///
-    /// This uses the recommended scrypt parameters created by
+    /// This uses the [recommended scrypt parameters] created by
     /// [`Params::recommended`] which are sufficient for most use-cases.
     ///
     /// # Examples
@@ -37,6 +37,8 @@ impl<'m> Encryptor<'m> {
     ///
     /// let cipher = Encryptor::new(data, passphrase);
     /// ```
+    ///
+    /// [recommended scrypt parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Self {
         Self::with_params(plaintext, passphrase, Params::recommended())
     }
@@ -175,7 +177,7 @@ impl<'m> Encryptor<'m> {
 
 /// Encrypts `plaintext` and into a newly allocated [`Vec`](alloc::vec::Vec).
 ///
-/// This uses the recommended scrypt parameters created by
+/// This uses the [recommended scrypt parameters] created by
 /// [`Params::recommended`] which are sufficient for most use-cases.
 ///
 /// This is a convenience function for using [`Encryptor::new`] and
@@ -190,6 +192,8 @@ impl<'m> Encryptor<'m> {
 /// let ciphertext = scryptenc::encrypt(data, passphrase);
 /// # assert_ne!(ciphertext, data);
 /// ```
+///
+/// [recommended scrypt parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 #[cfg(feature = "alloc")]
 pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> alloc::vec::Vec<u8> {
     Encryptor::new(&plaintext, passphrase).encrypt_to_vec()
