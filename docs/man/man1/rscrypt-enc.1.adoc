@@ -4,7 +4,7 @@
 
 = rscrypt-enc(1)
 // Specify in UTC.
-:docdate: 2024-01-19
+:docdate: 2024-04-15
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
 ifndef::revnumber[:mansource: rscrypt]
@@ -119,6 +119,22 @@ include::{includedir}/section-notes.adoc[]
 Encrypt a file:{blank}::
 
   $ *rscrypt enc data.txt data.txt.scrypt*
+
+Encrypt a file with the specified resource limits:{blank}::
+
+  $ *rscrypt enc -M 512MiB -t 10s data.txt data.txt.scrypt*
+
+Encrypt a file with the specified parameters:{blank}::
+
+  $ *rscrypt enc --log-n 10 -r 1 -p 1 data.txt > data.txt.scrypt*
+
+Read the passphrase from the specified file:{blank}::
+
+  $ *rscrypt enc --passphrase-from-file passphrase.txt data.txt data.txt.scrypt*
+
+Print encryption parameters and resource limits:{blank}::
+
+  $ *rscrypt enc -v data.txt > data.txt.scrypt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
 

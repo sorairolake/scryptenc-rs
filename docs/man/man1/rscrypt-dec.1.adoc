@@ -4,7 +4,7 @@
 
 = rscrypt-dec(1)
 // Specify in UTC.
-:docdate: 2024-01-19
+:docdate: 2024-04-15
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
 ifndef::revnumber[:mansource: rscrypt]
@@ -100,6 +100,18 @@ include::{includedir}/section-notes.adoc[]
 Decrypt a file:{blank}::
 
   $ *rscrypt dec data.txt.scrypt data.txt*
+
+Decrypt a file with the specified resource limits:{blank}::
+
+  $ *rscrypt dec -M 256MiB -t 60s data.txt.scrypt > data.txt*
+
+Read the passphrase from the specified file:{blank}::
+
+  $ *rscrypt dec --passphrase-from-file passphrase.txt data.txt.scrypt data.txt*
+
+Print encryption parameters and resource limits:{blank}::
+
+  $ *rscrypt dec -v data.txt.scrypt > data.txt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
 
