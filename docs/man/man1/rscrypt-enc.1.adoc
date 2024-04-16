@@ -2,25 +2,26 @@
 //
 // SPDX-License-Identifier: CC-BY-4.0
 
-= rscrypt-dec(1)
+= rscrypt-enc(1)
 // Specify in UTC.
-:docdate: 2024-01-19
+:docdate: 2024-04-15
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
+ifndef::revnumber[:mansource: rscrypt]
 :manmanual: General Commands Manual
-:includedir: ../include
+:includedir: ./include
 
 == NAME
 
-rscrypt-dec - decrypt files
+rscrypt-enc - encrypt files
 
 == SYNOPSIS
 
-*rscrypt dec* [_OPTION_]... _INFILE_ [_OUTFILE_]
+*rscrypt enc* [_OPTION_]... _INFILE_ [_OUTFILE_]
 
 == DESCRIPTION
 
-This command decrypt files.
+This command encrypt files.
 
 == POSITIONAL ARGUMENTS
 
@@ -50,12 +51,27 @@ _OUTFILE_::
 
   Use at most the specified fraction of the available RAM to compute the
   derived key. _RATE_ can be provided as a decimal or a fraction. _RATE_ should
-  be greater than 0 and less than or equal to *0.5*. Default is 0.5.
+  be greater than 0 and less than or equal to *0.5*. Default is 0.125.
 
 *-t*, *--max-time* _DURATION_::
 
   Use at most the specified duration of CPU time to compute the derived key.
-  Default is 300 seconds.
+  Default is 5 seconds.
+
+*--log-n* _VALUE_::
+
+  Set the work parameter N to 2^_VALUE_. _VALUE_ should be between *10* and
+  *40*. If this option is specified, *-r* and *-p* must also be specified.
+
+*-r* _VALUE_::
+
+  Set the work parameter r. _VALUE_ should be between *1* and *32*. If this
+  option is specified, *--log-n* and *-p* must also be specified.
+
+*-p* _VALUE_::
+
+  Set the work parameter p. _VALUE_ should be between *1* and *32*. If this
+  option is specified, *--log-n* and *-r* must also be specified.
 
 *--passphrase-from-tty*::
 
@@ -65,6 +81,10 @@ _OUTFILE_::
 
   Read the passphrase from stdin. This option cannot be used if _INFILE_ is
   also stdin.
+
+*--passphrase-from-tty-once*::
+
+  Read the passphrase from /dev/tty only once.
 
 *--passphrase-from-env* _VAR_::
 
@@ -96,9 +116,25 @@ include::{includedir}/section-notes.adoc[]
 
 == EXAMPLES
 
-Decrypt a file:{blank}::
+Encrypt a file:{blank}::
 
-  $ *rscrypt dec data.txt.scrypt data.txt*
+  $ *rscrypt enc data.txt data.txt.scrypt*
+
+Encrypt a file with the specified resource limits:{blank}::
+
+  $ *rscrypt enc -M 512MiB -t 10s data.txt data.txt.scrypt*
+
+Encrypt a file with the specified parameters:{blank}::
+
+  $ *rscrypt enc --log-n 10 -r 1 -p 1 data.txt > data.txt.scrypt*
+
+Read the passphrase from the specified file:{blank}::
+
+  $ *rscrypt enc --passphrase-from-file passphrase.txt data.txt data.txt.scrypt*
+
+Print encryption parameters and resource limits:{blank}::
+
+  $ *rscrypt enc -v data.txt > data.txt.scrypt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
 
@@ -106,5 +142,5 @@ include::{includedir}/section-copyright.adoc[]
 
 == SEE ALSO
 
-*rscrypt*(1), *rscrypt-enc*(1), *rscrypt-help*(1), *rscrypt-info*(1),
+*rscrypt*(1), *rscrypt-dec*(1), *rscrypt-help*(1), *rscrypt-info*(1),
 *scrypt*(1)

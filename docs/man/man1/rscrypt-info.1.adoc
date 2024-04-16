@@ -4,11 +4,12 @@
 
 = rscrypt-info(1)
 // Specify in UTC.
-:docdate: 2024-01-19
+:docdate: 2024-04-15
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
+ifndef::revnumber[:mansource: rscrypt]
 :manmanual: General Commands Manual
-:includedir: ../include
+:includedir: ./include
 
 == NAME
 
@@ -50,6 +51,18 @@ endif::[]
 include::{includedir}/section-exit-status.adoc[]
 
 include::{includedir}/section-notes.adoc[]
+
+== EXAMPLES
+
+Print the encryption parameters:{blank}::
+
+  $ *rscrypt info data.txt.scrypt*
+
+ifdef::json,env-github,site-gen-antora[]
+Print the encryption parameters as JSON:{blank}::
+
+  $ *rscrypt info -j data.txt.scrypt*
+endif::[]
 
 include::{includedir}/section-reporting-bugs.adoc[]
 
