@@ -29,6 +29,12 @@ cargo install scryptenc-cli
 If you want to enable optimizations such as LTO, set them using [environment
 variables].
 
+### Via a package manager
+
+| OS    | Package manager | Command                                      |
+| ----- | --------------- | -------------------------------------------- |
+| _Any_ | [Homebrew]      | `brew install sorairolake/tap/scryptenc-cli` |
+
 ### From binaries
 
 The [release page] contains pre-built binaries for Linux, macOS and Windows.
@@ -146,6 +152,7 @@ licensing information.
 [msrv-badge]: https://img.shields.io/crates/msrv/scryptenc-cli?style=for-the-badge&logo=rust
 [license-badge]: https://img.shields.io/crates/l/scryptenc-cli?style=for-the-badge
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
+[Homebrew]: https://brew.sh/
 [release page]: https://github.com/sorairolake/scryptenc-rs/releases
 [BUILD.adoc]: BUILD.adoc
 [`rscrypt(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt.1.html
