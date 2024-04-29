@@ -34,7 +34,7 @@ fraction = { version = "0.15.1", default-features = false }
 humantime = "2.1.0"
 once_cell = "1.19.0"
 scryptenc = { version = "0.9.5", path = "../scryptenc" }
-serde = { version = "1.0.198", features = ["derive"], optional = true }
+serde = { version = "1.0.199", features = ["derive"], optional = true }
 serde_json = { version = "1.0.116", optional = true }
 sysexits = "0.7.13"
 sysinfo = "0.30.11"
