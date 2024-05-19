@@ -83,7 +83,7 @@
 
 #![doc(html_root_url = "https://docs.rs/scryptenc/0.9.5/")]
 #![no_std]
-#![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
+#![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
 #![deny(missing_debug_implementations, missing_docs)]
