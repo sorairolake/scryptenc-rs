@@ -83,8 +83,8 @@ pub enum Command {
     Information(Information),
 }
 
-#[allow(clippy::struct_excessive_bools)]
 #[derive(Args, Debug)]
+#[allow(clippy::struct_excessive_bools)]
 #[command(
     group(ArgGroup::new("passphrase")),
     group(
@@ -209,8 +209,8 @@ pub struct Encrypt {
     pub output: Option<PathBuf>,
 }
 
-#[allow(clippy::struct_excessive_bools)]
 #[derive(Args, Debug)]
+#[allow(clippy::struct_excessive_bools)]
 #[command(
     group(ArgGroup::new("passphrase")),
     group(ArgGroup::new("resources").multiple(true).conflicts_with("force"))
@@ -318,8 +318,8 @@ impl Opt {
     }
 }
 
-#[allow(clippy::doc_markdown)]
 #[derive(Clone, Debug, ValueEnum)]
+#[allow(clippy::doc_markdown)]
 #[value(rename_all = "lower")]
 pub enum Shell {
     /// Bash.
