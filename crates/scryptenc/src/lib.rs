@@ -2,10 +2,8 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! The `scryptenc` crate is an implementation of the scrypt encrypted data
-//! format.
-//!
-//! The format is defined [here].
+//! The `scryptenc` crate is an implementation of the [scrypt encrypted data
+//! format].
 //!
 //! # Examples
 //!
@@ -79,7 +77,7 @@
 //! # }
 //! ```
 //!
-//! [here]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+//! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 
 #![doc(html_root_url = "https://docs.rs/scryptenc/0.9.5/")]
 #![no_std]

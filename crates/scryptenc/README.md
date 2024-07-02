@@ -13,9 +13,7 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 ![License][license-badge]
 
 **scryptenc-rs** ([`scryptenc`][version-url]) is an implementation of the
-scrypt encrypted data format.
-
-The format is defined [here].
+[scrypt encrypted data format].
 
 ## Usage
 
@@ -105,7 +103,7 @@ licensing information.
 [docs-badge]: https://img.shields.io/docsrs/scryptenc?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 [docs-url]: https://docs.rs/scryptenc
 [license-badge]: https://img.shields.io/crates/l/scryptenc?style=for-the-badge
-[here]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc

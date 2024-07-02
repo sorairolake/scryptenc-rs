@@ -12,7 +12,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 ![License][license-badge]
 
 **rscrypt** ([`scryptenc-cli`][version-url]) is a command-line utility for
-encrypt and decrypt files.
+encrypt and decrypt files using the [scrypt encrypted data format].
 
 This is a Rust implementation of `scrypt(1)`.
 
@@ -151,6 +151,7 @@ licensing information.
 [version-url]: https://crates.io/crates/scryptenc-cli
 [msrv-badge]: https://img.shields.io/crates/msrv/scryptenc-cli?style=for-the-badge&logo=rust
 [license-badge]: https://img.shields.io/crates/l/scryptenc-cli?style=for-the-badge
+[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [Homebrew]: https://brew.sh/
 [release page]: https://github.com/sorairolake/scryptenc-rs/releases
