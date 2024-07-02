@@ -4,7 +4,7 @@
 
 = rscrypt(1)
 // Specify in UTC.
-:docdate: 2024-01-19
+:docdate: 2024-07-02
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
 ifndef::revnumber[:mansource: rscrypt]
@@ -21,7 +21,8 @@ rscrypt - an utility for encrypt and decrypt files
 
 == DESCRIPTION
 
-*{manname}* is a command-line utility for encrypt and decrypt files.
+*{manname}* is a command-line utility for encrypt and decrypt files using the
+scrypt encrypted data format.
 
 == COMMANDS
 
