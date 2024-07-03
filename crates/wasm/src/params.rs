@@ -32,7 +32,7 @@ impl Params {
     }
 
     #[allow(clippy::missing_const_for_fn)]
-    /// Gets log2 of the scrypt parameter `N`.
+    /// Gets log₂ of the scrypt parameter `N`.
     #[must_use]
     #[inline]
     #[wasm_bindgen(js_name = logN, getter)]
