@@ -24,8 +24,8 @@ include = ["/LICENSES", "/README.md", "/src"]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-getrandom = { version = "0.2.14", features = ["js"] }
-scryptenc = { version = "0.9.5", path = "../scryptenc" }
+getrandom = { version = "0.2.15", features = ["js"] }
+scryptenc = { version = "0.9.6", path = "../scryptenc" }
 wasm-bindgen = "0.2.92"
 
 [dev-dependencies]

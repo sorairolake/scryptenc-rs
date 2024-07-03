@@ -25,7 +25,7 @@ impl<'m> Encryptor<'m> {
     /// Creates a new `Encryptor`.
     ///
     /// This uses the [recommended scrypt parameters] created by
-    /// [`Params::recommended`] which are sufficient for most use-cases.
+    /// [`Params::default`] which are sufficient for most use-cases.
     ///
     /// # Examples
     ///
@@ -40,7 +40,7 @@ impl<'m> Encryptor<'m> {
     ///
     /// [recommended scrypt parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Self {
-        Self::with_params(plaintext, passphrase, Params::recommended())
+        Self::with_params(plaintext, passphrase, Params::default())
     }
 
     #[allow(clippy::missing_panics_doc)]
@@ -177,8 +177,8 @@ impl<'m> Encryptor<'m> {
 
 /// Encrypts `plaintext` and into a newly allocated [`Vec`](alloc::vec::Vec).
 ///
-/// This uses the [recommended scrypt parameters] created by
-/// [`Params::recommended`] which are sufficient for most use-cases.
+/// This uses the [recommended scrypt parameters] created by [`Params::default`]
+/// which are sufficient for most use-cases.
 ///
 /// This is a convenience function for using [`Encryptor::new`] and
 /// [`Encryptor::encrypt_to_vec`].

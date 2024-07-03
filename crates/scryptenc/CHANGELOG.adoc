@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/scryptenc-v0.9.5\...scryptenc-v0.9.6[0.9.6] - 2024-07-03
+
+=== Changed
+
+* Change to use `Params::default` ({pull-request-url}/344[#344])
+
 == {compare-url}/scryptenc-v0.9.4\...scryptenc-v0.9.5[0.9.5] - 2024-04-16
 
 === Changed

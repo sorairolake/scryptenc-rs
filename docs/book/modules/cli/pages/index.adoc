@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 = rscrypt
-:project-url: https://github.com/sorairolake/scryptenc-rs
+:github-url: https://github.com
+:project-url: {github-url}/sorairolake/scryptenc-rs
 :shields-url: https://img.shields.io
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
@@ -11,6 +12,7 @@
 :version-url: https://crates.io/crates/scryptenc-cli
 :msrv-badge: {shields-url}/crates/msrv/scryptenc-cli?style=for-the-badge&logo=rust
 :license-badge: {shields-url}/crates/l/scryptenc-cli?style=for-the-badge
+:format-spec-url: {github-url}/Tarsnap/scrypt/blob/1.3.1/FORMAT
 
 image:{ci-badge}[CI,link={ci-url}]
 image:{version-badge}[Version,link={version-url}]
@@ -18,7 +20,8 @@ image:{msrv-badge}[MSRV]
 image:{license-badge}[License]
 
 *rscrypt* ({version-url}[`scryptenc-cli`]) is a command-line utility for
-encrypt and decrypt files.
+encrypt and decrypt files using the
+{format-spec-url}[scrypt encrypted data format].
 
 This is a Rust implementation of `scrypt(1)`.
 

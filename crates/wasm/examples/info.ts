@@ -4,7 +4,11 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-import { command, io, scryptenc } from "./deps.ts";
+import * as io from "@std/io";
+
+import * as command from "@cliffy/command";
+
+import * as scryptenc from "../pkg/scryptenc_wasm.js";
 
 import { VERSION } from "./version.ts";
 
