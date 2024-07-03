@@ -42,7 +42,7 @@ impl Params {
         Ok(params)
     }
 
-    /// Gets log2 of the scrypt parameter `N`.
+    /// Gets log₂ of the scrypt parameter `N`.
     ///
     /// # Examples
     ///
