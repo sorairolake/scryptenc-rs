@@ -8,9 +8,9 @@ use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
 use hmac::Mac;
 
 use crate::{
-    error::{Error, Result},
     format::{DerivedKey, Header},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, HEADER_SIZE, TAG_SIZE,
+    Aes256Ctr128BE, Error, HmacSha256, HmacSha256Key, HmacSha256Output, Result, HEADER_SIZE,
+    TAG_SIZE,
 };
 
 /// Decryptor for the scrypt encrypted data format.

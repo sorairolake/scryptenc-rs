@@ -17,10 +17,7 @@ use hmac::{
 use rand::{rngs::StdRng, Rng, SeedableRng};
 use sha2::{Digest, Sha256};
 
-use crate::{
-    error::{Error, Result},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, Params,
-};
+use crate::{Aes256Ctr128BE, Error, HmacSha256, HmacSha256Key, HmacSha256Output, Params, Result};
 
 /// A type alias for magic number of the scrypt encrypted data format.
 type MagicNumber = [u8; 6];

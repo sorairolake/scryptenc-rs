@@ -4,7 +4,7 @@
 
 //! The scrypt parameters.
 
-use crate::{error::Result, format::Header};
+use crate::{format::Header, Result};
 
 /// The scrypt parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
