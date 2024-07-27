@@ -62,6 +62,12 @@ impl std::error::Error for Error {
     }
 }
 
+impl From<InvalidParams> for Error {
+    fn from(err: InvalidParams) -> Self {
+        Self::InvalidParams(err)
+    }
+}
+
 /// A specialized [`Result`](result::Result) type for read and write operations
 /// for the scrypt encrypted data format.
 ///
@@ -338,6 +344,14 @@ mod tests {
             .source()
             .unwrap()
             .is::<MacError>());
+    }
+
+    #[test]
+    fn from_invalid_params_to_error() {
+        assert_eq!(
+            Error::from(InvalidParams),
+            Error::InvalidParams(InvalidParams)
+        );
     }
 
     #[test]

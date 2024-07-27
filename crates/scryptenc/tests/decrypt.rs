@@ -87,19 +87,19 @@ fn invalid_params() {
     {
         data[7] = 65;
         let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
-        assert_eq!(err, Error::InvalidParams(InvalidParams));
+        assert_eq!(err, InvalidParams.into());
     }
 
     {
         data[8..12].copy_from_slice(&u32::to_be_bytes(0));
         let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
-        assert_eq!(err, Error::InvalidParams(InvalidParams));
+        assert_eq!(err, InvalidParams.into());
     }
 
     {
         data[12..16].copy_from_slice(&u32::to_be_bytes(0));
         let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
-        assert_eq!(err, Error::InvalidParams(InvalidParams));
+        assert_eq!(err, InvalidParams.into());
     }
 }
 
