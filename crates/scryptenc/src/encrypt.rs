@@ -88,7 +88,10 @@ impl<'m> Encryptor<'m> {
     ///
     /// # Panics
     ///
-    /// Panics if `buf` and the encrypted data have different lengths.
+    /// Panics if any of the following are true:
+    ///
+    /// - `buf` and the encrypted data have different lengths.
+    /// - The end of the keystream will be reached with the given data length.
     ///
     /// # Examples
     ///
@@ -115,10 +118,11 @@ impl<'m> Encryptor<'m> {
 
             let bound = (HEADER_SIZE, encryptor.out_len() - TAG_SIZE);
 
+            let body = &mut buf[bound.0..bound.1];
+            body.copy_from_slice(encryptor.plaintext);
+
             let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &GenericArray::default());
-            cipher
-                .apply_keystream_b2b(encryptor.plaintext, &mut buf[bound.0..bound.1])
-                .expect("plaintext and ciphertext of the file body should have same lengths");
+            cipher.apply_keystream(body);
 
             buf[..bound.0].copy_from_slice(&encryptor.header.as_bytes());
 

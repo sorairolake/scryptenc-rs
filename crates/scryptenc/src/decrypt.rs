@@ -84,7 +84,10 @@ impl<'c> Decryptor<'c> {
     ///
     /// # Panics
     ///
-    /// Panics if `buf` and the decrypted data have different lengths.
+    /// Panics if any of the following are true:
+    ///
+    /// - `buf` and the decrypted data have different lengths.
+    /// - The end of the keystream will be reached with the given data length.
     ///
     /// # Examples
     ///
@@ -111,13 +114,12 @@ impl<'c> Decryptor<'c> {
 
             let input = [decryptor.header.as_bytes().as_slice(), decryptor.ciphertext].concat();
 
+            buf.copy_from_slice(decryptor.ciphertext);
+
             let mut cipher = Aes256Ctr128BE::new(&decryptor.dk.encrypt(), &GenericArray::default());
-            cipher
-                .apply_keystream_b2b(decryptor.ciphertext, buf)
-                .expect("plaintext and ciphertext of the file body should have same lengths");
+            cipher.apply_keystream(buf);
 
             verify_mac(&input, &decryptor.dk.mac(), &decryptor.mac)?;
-
             Ok(())
         };
         inner(self, buf.as_mut())

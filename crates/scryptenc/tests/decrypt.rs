@@ -36,7 +36,7 @@ fn success_to_vec() {
 }
 
 #[test]
-#[should_panic(expected = "plaintext and ciphertext of the file body should have same lengths")]
+#[should_panic(expected = "source slice length (14) does not match destination slice length (15)")]
 fn invalid_output_length() {
     let cipher = Decryptor::new(&TEST_DATA_ENC, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + 1];
