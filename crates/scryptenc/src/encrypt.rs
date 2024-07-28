@@ -74,7 +74,6 @@ impl<'m> Encryptor<'m> {
 
             header.compute_checksum();
             header.compute_mac(&dk.mac());
-
             Self {
                 header,
                 dk,
@@ -117,15 +116,12 @@ impl<'m> Encryptor<'m> {
             }
 
             let bound = (HEADER_SIZE, encryptor.out_len() - TAG_SIZE);
-
+            buf[..bound.0].copy_from_slice(&encryptor.header.as_bytes());
             let body = &mut buf[bound.0..bound.1];
             body.copy_from_slice(encryptor.plaintext);
 
             let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &GenericArray::default());
             cipher.apply_keystream(body);
-
-            buf[..bound.0].copy_from_slice(&encryptor.header.as_bytes());
-
             let mac = compute_mac(&buf[..bound.1], &encryptor.dk.mac());
             buf[bound.1..].copy_from_slice(&mac);
         };
