@@ -7,7 +7,3 @@
 Source repository:{blank}::
 
   https://github.com/sorairolake/scryptenc-rs
-
-The scrypt key derivation function and encryption utility:{blank}::
-
-  https://www.tarsnap.com/scrypt.html

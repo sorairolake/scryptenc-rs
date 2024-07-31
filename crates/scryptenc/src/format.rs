@@ -17,10 +17,7 @@ use hmac::{
 use rand::{rngs::StdRng, Rng, SeedableRng};
 use sha2::{Digest, Sha256};
 
-use crate::{
-    error::{Error, Result},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, Params,
-};
+use crate::{Aes256Ctr128BE, Error, HmacSha256, HmacSha256Key, HmacSha256Output, Params, Result};
 
 /// A type alias for magic number of the scrypt encrypted data format.
 type MagicNumber = [u8; 6];
@@ -136,9 +133,8 @@ impl Header {
                 .try_into()
                 .expect("size of `p` parameter should be 4 bytes"),
         );
-        let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
-            .map(Params::from)
-            .map_err(Error::InvalidParams)?;
+        let params =
+            scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN).map(Params::from)?;
         let salt = data[16..48]
             .try_into()
             .expect("size of salt should be 32 bytes");
@@ -226,8 +222,8 @@ impl DerivedKey {
 
     /// Creates a new `DerivedKey`.
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
-        let encrypt = Aes256Ctr128BEKey::clone_from_slice(&dk[..32]);
-        let mac = HmacSha256Key::clone_from_slice(&dk[32..]);
+        let encrypt = *Aes256Ctr128BEKey::from_slice(&dk[..32]);
+        let mac = *HmacSha256Key::from_slice(&dk[32..]);
         Self { encrypt, mac }
     }
 

@@ -8,9 +8,9 @@ use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
 use hmac::Mac;
 
 use crate::{
-    error::{Error, Result},
     format::{DerivedKey, Header},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, HEADER_SIZE, TAG_SIZE,
+    Aes256Ctr128BE, Error, HmacSha256, HmacSha256Key, HmacSha256Output, Result, HEADER_SIZE,
+    TAG_SIZE,
 };
 
 /// Decryptor for the scrypt encrypted data format.
@@ -50,7 +50,6 @@ impl<'c> Decryptor<'c> {
     pub fn new(ciphertext: &'c impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
         let inner = |ciphertext: &'c [u8], passphrase: &[u8]| -> Result<Self> {
             let mut header = Header::parse(ciphertext)?;
-
             header.verify_checksum(&ciphertext[48..64])?;
 
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
@@ -61,10 +60,9 @@ impl<'c> Decryptor<'c> {
             let dk = DerivedKey::new(dk);
 
             header.verify_mac(&dk.mac(), ciphertext[64..HEADER_SIZE].into())?;
-
             let (ciphertext, mac) =
                 ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
-            let mac = HmacSha256Output::clone_from_slice(mac);
+            let mac = *HmacSha256Output::from_slice(mac);
             Ok(Self {
                 header,
                 dk,
@@ -84,7 +82,10 @@ impl<'c> Decryptor<'c> {
     ///
     /// # Panics
     ///
-    /// Panics if `buf` and the decrypted data have different lengths.
+    /// Panics if any of the following are true:
+    ///
+    /// - `buf` and the decrypted data have different lengths.
+    /// - The end of the keystream will be reached with the given data length.
     ///
     /// # Examples
     ///
@@ -109,16 +110,12 @@ impl<'c> Decryptor<'c> {
                 mac.verify(tag).map_err(Error::InvalidMac)
             }
 
-            let input = [decryptor.header.as_bytes().as_slice(), decryptor.ciphertext].concat();
+            buf.copy_from_slice(decryptor.ciphertext);
 
             let mut cipher = Aes256Ctr128BE::new(&decryptor.dk.encrypt(), &GenericArray::default());
-            cipher
-                .apply_keystream_b2b(decryptor.ciphertext, buf)
-                .expect("plaintext and ciphertext of the file body should have same lengths");
-
-            verify_mac(&input, &decryptor.dk.mac(), &decryptor.mac)?;
-
-            Ok(())
+            cipher.apply_keystream(buf);
+            let data = [&decryptor.header.as_bytes(), decryptor.ciphertext].concat();
+            verify_mac(&data, &decryptor.dk.mac(), &decryptor.mac)
         };
         inner(self, buf.as_mut())
     }

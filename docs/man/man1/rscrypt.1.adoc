@@ -4,12 +4,13 @@
 
 = rscrypt(1)
 // Specify in UTC.
-:docdate: 2024-07-02
+:docdate: 2024-07-30
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
 ifndef::revnumber[:mansource: rscrypt]
 :manmanual: General Commands Manual
 ifndef::site-gen-antora[:includedir: ./include]
+:scrypt-url: https://www.tarsnap.com/scrypt.html
 
 == NAME
 
@@ -22,7 +23,7 @@ rscrypt - an utility for encrypt and decrypt files
 == DESCRIPTION
 
 *{manname}* is a command-line utility for encrypt and decrypt files using the
-scrypt encrypted data format.
+{scrypt-url}[scrypt encrypted data format].
 
 == COMMANDS
 

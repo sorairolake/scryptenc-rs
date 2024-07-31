@@ -36,7 +36,7 @@ fn success_to_vec() {
 }
 
 #[test]
-#[should_panic(expected = "plaintext and ciphertext of the file body should have same lengths")]
+#[should_panic(expected = "source slice length (14) does not match destination slice length (15)")]
 fn invalid_output_length() {
     let cipher = Decryptor::new(&TEST_DATA_ENC, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + 1];
@@ -87,19 +87,19 @@ fn invalid_params() {
     {
         data[7] = 65;
         let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
-        assert_eq!(err, Error::InvalidParams(InvalidParams));
+        assert_eq!(err, InvalidParams.into());
     }
 
     {
         data[8..12].copy_from_slice(&u32::to_be_bytes(0));
         let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
-        assert_eq!(err, Error::InvalidParams(InvalidParams));
+        assert_eq!(err, InvalidParams.into());
     }
 
     {
         data[12..16].copy_from_slice(&u32::to_be_bytes(0));
         let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
-        assert_eq!(err, Error::InvalidParams(InvalidParams));
+        assert_eq!(err, InvalidParams.into());
     }
 }
 
