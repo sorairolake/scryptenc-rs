@@ -4,12 +4,15 @@
 
 = rscrypt-info(1)
 // Specify in UTC.
-:docdate: 2024-04-15
+:docdate: 2024-08-01
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
 ifndef::revnumber[:mansource: rscrypt]
 :manmanual: General Commands Manual
 ifndef::site-gen-antora[:includedir: ./include]
+:ietf-datatracker: https://datatracker.ietf.org
+:datatracker-html-doc: {ietf-datatracker}/doc/html
+:rfc7914: {datatracker-html-doc}/rfc7914
 
 == NAME
 
@@ -21,8 +24,28 @@ rscrypt-info - provides information about the encryption parameters
 
 == DESCRIPTION
 
-This command provides information about the encryption parameters. The result
-will be write to stdout.
+This command provides information about the encryption parameters from _FILE_.
+The result will be write to stdout. If _FILE_ is "-", data will be read from
+stdin.
+
+The encryption parameters outputs either a human-readable string or JSON.
+
+.List of the encryption parameters
+|===
+|Parameter |Description
+
+|`N` (`costParameter`)
+|The CPU/Memory cost parameter
+
+|`r` (`blockSize`)
+|The block size
+
+|`p` (`parallelizationParameter`)
+|The parallelization parameter
+|===
+
+The encryption parameters represents the same thing as the scrypt parameters as
+defined in {rfc7914}[RFC 7914].
 
 == POSITIONAL ARGUMENTS
 
