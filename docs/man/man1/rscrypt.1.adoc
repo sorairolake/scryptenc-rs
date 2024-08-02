@@ -4,7 +4,7 @@
 
 = rscrypt(1)
 // Specify in UTC.
-:docdate: 2024-07-30
+:docdate: 2024-08-02
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
 ifndef::revnumber[:mansource: rscrypt]
@@ -57,7 +57,7 @@ rscrypt - an utility for encrypt and decrypt files
 
 *--generate-completion* _SHELL_::
 
-  Generate shell completion. The completion is output to stdout.
+  Generate shell completion. The completion is output to standard output.
 
   The possible values are:{blank}:::
 

@@ -40,7 +40,7 @@ const ENC_AFTER_LONG_HELP: &str = "See `rscrypt-enc(1)` for more details.";
 const DEC_AFTER_LONG_HELP: &str = "See `rscrypt-dec(1)` for more details.";
 
 const INFO_AFTER_LONG_HELP: &str = concat!(
-    "The result will be write to stdout.\n",
+    "The result will be write to standard output.\n",
     '\n',
     "See `rscrypt-info(1)` for more details."
 );
@@ -60,7 +60,7 @@ const INFO_AFTER_LONG_HELP: &str = concat!(
 pub struct Opt {
     /// Generate shell completion.
     ///
-    /// The completion is output to stdout.
+    /// The completion is output to standard output.
     #[arg(long, value_enum, value_name("SHELL"))]
     pub generate_completion: Option<Shell>,
 
@@ -166,7 +166,7 @@ pub struct Encrypt {
     #[arg(long, group("passphrase"))]
     pub passphrase_from_tty: bool,
 
-    /// Read the passphrase from stdin.
+    /// Read the passphrase from standard input.
     #[arg(long, group("passphrase"))]
     pub passphrase_from_stdin: bool,
 
@@ -198,13 +198,14 @@ pub struct Encrypt {
 
     /// Input file.
     ///
-    /// If "-" is specified, data will be read from stdin.
+    /// If "-" is specified, data will be read from standard input.
     #[arg(value_name("INFILE"), value_hint(ValueHint::FilePath))]
     pub input: PathBuf,
 
     /// Output file.
     ///
-    /// If [OUTFILE] is not specified, the result will be write to stdout.
+    /// If [OUTFILE] is not specified, the result will be write to standard
+    /// output.
     #[arg(value_name("OUTFILE"), value_hint(ValueHint::FilePath))]
     pub output: Option<PathBuf>,
 }
@@ -253,7 +254,7 @@ pub struct Decrypt {
     #[arg(long, group("passphrase"))]
     pub passphrase_from_tty: bool,
 
-    /// Read the passphrase from stdin.
+    /// Read the passphrase from standard input.
     #[arg(long, group("passphrase"))]
     pub passphrase_from_stdin: bool,
 
@@ -281,13 +282,14 @@ pub struct Decrypt {
 
     /// Input file.
     ///
-    /// If "-" is specified, data will be read from stdin.
+    /// If "-" is specified, data will be read from standard input.
     #[arg(value_name("INFILE"), value_hint(ValueHint::FilePath))]
     pub input: PathBuf,
 
     /// Output file.
     ///
-    /// If [OUTFILE] is not specified, the result will be write to stdout.
+    /// If [OUTFILE] is not specified, the result will be write to standard
+    /// output.
     #[arg(value_name("OUTFILE"), value_hint(ValueHint::FilePath))]
     pub output: Option<PathBuf>,
 }
@@ -301,7 +303,7 @@ pub struct Information {
 
     /// Input file.
     ///
-    /// If "-" is specified, data will be read from stdin.
+    /// If "-" is specified, data will be read from standard input.
     #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
     pub input: PathBuf,
 }

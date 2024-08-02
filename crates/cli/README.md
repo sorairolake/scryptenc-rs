@@ -86,7 +86,7 @@ Output:
 
 ### Generate shell completion
 
-`--generate-completion` option generates shell completions to stdout.
+`--generate-completion` option generates shell completions to standard output.
 
 The following shells are supported:
 
