@@ -4,7 +4,7 @@
 
 = rscrypt-enc(1)
 // Specify in UTC.
-:docdate: 2024-04-15
+:docdate: 2024-08-02
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
 ifndef::revnumber[:mansource: rscrypt]
@@ -21,18 +21,23 @@ rscrypt-enc - encrypt files
 
 == DESCRIPTION
 
-This command encrypt files.
+This command encrypts _INFILE_ to _OUTFILE_. If _INFILE_ is "-", data will be
+read from standard input. If _OUTFILE_ is not specified, the result will be
+write to standard output.
+
+The passphrase used for encryption can be read from either `/dev/tty`, standard
+input, an environment variable, or a file.
 
 == POSITIONAL ARGUMENTS
 
 _INFILE_::
 
-  Input file. If "-" is specified, data will be read from stdin.
+  Input file. If "-" is specified, data will be read from standard input.
 
 _OUTFILE_::
 
   Output file. If _OUTFILE_ is not specified, the result will be write to
-  stdout.
+  standard output.
 
 == OPTIONS
 
@@ -75,16 +80,16 @@ _OUTFILE_::
 
 *--passphrase-from-tty*::
 
-  Read the passphrase from /dev/tty. This is the default behavior.
+  Read the passphrase from `/dev/tty`. This is the default behavior.
 
 *--passphrase-from-stdin*::
 
-  Read the passphrase from stdin. This option cannot be used if _INFILE_ is
-  also stdin.
+  Read the passphrase from standard input. This option cannot be used if
+  _INFILE_ is also standard input.
 
 *--passphrase-from-tty-once*::
 
-  Read the passphrase from /dev/tty only once.
+  Read the passphrase from `/dev/tty` only once.
 
 *--passphrase-from-env* _VAR_::
 
