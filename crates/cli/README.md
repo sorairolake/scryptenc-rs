@@ -26,8 +26,8 @@ This is a Rust implementation of `scrypt(1)`.
 cargo install scryptenc-cli
 ```
 
-If you want to enable optimizations such as LTO, set them using [environment
-variables].
+If you want to enable optimizations such as LTO, set them using
+[environment variables].
 
 ### From binaries
 
