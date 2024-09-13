@@ -49,6 +49,15 @@ image::crates/cli/assets/screenshot.webp[Screenshot of rscrypt]
 |Wasm bindings for scryptenc.
 |===
 
+== Source code
+
+The upstream repository is available at
+https://github.com/sorairolake/scryptenc-rs.git.
+
+.The source code is also available at
+* https://gitlab.com/sorairolake/scryptenc-rs.git
+* https://codeberg.org/sorairolake/scryptenc-rs.git
+
 == Contributing
 
 Please see link:CONTRIBUTING.adoc[].

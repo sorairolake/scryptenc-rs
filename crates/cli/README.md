@@ -113,6 +113,16 @@ Please see the following:
 - [`rscrypt-info(1)`]
 - [`rscrypt-help(1)`]
 
+## Source code
+
+The upstream repository is available at
+<https://github.com/sorairolake/scryptenc-rs.git>.
+
+The source code is also available at:
+
+- <https://gitlab.com/sorairolake/scryptenc-rs.git>
+- <https://codeberg.org/sorairolake/scryptenc-rs.git>
+
 ## Changelog
 
 Please see [CHANGELOG.adoc].
