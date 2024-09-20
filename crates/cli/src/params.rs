@@ -2,12 +2,14 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use std::time::{Duration, Instant};
+use std::{
+    sync::LazyLock,
+    time::{Duration, Instant},
+};
 
 use anyhow::Context;
 use byte_unit::UnitType;
 use fraction::{Fraction, GenericFraction, ToPrimitive};
-use once_cell::sync::Lazy;
 use scryptenc::scrypt;
 use sysinfo::System;
 use thiserror::Error;
@@ -18,8 +20,8 @@ type U128Fraction = GenericFraction<u128>;
 
 const SECOND: Duration = Duration::from_secs(1);
 
-static SYSTEM: Lazy<System> = Lazy::new(System::new_all);
-static OPERATIONS_PER_SECOND: Lazy<u64> = Lazy::new(get_scrypt_performance);
+static SYSTEM: LazyLock<System> = LazyLock::new(System::new_all);
+static OPERATIONS_PER_SECOND: LazyLock<u64> = LazyLock::new(get_scrypt_performance);
 
 /// The error type for this module.
 #[derive(Debug, Error)]

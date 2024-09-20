@@ -16,6 +16,13 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 == {compare-url}/scryptenc-v0.9.8\...HEAD[Unreleased]
 
+=== Changed
+
+* Make `Error` trait available in `no_std` mode ({pull-request-url}/432[#432])
+* Bump MSRV to 1.81.0 ({pull-request-url}/432[#432])
+
+== {compare-url}/scryptenc-v0.9.8\...HEAD[Unreleased]
+
 === Fixed
 
 * Change `Encryptor::encrypt` and `Decryptor::decrypt` to take the buffer to
