@@ -38,7 +38,7 @@ default: build
 
 # Apply lint suggestions
 @clippy-fix:
-    cargo clippy --workspace --fix --allow-dirty --allow-staged --lib --bins --examples --tests -- -D warnings
+    cargo +nightly clippy --workspace --fix --allow-dirty --allow-staged -- -D warnings
 
 # Build examples for the Wasm bindings
 @build-wasm-examples:
