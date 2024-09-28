@@ -12,9 +12,8 @@
 
 extern crate test;
 
-use test::Bencher;
-
 use scryptenc::Params;
+use test::Bencher;
 
 // Generated using `scrypt` version 1.3.1.
 const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.scrypt");

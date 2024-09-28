@@ -101,15 +101,14 @@ mod error;
 mod format;
 mod params;
 
-pub use hmac;
-pub use scrypt;
-
 use aes::Aes256;
 use ctr::Ctr128BE;
+pub use hmac;
 use hmac::{
     digest::{generic_array::GenericArray, typenum::U32, Output},
     Hmac,
 };
+pub use scrypt;
 use sha2::Sha256;
 
 #[cfg(feature = "alloc")]
