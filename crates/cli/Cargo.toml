@@ -37,7 +37,7 @@ scryptenc = { version = "0.9.8", path = "../scryptenc" }
 serde = { version = "1.0.210", features = ["derive"], optional = true }
 serde_json = { version = "1.0.128", optional = true }
 sysexits = "0.8.2"
-sysinfo = "0.31.4"
+sysinfo = "0.32.0"
 thiserror = "1.0.64"
 
 [dev-dependencies]
