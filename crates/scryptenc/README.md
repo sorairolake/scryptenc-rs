@@ -24,30 +24,6 @@ Add this to your `Cargo.toml`:
 scryptenc = "0.9.8"
 ```
 
-### Example
-
-```rust
-use scryptenc::Params;
-
-let data = b"Hello, world!\n";
-let passphrase = "passphrase";
-
-// Encrypt `data` using `passphrase`.
-let ciphertext = scryptenc::encrypt(data, passphrase);
-assert_ne!(ciphertext, data);
-
-// And extract the scrypt parameters from it.
-let params = Params::new(&ciphertext).unwrap();
-assert_eq!(params.log_n(), 17);
-assert_eq!(params.n(), u64::pow(2, 17));
-assert_eq!(params.r(), 8);
-assert_eq!(params.p(), 1);
-
-// And decrypt it back.
-let plaintext = scryptenc::decrypt(ciphertext, passphrase).unwrap();
-assert_eq!(plaintext, data);
-```
-
 ### Crate features
 
 #### `alloc`
