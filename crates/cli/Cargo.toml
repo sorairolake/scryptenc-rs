@@ -33,9 +33,9 @@ dialoguer.workspace = true
 fraction = { version = "0.15.3", default-features = false }
 humantime = "2.1.0"
 once_cell = "1.20.2"
-scryptenc = { version = "0.9.8", path = "../scryptenc" }
+scryptenc = { version = "0.9.9", path = "../scryptenc" }
 serde = { version = "1.0.210", features = ["derive"], optional = true }
-serde_json = { version = "1.0.128", optional = true }
+serde_json = { version = "1.0.131", optional = true }
 sysexits = "0.8.2"
 sysinfo = "0.32.0"
 thiserror = "1.0.64"
