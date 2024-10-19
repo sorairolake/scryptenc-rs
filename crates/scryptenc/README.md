@@ -21,31 +21,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-scryptenc = "0.9.8"
-```
-
-### Example
-
-```rust
-use scryptenc::Params;
-
-let data = b"Hello, world!\n";
-let passphrase = "passphrase";
-
-// Encrypt `data` using `passphrase`.
-let ciphertext = scryptenc::encrypt(data, passphrase);
-assert_ne!(ciphertext, data);
-
-// And extract the scrypt parameters from it.
-let params = Params::new(&ciphertext).unwrap();
-assert_eq!(params.log_n(), 17);
-assert_eq!(params.n(), u64::pow(2, 17));
-assert_eq!(params.r(), 8);
-assert_eq!(params.p(), 1);
-
-// And decrypt it back.
-let plaintext = scryptenc::decrypt(ciphertext, passphrase).unwrap();
-assert_eq!(plaintext, data);
+scryptenc = "0.9.9"
 ```
 
 ### Crate features
@@ -75,6 +51,16 @@ See the [documentation][docs-url] for more details.
 ## Minimum supported Rust version
 
 The minimum supported Rust version (MSRV) of this library is v1.74.0.
+
+## Source code
+
+The upstream repository is available at
+<https://github.com/sorairolake/scryptenc-rs.git>.
+
+The source code is also available at:
+
+- <https://gitlab.com/sorairolake/scryptenc-rs.git>
+- <https://codeberg.org/sorairolake/scryptenc-rs.git>
 
 ## Changelog
 

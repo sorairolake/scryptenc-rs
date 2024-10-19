@@ -5,6 +5,5 @@
 .Library
 * xref:index.adoc[Introduction]
 * xref:usage.adoc[]
-* xref:examples.adoc[]
 * https://docs.rs/scryptenc[API Reference]
 * xref:changelog.adoc[]

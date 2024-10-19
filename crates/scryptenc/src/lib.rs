@@ -79,7 +79,7 @@
 //!
 //! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.9.8/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.9.9/")]
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
@@ -101,15 +101,14 @@ mod error;
 mod format;
 mod params;
 
-pub use hmac;
-pub use scrypt;
-
 use aes::Aes256;
 use ctr::Ctr128BE;
+pub use hmac;
 use hmac::{
     digest::{generic_array::GenericArray, typenum::U32, Output},
     Hmac,
 };
+pub use scrypt;
 use sha2::Sha256;
 
 #[cfg(feature = "alloc")]

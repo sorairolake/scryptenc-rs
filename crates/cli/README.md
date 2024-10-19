@@ -26,8 +26,8 @@ This is a Rust implementation of `scrypt(1)`.
 cargo install scryptenc-cli
 ```
 
-If you want to enable optimizations such as LTO, set them using [environment
-variables].
+If you want to enable optimizations such as LTO, set them using
+[environment variables].
 
 ### From binaries
 
@@ -113,6 +113,16 @@ Please see the following:
 - [`rscrypt-info(1)`]
 - [`rscrypt-help(1)`]
 
+## Source code
+
+The upstream repository is available at
+<https://github.com/sorairolake/scryptenc-rs.git>.
+
+The source code is also available at:
+
+- <https://gitlab.com/sorairolake/scryptenc-rs.git>
+- <https://codeberg.org/sorairolake/scryptenc-rs.git>
+
 ## Changelog
 
 Please see [CHANGELOG.adoc].
@@ -130,10 +140,10 @@ of the [`scryptenc`] crate.
 
 Copyright &copy; 2022&ndash;2024 Shun Sakai (see [AUTHORS.adoc])
 
-1. This program is distributed under the terms of the _GNU General Public
-   License v3.0 or later_.
-2. Some files are distributed under the terms of the _Creative Commons
-   Attribution 4.0 International Public License_.
+1.  This program is distributed under the terms of the _GNU General Public
+    License v3.0 or later_.
+2.  Some files are distributed under the terms of the _Creative Commons
+    Attribution 4.0 International Public License_.
 
 This project is compliant with version 3.2 of the [_REUSE Specification_]. See
 copyright notices of individual files for more details on copyright and

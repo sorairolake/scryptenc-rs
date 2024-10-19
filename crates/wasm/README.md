@@ -35,32 +35,6 @@ wasm-pack build
 
 This will generate build artifacts in the `pkg` directory.
 
-### Example
-
-```ts
-import * as assert from "jsr:@std/assert";
-
-import * as scryptenc from "./pkg/scryptenc_wasm.js";
-
-const data = new TextEncoder().encode("Hello, world!\n");
-const passphrase = new TextEncoder().encode("passphrase");
-
-// Encrypt `data` using `passphrase`.
-const ciphertext = scryptenc.encrypt(data, passphrase);
-assert.assertNotEquals(ciphertext, data);
-
-// And extract the scrypt parameters from it.
-const params = new scryptenc.Params(ciphertext);
-assert.assertEquals(params.logN, 17);
-assert.assertEquals(params.n, BigInt(2 ** 17));
-assert.assertEquals(params.r, 8);
-assert.assertEquals(params.p, 1);
-
-// And decrypt it back.
-const plaintext = scryptenc.decrypt(ciphertext, passphrase);
-assert.assertEquals(plaintext, data);
-```
-
 ### Documentation
 
 See the [documentation][docs-url] for more details.
@@ -68,6 +42,16 @@ See the [documentation][docs-url] for more details.
 ## Minimum supported Rust version
 
 The minimum supported Rust version (MSRV) of this library is v1.74.0.
+
+## Source code
+
+The upstream repository is available at
+<https://github.com/sorairolake/scryptenc-rs.git>.
+
+The source code is also available at:
+
+- <https://gitlab.com/sorairolake/scryptenc-rs.git>
+- <https://codeberg.org/sorairolake/scryptenc-rs.git>
 
 ## Changelog
 
