@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/scryptenc-v0.9.8\...HEAD[Unreleased]
+== {compare-url}/scryptenc-v0.9.8\...scryptenc-v0.9.9[0.9.9] - 2024-10-19
 
 === Fixed
 
