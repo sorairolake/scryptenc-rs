@@ -45,7 +45,7 @@ impl Params {
         inner(ciphertext.as_ref())
     }
 
-    /// Gets log₂ of the scrypt parameter `N`.
+    /// Gets log<sub>2</sub> of the scrypt parameter `N`.
     ///
     /// # Examples
     ///
