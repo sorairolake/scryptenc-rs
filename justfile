@@ -40,6 +40,10 @@ default: build
 @clippy-fix:
     cargo +nightly clippy --workspace --fix --allow-dirty --allow-staged -- -D warnings
 
+# Run tests for the Wasm bindings
+@wasm-test:
+    wasm-pack test --node crates/wasm
+
 # Build examples for the Wasm bindings
 @build-wasm-examples:
     wasm-pack build -t deno crates/wasm
