@@ -37,6 +37,7 @@ impl Params {
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
+    #[inline]
     pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
         let inner = |ciphertext: &[u8]| -> Result<Self> {
             let params = Header::parse(ciphertext).map(|h| h.params())?;
@@ -119,6 +120,7 @@ impl Params {
 }
 
 impl From<Params> for scrypt::Params {
+    #[inline]
     fn from(params: Params) -> Self {
         Self::new(
             params.log_n(),
@@ -131,6 +133,7 @@ impl From<Params> for scrypt::Params {
 }
 
 impl From<scrypt::Params> for Params {
+    #[inline]
     fn from(params: scrypt::Params) -> Self {
         let (log_n, r, p) = (params.log_n(), params.r(), params.p());
         Self { log_n, r, p }

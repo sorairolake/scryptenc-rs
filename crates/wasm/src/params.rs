@@ -24,6 +24,7 @@ impl Params {
     /// - The magic number is invalid.
     /// - The version number is the unrecognized scrypt version number.
     /// - The scrypt parameters are invalid.
+    #[inline]
     #[wasm_bindgen(constructor)]
     pub fn new(ciphertext: &[u8]) -> Result<Params, JsError> {
         scryptenc::Params::new(ciphertext)

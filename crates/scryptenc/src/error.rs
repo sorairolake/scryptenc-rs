@@ -63,6 +63,7 @@ impl std::error::Error for Error {
 }
 
 impl From<InvalidParams> for Error {
+    #[inline]
     fn from(err: InvalidParams) -> Self {
         Self::InvalidParams(err)
     }
