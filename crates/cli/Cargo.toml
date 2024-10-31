@@ -27,7 +27,7 @@ path = "src/main.rs"
 anyhow.workspace = true
 byte-unit = "5.1.4"
 clap = { workspace = true, features = ["wrap_help"] }
-clap_complete = "4.5.35"
+clap_complete = "4.5.36"
 clap_complete_nushell = "4.5.4"
 dialoguer.workspace = true
 fraction = { version = "0.15.3", default-features = false }
@@ -36,7 +36,7 @@ once_cell = "1.20.2"
 scryptenc = { version = "0.9.9", path = "../scryptenc" }
 serde = { version = "1.0.214", features = ["derive"], optional = true }
 serde_json = { version = "1.0.132", optional = true }
-sysexits = "0.8.2"
+sysexits = "0.8.4"
 sysinfo = "0.32.0"
 thiserror = "1.0.65"
 
