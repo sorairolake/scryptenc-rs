@@ -28,7 +28,7 @@ jobs:
           - stable
         include:
           - target: x86_64-unknown-linux-gnu
-            os: ubuntu-22.04
+            os: ubuntu-24.04
           - target: aarch64-apple-darwin
             os: macos-14
           - target: x86_64-pc-windows-msvc
@@ -70,7 +70,7 @@ jobs:
           - stable
         include:
           - target: x86_64-unknown-linux-gnu
-            os: ubuntu-22.04
+            os: ubuntu-24.04
           - target: aarch64-apple-darwin
             os: macos-14
           - target: x86_64-pc-windows-msvc
@@ -105,7 +105,7 @@ jobs:
 
   wasm-check:
     name: Check Wasm bindings
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         toolchain:
@@ -133,7 +133,7 @@ jobs:
 
   wasm-test:
     name: Test Wasm bindings
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         toolchain:
@@ -161,7 +161,7 @@ jobs:
 
   rustfmt:
     name: Rustfmt
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -177,7 +177,7 @@ jobs:
 
   clippy:
     name: Clippy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -195,7 +195,7 @@ jobs:
 
   doc:
     name: Documentation
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -210,7 +210,7 @@ jobs:
 
   benchmark:
     name: Benchmark
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -225,7 +225,7 @@ jobs:
 
   wasm-examples:
     name: Examples for the Wasm bindings
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
