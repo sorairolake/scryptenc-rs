@@ -22,7 +22,7 @@ default: build
 
 # Run tests
 @test:
-    cargo test
+    cargo test -p scryptenc -p scryptenc-cli
 
 # Run the formatter
 @fmt:

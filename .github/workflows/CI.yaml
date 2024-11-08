@@ -93,9 +93,9 @@ jobs:
         with:
           key: ${{ matrix.target }}
       - name: Run tests
-        run: cargo test --target ${{ matrix.target }}
+        run: cargo test -p scryptenc -p scryptenc-cli --target ${{ matrix.target }}
       - name: Run tests (no default features)
-        run: cargo test --target ${{ matrix.target }} --no-default-features
+        run: cargo test -p scryptenc -p scryptenc-cli --target ${{ matrix.target }} --no-default-features
       - name: Run tests (`alloc` feature)
         run: cargo test -p scryptenc --target ${{ matrix.target }} --no-default-features -F alloc
       - name: Run tests (`serde` feature)
