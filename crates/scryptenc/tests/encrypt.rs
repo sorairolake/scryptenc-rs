@@ -119,6 +119,9 @@ fn log_n() {
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
     cipher.encrypt(&mut buf);
     assert_eq!(buf[7], 4);
+
+    let params = scryptenc::Params::new(buf).unwrap();
+    assert_eq!(params.log_n(), 4);
 }
 
 #[test]
@@ -131,6 +134,9 @@ fn r() {
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
     cipher.encrypt(&mut buf);
     assert_eq!(&buf[8..12], u32::to_be_bytes(10));
+
+    let params = scryptenc::Params::new(buf).unwrap();
+    assert_eq!(params.r(), 10);
 }
 
 #[test]
@@ -143,6 +149,9 @@ fn p() {
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
     cipher.encrypt(&mut buf);
     assert_eq!(&buf[12..16], u32::to_be_bytes(16));
+
+    let params = scryptenc::Params::new(buf).unwrap();
+    assert_eq!(params.p(), 16);
 }
 
 #[test]

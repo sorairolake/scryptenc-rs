@@ -49,7 +49,6 @@ pub const TAG_SIZE: usize = <HmacSha256 as OutputSizeUser>::OutputSize::USIZE;
 
 /// Version of the scrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-#[non_exhaustive]
 pub enum Version {
     /// Version 0.
     #[default]

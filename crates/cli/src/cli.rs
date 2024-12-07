@@ -38,11 +38,7 @@ const ENC_AFTER_LONG_HELP: &str = "See `rscrypt-enc(1)` for more details.";
 
 const DEC_AFTER_LONG_HELP: &str = "See `rscrypt-dec(1)` for more details.";
 
-const INFO_AFTER_LONG_HELP: &str = concat!(
-    "The result will be write to standard output.\n",
-    '\n',
-    "See `rscrypt-info(1)` for more details."
-);
+const INFO_AFTER_LONG_HELP: &str = "See `rscrypt-info(1)` for more details.";
 
 #[derive(Debug, Parser)]
 #[command(

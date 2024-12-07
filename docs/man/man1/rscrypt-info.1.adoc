@@ -4,7 +4,7 @@
 
 = rscrypt-info(1)
 // Specify in UTC.
-:docdate: 2024-08-02
+:docdate: 2024-12-07
 :doctype: manpage
 ifdef::revnumber[:mansource: rscrypt {revnumber}]
 ifndef::revnumber[:mansource: rscrypt]
@@ -25,8 +25,7 @@ rscrypt-info - provides information about the encryption parameters
 == DESCRIPTION
 
 This command provides information about the encryption parameters from _FILE_.
-The result will be write to standard output. If _FILE_ is "-", data will be
-read from standard input.
+If _FILE_ is "-", data will be read from standard input.
 
 The encryption parameters outputs either a human-readable string or JSON.
 

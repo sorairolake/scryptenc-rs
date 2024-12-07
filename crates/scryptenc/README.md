@@ -15,6 +15,8 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 **scryptenc-rs** ([`scryptenc`][version-url]) is an implementation of the
 [scrypt encrypted data format].
 
+This crate supports the scrypt version 0 file format.
+
 ## Usage
 
 Add this to your `Cargo.toml`:
