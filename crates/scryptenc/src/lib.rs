@@ -79,7 +79,7 @@
 //! # }
 //! ```
 //!
-//! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+//! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.2/FORMAT
 
 #![doc(html_root_url = "https://docs.rs/scryptenc/0.9.9/")]
 #![no_std]

@@ -153,7 +153,7 @@ licensing information.
 [version-url]: https://crates.io/crates/scryptenc-cli
 [msrv-badge]: https://img.shields.io/crates/msrv/scryptenc-cli?style=for-the-badge&logo=rust
 [license-badge]: https://img.shields.io/crates/l/scryptenc-cli?style=for-the-badge
-[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.2/FORMAT
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/scryptenc-rs/releases
 [BUILD.adoc]: BUILD.adoc

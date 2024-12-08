@@ -91,7 +91,7 @@ licensing information.
 [docs-badge]: https://img.shields.io/docsrs/scryptenc?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 [docs-url]: https://docs.rs/scryptenc
 [license-badge]: https://img.shields.io/crates/l/scryptenc?style=for-the-badge
-[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.2/FORMAT
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
