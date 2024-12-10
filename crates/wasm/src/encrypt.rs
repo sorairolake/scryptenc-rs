@@ -9,8 +9,8 @@ use wasm_bindgen::{prelude::wasm_bindgen, JsError};
 
 /// Encrypts `plaintext` and into a newly allocated `Uint8Array`.
 ///
-/// This uses the recommended scrypt parameters which are sufficient for most
-/// use-cases.
+/// This uses the recommended scrypt parameters according to the OWASP Password
+/// Storage Cheat Sheet.
 #[must_use]
 #[inline]
 #[wasm_bindgen]
