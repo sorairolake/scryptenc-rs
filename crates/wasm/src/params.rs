@@ -13,7 +13,6 @@ pub struct Params(scryptenc::Params);
 
 #[wasm_bindgen]
 impl Params {
-    #[allow(clippy::use_self)]
     /// Creates a new instance of the scrypt parameters from `ciphertext`.
     ///
     /// # Errors
@@ -26,7 +25,7 @@ impl Params {
     /// - The scrypt parameters are invalid.
     #[inline]
     #[wasm_bindgen(constructor)]
-    pub fn new(ciphertext: &[u8]) -> Result<Params, JsError> {
+    pub fn new(ciphertext: &[u8]) -> Result<Self, JsError> {
         scryptenc::Params::new(ciphertext)
             .map(Self)
             .map_err(JsError::from)
