@@ -60,6 +60,10 @@ https://github.com/sorairolake/scryptenc-rs.git.
 
 Please see link:CONTRIBUTING.adoc[].
 
+== Home page
+
+https://sorairolake.github.io/scryptenc-rs/
+
 == License
 
 Copyright (C) 2022-2024 Shun Sakai (see link:AUTHORS.adoc[])

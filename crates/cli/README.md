@@ -134,6 +134,10 @@ Please see [CONTRIBUTING.adoc].
 This program is inspired by the [scrypt encryption utility], and built on top
 of the [`scryptenc`] crate.
 
+## Home page
+
+<https://sorairolake.github.io/scryptenc-rs/>
+
 ## License
 
 Copyright (C) 2022-2024 Shun Sakai (see [AUTHORS.adoc])
