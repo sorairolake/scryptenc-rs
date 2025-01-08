@@ -5,9 +5,9 @@
 = rscrypt-help(1)
 // Specify in UTC.
 :docdate: 2023-07-17
+:revnumber: 0.7.13
 :doctype: manpage
-ifdef::revnumber[:mansource: rscrypt {revnumber}]
-ifndef::revnumber[:mansource: rscrypt]
+:mansource: rscrypt {revnumber}
 :manmanual: General Commands Manual
 ifndef::site-gen-antora[:includedir: ./include]
 
