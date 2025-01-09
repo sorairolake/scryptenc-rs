@@ -16,8 +16,6 @@ encrypt and decrypt files using the [scrypt encrypted data format].
 
 This is a Rust implementation of `scrypt(1)`.
 
-![Screenshot of rscrypt](assets/screenshot.webp)
-
 ## Installation
 
 ### From source
@@ -136,9 +134,13 @@ Please see [CONTRIBUTING.adoc].
 This program is inspired by the [scrypt encryption utility], and built on top
 of the [`scryptenc`] crate.
 
+## Home page
+
+<https://sorairolake.github.io/scryptenc-rs/>
+
 ## License
 
-Copyright &copy; 2022&ndash;2024 Shun Sakai (see [AUTHORS.adoc])
+Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
 
 1.  This program is distributed under the terms of the _GNU General Public
     License v3.0 or later_.
@@ -155,7 +157,7 @@ licensing information.
 [version-url]: https://crates.io/crates/scryptenc-cli
 [msrv-badge]: https://img.shields.io/crates/msrv/scryptenc-cli?style=for-the-badge&logo=rust
 [license-badge]: https://img.shields.io/crates/l/scryptenc-cli?style=for-the-badge
-[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.2/FORMAT
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/scryptenc-rs/releases
 [BUILD.adoc]: BUILD.adoc

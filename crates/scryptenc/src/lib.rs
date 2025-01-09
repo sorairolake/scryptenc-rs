@@ -5,6 +5,8 @@
 //! The `scryptenc` crate is an implementation of the [scrypt encrypted data
 //! format].
 //!
+//! This crate supports the scrypt version 0 file format.
+//!
 //! # Examples
 //!
 //! ## Encryption and decryption
@@ -46,13 +48,13 @@
 //! let cipher = Encryptor::with_params(data, passphrase, params);
 //! let mut buf = [u8::default(); 142];
 //! cipher.encrypt(&mut buf);
-//! assert_ne!(buf, data.as_slice());
+//! assert_ne!(buf.as_slice(), data);
 //!
 //! // And decrypt it back.
 //! let cipher = Decryptor::new(&buf, passphrase).unwrap();
 //! let mut buf = [u8::default(); 14];
 //! cipher.decrypt(&mut buf).unwrap();
-//! assert_eq!(buf, data.as_slice());
+//! assert_eq!(buf, *data);
 //! ```
 //!
 //! ## Extracting the scrypt parameters in the encrypted data
@@ -77,17 +79,13 @@
 //! # }
 //! ```
 //!
-//! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
+//! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.2/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.9.9/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.9.10/")]
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
-#![forbid(unsafe_code)]
-#![deny(missing_debug_implementations, missing_docs)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
+#![deny(missing_docs)]
 
 #[cfg(feature = "alloc")]
 #[macro_use]

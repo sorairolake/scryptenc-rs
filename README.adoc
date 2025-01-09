@@ -12,7 +12,7 @@
 :npm-package: {npm-url}/package
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/scryptenc-rs/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
-:format-spec-url: {github-url}/Tarsnap/scrypt/blob/1.3.1/FORMAT
+:format-spec-url: {github-url}/Tarsnap/scrypt/blob/1.3.2/FORMAT
 :scryptenc-repo-url: {project-url}/tree/develop/crates/scryptenc
 :scryptenc-badge: {shields-url}/crates/v/scryptenc?style=for-the-badge&logo=rust
 :scryptenc-crates-io: {crates-io-crates}/scryptenc
@@ -28,8 +28,6 @@ image:{ci-badge}[CI,link={ci-url}]
 
 *scryptenc-rs* is a file encryption tool and Rust library which implements the
 {format-spec-url}[scrypt encrypted data format].
-
-image::crates/cli/assets/screenshot.webp[Screenshot of rscrypt]
 
 == Crates
 
@@ -62,9 +60,13 @@ https://github.com/sorairolake/scryptenc-rs.git.
 
 Please see link:CONTRIBUTING.adoc[].
 
+== Home page
+
+https://sorairolake.github.io/scryptenc-rs/
+
 == License
 
-Copyright (C) 2022&ndash;2024 Shun Sakai (see link:AUTHORS.adoc[])
+Copyright (C) 2022 Shun Sakai (see link:AUTHORS.adoc[])
 
 . Unless otherwise noted, each file is distributed under the terms of either
   the _Apache License 2.0_ or the _MIT License_.

@@ -21,7 +21,7 @@ use fraction::{Fraction, Zero};
 const LONG_VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
     '\n',
-    "Copyright (C) 2022-2024 Shun Sakai\n",
+    "Copyright (C) 2022 Shun Sakai\n",
     '\n',
     "This program is distributed under the terms of the GNU General Public License\n",
     "v3.0 or later.\n",
@@ -38,11 +38,7 @@ const ENC_AFTER_LONG_HELP: &str = "See `rscrypt-enc(1)` for more details.";
 
 const DEC_AFTER_LONG_HELP: &str = "See `rscrypt-dec(1)` for more details.";
 
-const INFO_AFTER_LONG_HELP: &str = concat!(
-    "The result will be write to standard output.\n",
-    '\n',
-    "See `rscrypt-info(1)` for more details."
-);
+const INFO_AFTER_LONG_HELP: &str = "See `rscrypt-info(1)` for more details.";
 
 #[derive(Debug, Parser)]
 #[command(

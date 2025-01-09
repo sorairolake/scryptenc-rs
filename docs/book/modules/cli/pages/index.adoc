@@ -12,7 +12,7 @@
 :version-url: https://crates.io/crates/scryptenc-cli
 :msrv-badge: {shields-url}/crates/msrv/scryptenc-cli?style=for-the-badge&logo=rust
 :license-badge: {shields-url}/crates/l/scryptenc-cli?style=for-the-badge
-:format-spec-url: {github-url}/Tarsnap/scrypt/blob/1.3.1/FORMAT
+:format-spec-url: {github-url}/Tarsnap/scrypt/blob/1.3.2/FORMAT
 
 image:{ci-badge}[CI,link={ci-url}]
 image:{version-badge}[Version,link={version-url}]
@@ -24,5 +24,3 @@ encrypt and decrypt files using the
 {format-spec-url}[scrypt encrypted data format].
 
 This is a Rust implementation of `scrypt(1)`.
-
-image::screenshot.webp[Screenshot of rscrypt]

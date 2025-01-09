@@ -49,18 +49,19 @@ pub const TAG_SIZE: usize = <HmacSha256 as OutputSizeUser>::OutputSize::USIZE;
 
 /// Version of the scrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-#[non_exhaustive]
-pub enum Version {
+enum Version {
     /// Version 0.
     #[default]
     V0,
 
+    #[allow(dead_code)]
     /// Version 1.
     #[doc(hidden)]
     V1,
 }
 
 impl From<Version> for u8 {
+    #[inline]
     fn from(version: Version) -> Self {
         version as Self
     }
@@ -151,12 +152,14 @@ impl Header {
     }
 
     /// Gets a SHA-256 checksum of this header.
+    #[inline]
     pub fn compute_checksum(&mut self) {
         let result = Sha256::digest(&self.as_bytes()[..48]);
         self.checksum.copy_from_slice(&result[..16]);
     }
 
     /// Verifies a SHA-256 checksum stored in this header.
+    #[inline]
     pub fn verify_checksum(&mut self, checksum: &[u8]) -> Result<()> {
         self.compute_checksum();
         if self.checksum == checksum {
@@ -167,6 +170,7 @@ impl Header {
     }
 
     /// Gets a HMAC-SHA-256 of this header.
+    #[inline]
     pub fn compute_mac(&mut self, key: &HeaderMacKey) {
         let mut mac =
             HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
@@ -199,11 +203,13 @@ impl Header {
     }
 
     /// Returns the scrypt parameters stored in this header.
+    #[inline]
     pub const fn params(&self) -> Params {
         self.params
     }
 
     /// Returns a salt stored in this header.
+    #[inline]
     pub const fn salt(&self) -> Salt {
         self.salt
     }
@@ -221,6 +227,7 @@ impl DerivedKey {
     pub const SIZE: usize = <Aes256Ctr128BE as KeySizeUser>::KeySize::USIZE + U32::USIZE;
 
     /// Creates a new `DerivedKey`.
+    #[inline]
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
         let encrypt = *Aes256Ctr128BEKey::from_slice(&dk[..32]);
         let mac = *HmacSha256Key::from_slice(&dk[32..]);
@@ -228,11 +235,13 @@ impl DerivedKey {
     }
 
     /// Returns the key for encrypted.
+    #[inline]
     pub const fn encrypt(&self) -> Aes256Ctr128BEKey {
         self.encrypt
     }
 
     /// Returns the key for a MAC.
+    #[inline]
     pub const fn mac(&self) -> HmacSha256Key {
         self.mac
     }
