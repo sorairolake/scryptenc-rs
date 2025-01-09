@@ -5,7 +5,7 @@
 = rscrypt-dec(1)
 // Specify in UTC.
 :docdate: 2024-08-02
-:revnumber: 0.7.13
+:revnumber: 0.7.14
 :doctype: manpage
 :mansource: rscrypt {revnumber}
 :manmanual: General Commands Manual
