@@ -57,8 +57,8 @@ serde_test = "1.0.177"
 [features]
 default = ["std"]
 alloc = []
-std = ["alloc", "hmac/std", "scrypt/std"]
 serde = ["dep:serde"]
+std = ["alloc", "hmac/std", "scrypt/std"]
 
 [lints]
 workspace = true
