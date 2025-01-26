@@ -5,7 +5,7 @@
 //! The `scryptenc` crate is an implementation of the [scrypt encrypted data
 //! format].
 //!
-//! This crate supports the scrypt version 0 file format.
+//! This crate supports version 1 of the scrypt format.
 //!
 //! # Examples
 //!
