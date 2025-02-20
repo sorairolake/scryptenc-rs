@@ -6,10 +6,4 @@
 current_version = "0.9.10"
 
 [[tool.bumpversion.files]]
-filename = "crates/scryptenc/README.md"
-
-[[tool.bumpversion.files]]
 filename = "crates/scryptenc/src/lib.rs"
-
-[[tool.bumpversion.files]]
-filename = "docs/book/modules/lib/pages/usage.adoc"

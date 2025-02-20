@@ -19,11 +19,10 @@ This crate supports version 1 of the scrypt format.
 
 ## Usage
 
-Add this to your `Cargo.toml`:
+Run the following command in your project directory:
 
-```toml
-[dependencies]
-scryptenc = "0.9.10"
+```sh
+cargo add scryptenc
 ```
 
 ### Crate features

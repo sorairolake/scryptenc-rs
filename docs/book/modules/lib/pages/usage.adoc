@@ -4,11 +4,10 @@
 
 = Usage
 
-.Add this to your `Cargo.toml`
-[source,toml]
+.Run the following command in your project directory
+[source,sh]
 ----
-[dependencies]
-scryptenc = "0.9.10"
+cargo add scryptenc
 ----
 
 == Crate features
