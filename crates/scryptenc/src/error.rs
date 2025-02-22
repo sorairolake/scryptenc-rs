@@ -331,19 +331,25 @@ mod tests {
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
-        assert!(Error::InvalidParams(InvalidParams)
-            .source()
-            .unwrap()
-            .is::<InvalidParams>());
+        assert!(
+            Error::InvalidParams(InvalidParams)
+                .source()
+                .unwrap()
+                .is::<InvalidParams>()
+        );
         assert!(Error::InvalidChecksum.source().is_none());
-        assert!(Error::InvalidHeaderMac(MacError)
-            .source()
-            .unwrap()
-            .is::<MacError>());
-        assert!(Error::InvalidMac(MacError)
-            .source()
-            .unwrap()
-            .is::<MacError>());
+        assert!(
+            Error::InvalidHeaderMac(MacError)
+                .source()
+                .unwrap()
+                .is::<MacError>()
+        );
+        assert!(
+            Error::InvalidMac(MacError)
+                .source()
+                .unwrap()
+                .is::<MacError>()
+        );
     }
 
     #[test]

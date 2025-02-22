@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-use scryptenc::{scrypt::Params, Decryptor, Encryptor, HEADER_SIZE, TAG_SIZE};
+use scryptenc::{Decryptor, Encryptor, HEADER_SIZE, TAG_SIZE, scrypt::Params};
 use sha2::{Digest, Sha256};
 
 const PASSPHRASE: &str = "passphrase";

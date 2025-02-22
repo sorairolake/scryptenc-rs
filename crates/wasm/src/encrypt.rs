@@ -5,7 +5,7 @@
 //! Encrypts to the scrypt encrypted data format.
 
 use scryptenc::scrypt::Params;
-use wasm_bindgen::{prelude::wasm_bindgen, JsError};
+use wasm_bindgen::{JsError, prelude::wasm_bindgen};
 
 /// Encrypts `plaintext` and into a newly allocated `Uint8Array`.
 ///

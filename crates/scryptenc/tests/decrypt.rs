@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use scryptenc::{
-    hmac::digest::MacError, scrypt::errors::InvalidParams, Decryptor, Error, HEADER_SIZE, TAG_SIZE,
+    Decryptor, Error, HEADER_SIZE, TAG_SIZE, hmac::digest::MacError, scrypt::errors::InvalidParams,
 };
 
 const PASSPHRASE: &str = "passphrase";

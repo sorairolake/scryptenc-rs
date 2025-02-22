@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/scryptenc-v0.9.10\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump MSRV to 1.85.0 ({pull-request-url}/557[#557])
+
 == {compare-url}/scryptenc-v0.9.9\...scryptenc-v0.9.10[0.9.10] - 2025-01-09
 
 === Changed

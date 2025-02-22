@@ -40,7 +40,7 @@ fn p() {
 #[cfg(feature = "serde")]
 #[test]
 fn serialize() {
-    use serde_test::{assert_ser_tokens, Token};
+    use serde_test::{Token, assert_ser_tokens};
 
     assert_ser_tokens(
         &Params::new(TEST_DATA_ENC).unwrap(),

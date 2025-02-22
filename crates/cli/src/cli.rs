@@ -13,7 +13,7 @@ use std::{
 
 use anyhow::anyhow;
 use clap::{
-    value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
+    ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint, value_parser,
 };
 use clap_complete::Generator;
 use fraction::{Fraction, Zero};
@@ -305,9 +305,9 @@ pub struct Information {
 
 impl Opt {
     /// Generates shell completion and print it.
-    pub fn print_completion(gen: impl Generator) {
+    pub fn print_completion(generator: impl Generator) {
         clap_complete::generate(
-            gen,
+            generator,
             &mut Self::command(),
             Self::command().get_name(),
             &mut io::stdout(),
@@ -493,30 +493,40 @@ mod tests {
 
     #[test]
     fn from_str_byte_with_invalid_unit() {
-        assert!(Byte::from_str("1048576 A")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'A' is incorrect"));
-        assert!(Byte::from_str("1.0LiB")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'L' is incorrect"));
+        assert!(
+            Byte::from_str("1048576 A")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'A' is incorrect")
+        );
+        assert!(
+            Byte::from_str("1.0LiB")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'L' is incorrect")
+        );
     }
 
     #[test]
     fn from_str_byte_with_nan() {
-        assert!(Byte::from_str("n B")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'n' is not a number"));
-        assert!(Byte::from_str("n")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'n' is not a number"));
-        assert!(Byte::from_str("nMiB")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'n' is not a number"));
+        assert!(
+            Byte::from_str("n B")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'n' is not a number")
+        );
+        assert!(
+            Byte::from_str("n")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'n' is not a number")
+        );
+        assert!(
+            Byte::from_str("nMiB")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'n' is not a number")
+        );
     }
 
     #[test]
@@ -539,22 +549,28 @@ mod tests {
 
     #[test]
     fn from_str_rate_with_invalid_fraction() {
-        assert!(Rate::from_str("RATE")
-            .unwrap_err()
-            .to_string()
-            .contains("Could not parse integer"));
+        assert!(
+            Rate::from_str("RATE")
+                .unwrap_err()
+                .to_string()
+                .contains("Could not parse integer")
+        );
     }
 
     #[test]
     fn from_str_rate_if_out_of_range() {
-        assert!(Rate::from_str("0")
-            .unwrap_err()
-            .to_string()
-            .contains("fraction is 0"));
-        assert!(Rate::from_str("0.51")
-            .unwrap_err()
-            .to_string()
-            .contains("fraction is more than 0.5"));
+        assert!(
+            Rate::from_str("0")
+                .unwrap_err()
+                .to_string()
+                .contains("fraction is 0")
+        );
+        assert!(
+            Rate::from_str("0.51")
+                .unwrap_err()
+                .to_string()
+                .contains("fraction is more than 0.5")
+        );
     }
 
     #[test]
@@ -577,21 +593,29 @@ mod tests {
 
     #[test]
     fn from_str_time_with_invalid_time() {
-        assert!(Time::from_str("NaN")
-            .unwrap_err()
-            .to_string()
-            .contains("expected number at 0"));
-        assert!(Time::from_str("1")
-            .unwrap_err()
-            .to_string()
-            .contains("time unit needed"));
-        assert!(Time::from_str("1a")
-            .unwrap_err()
-            .to_string()
-            .contains(r#"unknown time unit "a""#));
-        assert!(Time::from_str("10000000000000y")
-            .unwrap_err()
-            .to_string()
-            .contains("number is too large"));
+        assert!(
+            Time::from_str("NaN")
+                .unwrap_err()
+                .to_string()
+                .contains("expected number at 0")
+        );
+        assert!(
+            Time::from_str("1")
+                .unwrap_err()
+                .to_string()
+                .contains("time unit needed")
+        );
+        assert!(
+            Time::from_str("1a")
+                .unwrap_err()
+                .to_string()
+                .contains(r#"unknown time unit "a""#)
+        );
+        assert!(
+            Time::from_str("10000000000000y")
+                .unwrap_err()
+                .to_string()
+                .contains("number is too large")
+        );
     }
 }

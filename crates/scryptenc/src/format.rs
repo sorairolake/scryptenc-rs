@@ -8,13 +8,13 @@ use core::mem;
 
 use ctr::cipher::{self, KeySizeUser};
 use hmac::{
-    digest::{
-        typenum::{Unsigned, U32},
-        OutputSizeUser,
-    },
     Mac,
+    digest::{
+        OutputSizeUser,
+        typenum::{U32, Unsigned},
+    },
 };
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng, rngs::StdRng};
 use sha2::{Digest, Sha256};
 
 use crate::{Aes256Ctr128BE, Error, HmacSha256, HmacSha256Key, HmacSha256Output, Params, Result};
@@ -97,7 +97,7 @@ impl Header {
         let magic_number = Self::MAGIC_NUMBER;
         let version = Version::default();
         let params = params.into();
-        let salt = StdRng::from_entropy().gen();
+        let salt = StdRng::from_entropy().r#gen();
         let checksum = Checksum::default();
         let mac = HeaderMacOutput::default();
         Self {

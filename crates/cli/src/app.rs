@@ -4,9 +4,9 @@
 
 use std::path::Path;
 
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 use clap::Parser;
-use scryptenc::{scrypt, Decryptor, Error as ScryptencError};
+use scryptenc::{Decryptor, Error as ScryptencError, scrypt};
 
 use crate::{
     cli::{Command, Opt},
