@@ -24,6 +24,10 @@ default: build
 @test:
     cargo test -p scryptenc -p scryptenc-cli
 
+# Run benchmarks
+@bench:
+    cargo +nightly bench -p scryptenc
+
 # Run the formatter
 @fmt:
     cargo fmt --all
@@ -39,6 +43,10 @@ default: build
 # Apply lint suggestions
 @clippy-fix:
     cargo +nightly clippy --workspace --fix --allow-dirty --allow-staged -- -D warnings
+
+# Build the library package documentation
+@doc $RUSTDOCFLAGS="--cfg docsrs":
+    cargo +nightly doc -p scryptenc --all-features
 
 # Run tests for the Wasm bindings
 @wasm-test:
@@ -86,15 +94,15 @@ publish-wasm: build-wasm
 
 # Increment the version of the library
 @bump-lib part:
-    bump-my-version bump --config-file .bumpversion-lib.toml {{part}}
-    cargo set-version --bump {{part}} -p scryptenc
+    bump-my-version bump --config-file .bumpversion-lib.toml {{ part }}
+    cargo set-version --bump {{ part }} -p scryptenc
 
 # Increment the version of the command-line utility
 @bump-cli part:
-    bump-my-version bump --config-file .bumpversion-cli.toml {{part}}
-    cargo set-version --bump {{part}} -p scryptenc-cli
+    bump-my-version bump --config-file .bumpversion-cli.toml {{ part }}
+    cargo set-version --bump {{ part }} -p scryptenc-cli
 
 # Increment the version of the Wasm bindings
 @bump-wasm part:
-    bump-my-version bump --config-file .bumpversion-wasm.toml {{part}}
-    cargo set-version --bump {{part}} -p scryptenc-wasm
+    bump-my-version bump --config-file .bumpversion-wasm.toml {{ part }}
+    cargo set-version --bump {{ part }} -p scryptenc-wasm
