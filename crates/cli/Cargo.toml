@@ -32,7 +32,7 @@ fraction = { version = "0.15.3", default-features = false }
 humantime = "2.1.0"
 scryptenc = { version = "0.9.10", path = "../scryptenc" }
 serde = { version = "1.0.218", features = ["derive"], optional = true }
-serde_json = { version = "1.0.139", optional = true }
+serde_json = { version = "1.0.140", optional = true }
 sysexits = "0.8.5"
 sysinfo = "0.33.1"
 thiserror = "2.0.11"
