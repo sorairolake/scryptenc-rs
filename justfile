@@ -2,11 +2,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
-alias all := default
 alias lint := clippy
 
 # Run default recipe
-default: build
+@_default:
+    just -l
 
 # Build packages
 @build:
@@ -81,15 +81,13 @@ default: build
     npx antora antora-playbook.yml
 
 # Build the Wasm bindings
-build-wasm $CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1" $CARGO_PROFILE_RELEASE_STRIP="true":
-    #!/usr/bin/env bash
-    cd crates/wasm
+[working-directory("crates/wasm")]
+@build-wasm $CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1" $CARGO_PROFILE_RELEASE_STRIP="true":
     wasm-pack build -s sorairolake -t nodejs --release
 
 # Publish the Wasm bindings
-publish-wasm: build-wasm
-    #!/usr/bin/env bash
-    cd crates/wasm
+[working-directory("crates/wasm")]
+@publish-wasm: build-wasm
     wasm-pack publish -a public
 
 # Increment the version of the library
