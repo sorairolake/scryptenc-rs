@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 == EXIT STATUS
+:sysexits-man-page-url: https://man.openbsd.org/sysexits
 
 *0*::
 
@@ -44,10 +45,5 @@
 
   Decrypting files takes too much resources.
 
-*66*::
-
-  An input file did not exist or was not readable.
-
-*77*::
-
-  You did not have sufficient permission to perform the operation.
+Exit statuses other than these are defined by
+{sysexits-man-page-url}[`<sysexits.h>`].

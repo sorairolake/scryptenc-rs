@@ -4,7 +4,7 @@
 
 = rscrypt(1)
 // Specify in UTC.
-:docdate: 2024-08-02
+:docdate: 2025-03-10
 :revnumber: 0.7.14
 :doctype: manpage
 :mansource: rscrypt {revnumber}
