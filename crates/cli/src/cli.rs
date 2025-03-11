@@ -17,6 +17,7 @@ use clap::{
 };
 use clap_complete::Generator;
 use fraction::{Fraction, Zero};
+use jiff::SignedDuration;
 
 const LONG_VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
@@ -436,8 +437,8 @@ impl FromStr for Time {
     type Err = anyhow::Error;
 
     fn from_str(duration: &str) -> anyhow::Result<Self> {
-        match humantime::Duration::from_str(duration) {
-            Ok(d) => Ok(Self(*d)),
+        match SignedDuration::from_str(duration).and_then(Duration::try_from) {
+            Ok(d) => Ok(Self(d)),
             Err(err) => Err(anyhow!("time is not a valid value: {err}")),
         }
     }
@@ -597,25 +598,25 @@ mod tests {
             Time::from_str("NaN")
                 .unwrap_err()
                 .to_string()
-                .contains("expected number at 0")
+                .contains(r#"failed to parse "NaN" in the "friendly" format"#)
         );
         assert!(
             Time::from_str("1")
                 .unwrap_err()
                 .to_string()
-                .contains("time unit needed")
+                .contains(r#"failed to parse "1" in the "friendly" format"#)
         );
         assert!(
             Time::from_str("1a")
                 .unwrap_err()
                 .to_string()
-                .contains(r#"unknown time unit "a""#)
+                .contains(r#"failed to parse "1a" in the "friendly" format"#)
         );
         assert!(
             Time::from_str("10000000000000y")
                 .unwrap_err()
                 .to_string()
-                .contains("number is too large")
+                .contains(r#"failed to parse "10000000000000y" in the "friendly" format"#)
         );
     }
 }
