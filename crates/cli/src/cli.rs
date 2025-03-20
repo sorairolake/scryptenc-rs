@@ -17,7 +17,7 @@ use clap::{
 };
 use clap_complete::Generator;
 use fraction::{Fraction, Zero};
-use jiff::SignedDuration;
+use jiff::Span;
 
 const LONG_VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
@@ -437,7 +437,7 @@ impl FromStr for Time {
     type Err = anyhow::Error;
 
     fn from_str(duration: &str) -> anyhow::Result<Self> {
-        match SignedDuration::from_str(duration).and_then(Duration::try_from) {
+        match Span::from_str(duration).and_then(Duration::try_from) {
             Ok(d) => Ok(Self(d)),
             Err(err) => Err(anyhow!("time is not a valid value: {err}")),
         }
