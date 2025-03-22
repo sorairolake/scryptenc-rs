@@ -22,7 +22,7 @@
 :scryptenc-wasm-repo-url: {project-url}/tree/develop/crates/wasm
 :scryptenc-wasm-badge: {shields-url}/npm/v/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge&logo=npm
 :scryptenc-wasm-npm: {npm-package}/@sorairolake/scryptenc-wasm
-:reuse-spec-url: https://reuse.software/spec/
+:reuse-spec-url: https://reuse.software/spec-3.3/
 
 image:{ci-badge}[CI,link={ci-url}]
 
