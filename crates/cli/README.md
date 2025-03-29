@@ -16,6 +16,8 @@ encrypt and decrypt files using the [scrypt encrypted data format].
 
 This is a Rust implementation of `scrypt(1)`.
 
+![Demo animation](assets/demo.gif)
+
 ## Installation
 
 ### From source

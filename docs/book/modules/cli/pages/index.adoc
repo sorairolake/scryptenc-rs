@@ -24,3 +24,5 @@ encrypt and decrypt files using the
 {format-spec-url}[scrypt encrypted data format].
 
 This is a Rust implementation of `scrypt(1)`.
+
+image::demo.gif[Demo animation]

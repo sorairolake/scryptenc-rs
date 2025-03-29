@@ -25,6 +25,8 @@ image:{ci-badge}[CI,link={ci-url}]
 *scryptenc-rs* is a file encryption tool and Rust library which implements the
 {format-spec-url}[scrypt encrypted data format].
 
+image::demo.gif[Demo animation]
+
 == Crates
 
 |===

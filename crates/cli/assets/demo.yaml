@@ -1,0 +1,49 @@
+# SPDX-FileCopyrightText: 2025 Shun Sakai
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+settings:
+  width: 120
+  height: 30
+  title: rscrypt demo
+
+instructions:
+  - !Command
+    command: echo "Hello, world!" > file.txt
+    hidden: true
+
+  - !Marker Encrypt a file
+  - !Command
+    command: cat file.txt
+  - !Wait 1s
+  - !Command
+    command: echo "passphrase" | rscrypt enc --log-n 17 -r 8 -p 1 --passphrase-from-stdin file.txt > file.txt.scrypt
+  - !Wait 1s
+  - !Command
+    command: file file.txt*
+  - !Wait 1s
+  - !Command
+    command: hexyl file.txt.scrypt
+  - !Wait 3s
+  - !Clear
+
+  - !Marker Print the encryption parameters
+  - !Command
+    command: rscrypt info -j file.txt.scrypt | jq
+  - !Wait 3s
+  - !Clear
+
+  - !Marker Decrypt a file
+  - !Command
+    command: echo "password" | rscrypt dec --passphrase-from-stdin file.txt.scrypt > /dev/null
+  - !Wait 1s
+  - !Command
+    command: echo "passphrase" | rscrypt dec --passphrase-from-stdin file.txt.scrypt > file.txt.dec
+  - !Wait 1s
+  - !Command
+    command: diff -s file.txt file.txt.dec
+  - !Wait 3s
+
+  - !Command
+    command: git clean -f
+    hidden: true

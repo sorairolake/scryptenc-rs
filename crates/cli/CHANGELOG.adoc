@@ -24,6 +24,7 @@ project adheres to https://semver.org/[Semantic Versioning].
 === Changed
 
 * Bump MSRV to 1.85.0 ({pull-request-url}/557[#557])
+* Restore demo animation ({pull-request-url}/581[#581])
 
 == {compare-url}/scryptenc-cli-v0.7.13\...scryptenc-cli-v0.7.14[0.7.14] - 2025-01-09
 
