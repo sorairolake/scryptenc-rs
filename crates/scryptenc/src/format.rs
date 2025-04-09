@@ -41,10 +41,36 @@ type HeaderMacKey = HmacSha256Key;
 type Aes256Ctr128BEKey = cipher::Key<Aes256Ctr128BE>;
 
 /// The number of bytes of the header.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(scryptenc::HEADER_SIZE, 96);
+///
+/// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
+/// let plaintext = include_bytes!("../tests/data/data.txt");
+/// assert_eq!(
+///     scryptenc::HEADER_SIZE,
+///     ciphertext.len() - (plaintext.len() + scryptenc::TAG_SIZE)
+/// );
+/// ```
 pub const HEADER_SIZE: usize = Header::SIZE;
 
 /// The number of bytes of the MAC (authentication tag) of the scrypt encrypted
 /// data format.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(scryptenc::TAG_SIZE, 32);
+///
+/// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
+/// let plaintext = include_bytes!("../tests/data/data.txt");
+/// assert_eq!(
+///     scryptenc::TAG_SIZE,
+///     ciphertext.len() - (scryptenc::HEADER_SIZE + plaintext.len())
+/// );
+/// ```
 pub const TAG_SIZE: usize = <HmacSha256 as OutputSizeUser>::OutputSize::USIZE;
 
 /// Version of the scrypt encrypted data format.
