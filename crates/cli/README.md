@@ -118,11 +118,6 @@ Please see the following:
 The upstream repository is available at
 <https://github.com/sorairolake/scryptenc-rs.git>.
 
-The source code is also available at:
-
-- <https://gitlab.com/sorairolake/scryptenc-rs.git>
-- <https://codeberg.org/sorairolake/scryptenc-rs.git>
-
 ## Changelog
 
 Please see [CHANGELOG.adoc].
