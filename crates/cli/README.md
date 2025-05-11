@@ -86,7 +86,7 @@ Output:
 
 ### Generate shell completion
 
-`--generate-completion` option generates shell completions to standard output.
+`completion` subcommand generates shell completions to standard output.
 
 The following shells are supported:
 
@@ -100,7 +100,7 @@ The following shells are supported:
 Example:
 
 ```sh
-rscrypt --generate-completion bash > rscrypt.bash
+rscrypt completion bash > rscrypt.bash
 ```
 
 ## Command-line options
@@ -111,6 +111,7 @@ Please see the following:
 - [`rscrypt-enc(1)`]
 - [`rscrypt-dec(1)`]
 - [`rscrypt-info(1)`]
+- [`rscrypt-completion(1)`]
 - [`rscrypt-help(1)`]
 
 ## Source code
@@ -162,6 +163,7 @@ licensing information.
 [`rscrypt-enc(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-enc.1.html
 [`rscrypt-dec(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-dec.1.html
 [`rscrypt-info(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-info.1.html
+[`rscrypt-completion(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-completion.1.html
 [`rscrypt-help(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-help.1.html
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc

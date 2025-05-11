@@ -41,6 +41,12 @@ const DEC_AFTER_LONG_HELP: &str = "See `rscrypt-dec(1)` for more details.";
 
 const INFO_AFTER_LONG_HELP: &str = "See `rscrypt-info(1)` for more details.";
 
+const COMPLETION_AFTER_LONG_HELP: &str = concat!(
+    "The completion is output to standard output.\n",
+    '\n',
+    "See `rscrypt-completion(1)` for more details."
+);
+
 #[derive(Debug, Parser)]
 #[command(
     name("rscrypt"),
@@ -49,19 +55,11 @@ const INFO_AFTER_LONG_HELP: &str = "See `rscrypt-info(1)` for more details.";
     about,
     max_term_width(100),
     propagate_version(true),
-    after_long_help(AFTER_LONG_HELP),
-    arg_required_else_help(true),
-    args_conflicts_with_subcommands(true)
+    after_long_help(AFTER_LONG_HELP)
 )]
 pub struct Opt {
-    /// Generate shell completion.
-    ///
-    /// The completion is output to standard output.
-    #[arg(long, value_enum, value_name("SHELL"))]
-    pub generate_completion: Option<Shell>,
-
     #[command(subcommand)]
-    pub command: Option<Command>,
+    pub command: Command,
 }
 
 #[derive(Debug, Subcommand)]
@@ -77,6 +75,10 @@ pub enum Command {
     /// Provides information about the encryption parameters.
     #[command(name("info"), after_long_help(INFO_AFTER_LONG_HELP))]
     Information(Information),
+
+    /// Generate shell completion.
+    #[command(after_long_help(COMPLETION_AFTER_LONG_HELP))]
+    Completion(Completion),
 }
 
 #[derive(Args, Debug)]
@@ -302,6 +304,13 @@ pub struct Information {
     /// If "-" is specified, data will be read from standard input.
     #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
     pub input: PathBuf,
+}
+
+#[derive(Args, Debug)]
+pub struct Completion {
+    /// Shell to generate completion for.
+    #[arg(value_enum, ignore_case(true))]
+    pub shell: Shell,
 }
 
 impl Opt {

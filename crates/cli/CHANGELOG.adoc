@@ -27,6 +27,8 @@ project adheres to https://semver.org/[Semantic Versioning].
 * Restore demo animation ({pull-request-url}/581[#581])
 * Change the license for documents and assets to CC BY 4.0
   ({pull-request-url}/598[#598])
+* Replace `--generate-completion` with `completion` subcommand
+  ({pull-request-url}/610[#610])
 
 == {compare-url}/scryptenc-cli-v0.7.13\...scryptenc-cli-v0.7.14[0.7.14] - 2025-01-09
 
