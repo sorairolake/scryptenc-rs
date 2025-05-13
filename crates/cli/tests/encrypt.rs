@@ -461,27 +461,3 @@ fn encrypt_verbose() {
             "Parameters used: N = 1024; r = 8; p = 1;",
         ));
 }
-
-#[test]
-fn long_version_for_encrypt_command() {
-    utils::command::command()
-        .arg("enc")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_encrypt_command() {
-    utils::command::command()
-        .arg("enc")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/enc-after-long-help.md"
-        )));
-}

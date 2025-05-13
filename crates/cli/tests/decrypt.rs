@@ -321,27 +321,3 @@ fn decrypt_verbose() {
             "Parameters used: N = 1024; r = 8; p = 1;",
         ));
 }
-
-#[test]
-fn long_version_for_decrypt_command() {
-    utils::command::command()
-        .arg("dec")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_decrypt_command() {
-    utils::command::command()
-        .arg("dec")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/dec-after-long-help.md"
-        )));
-}

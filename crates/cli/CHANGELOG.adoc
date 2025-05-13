@@ -29,6 +29,10 @@ project adheres to https://semver.org/[Semantic Versioning].
   ({pull-request-url}/598[#598])
 * Replace `--generate-completion` with `completion` subcommand
   ({pull-request-url}/610[#610])
+* Remove help text for after auto-generated `--help`
+  ({pull-request-url}/616[#616])
+* Make the message for `--version` the same as the message for `-V`
+  ({pull-request-url}/616[#616])
 
 == {compare-url}/scryptenc-cli-v0.7.13\...scryptenc-cli-v0.7.14[0.7.14] - 2025-01-09
 

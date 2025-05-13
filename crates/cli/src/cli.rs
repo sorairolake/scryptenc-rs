@@ -19,43 +19,13 @@ use clap_complete::Generator;
 use fraction::{Fraction, Zero};
 use jiff::Span;
 
-const LONG_VERSION: &str = concat!(
-    env!("CARGO_PKG_VERSION"),
-    '\n',
-    "Copyright (C) 2022 Shun Sakai\n",
-    '\n',
-    "This program is distributed under the terms of the GNU General Public License\n",
-    "v3.0 or later.\n",
-    '\n',
-    "This is free software: you are free to change and redistribute it. There is NO\n",
-    "WARRANTY, to the extent permitted by law.\n",
-    '\n',
-    "Report bugs to <https://github.com/sorairolake/scryptenc-rs/issues>."
-);
-
-const AFTER_LONG_HELP: &str = "See `rscrypt(1)` for more details.";
-
-const ENC_AFTER_LONG_HELP: &str = "See `rscrypt-enc(1)` for more details.";
-
-const DEC_AFTER_LONG_HELP: &str = "See `rscrypt-dec(1)` for more details.";
-
-const INFO_AFTER_LONG_HELP: &str = "See `rscrypt-info(1)` for more details.";
-
-const COMPLETION_AFTER_LONG_HELP: &str = concat!(
-    "The completion is output to standard output.\n",
-    '\n',
-    "See `rscrypt-completion(1)` for more details."
-);
-
 #[derive(Debug, Parser)]
 #[command(
     name("rscrypt"),
     version,
-    long_version(LONG_VERSION),
     about,
     max_term_width(100),
     propagate_version(true),
-    after_long_help(AFTER_LONG_HELP),
     arg_required_else_help(false)
 )]
 pub struct Opt {
@@ -66,19 +36,20 @@ pub struct Opt {
 #[derive(Debug, Subcommand)]
 pub enum Command {
     /// Encrypt files.
-    #[command(name("enc"), after_long_help(ENC_AFTER_LONG_HELP))]
+    #[command(name("enc"))]
     Encrypt(Encrypt),
 
     /// Decrypt files.
-    #[command(name("dec"), after_long_help(DEC_AFTER_LONG_HELP))]
+    #[command(name("dec"))]
     Decrypt(Decrypt),
 
     /// Provides information about the encryption parameters.
-    #[command(name("info"), after_long_help(INFO_AFTER_LONG_HELP))]
+    #[command(name("info"))]
     Information(Information),
 
     /// Generate shell completion.
-    #[command(after_long_help(COMPLETION_AFTER_LONG_HELP))]
+    ///
+    /// The completion is output to standard output.
     Completion(Completion),
 }
 
