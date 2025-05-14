@@ -159,12 +159,12 @@ licensing information.
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/scryptenc-rs/releases
 [BUILD.adoc]: BUILD.adoc
-[`rscrypt(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt.1.html
-[`rscrypt-enc(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-enc.1.html
-[`rscrypt-dec(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-dec.1.html
-[`rscrypt-info(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-info.1.html
-[`rscrypt-completion(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-completion.1.html
-[`rscrypt-help(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-help.1.html
+[`rscrypt(1)`]: docs/man/man1/rscrypt.1.adoc
+[`rscrypt-enc(1)`]: docs/man/man1/rscrypt-enc.1.adoc
+[`rscrypt-dec(1)`]: docs/man/man1/rscrypt-dec.1.adoc
+[`rscrypt-info(1)`]: docs/man/man1/rscrypt-info.1.adoc
+[`rscrypt-completion(1)`]: docs/man/man1/rscrypt-completion.1.adoc
+[`rscrypt-help(1)`]: docs/man/man1/rscrypt-help.1.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [scrypt encryption utility]: https://www.tarsnap.com/scrypt.html
