@@ -4,7 +4,7 @@
 
 = rscrypt-completion(1)
 // Specify in UTC.
-:docdate: 2025-05-13
+:docdate: 2025-05-26
 :revnumber: 0.7.14
 :doctype: manpage
 :mansource: rscrypt {revnumber}
@@ -81,5 +81,4 @@ ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[
 
 == SEE ALSO
 
-*rscrypt*(1), *rscrypt-dec*(1), *rscrypt-enc*(1), *rscrypt-help*(1),
-*rscrypt-info*(1), *scrypt*(1)
+*rscrypt*(1), *rscrypt-dec*(1), *rscrypt-enc*(1), *rscrypt-info*(1), *scrypt*(1)

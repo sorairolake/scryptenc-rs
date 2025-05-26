@@ -4,7 +4,7 @@
 
 = rscrypt(1)
 // Specify in UTC.
-:docdate: 2025-05-12
+:docdate: 2025-05-26
 :revnumber: 0.7.14
 :doctype: manpage
 :mansource: rscrypt {revnumber}
@@ -42,10 +42,6 @@ rscrypt - an utility for encrypt and decrypt files
 *rscrypt-completion*(1)::
 
   Generate shell completion.
-
-*rscrypt-help*(1)::
-
-  Print the help for a command.
 
 == OPTIONS
 

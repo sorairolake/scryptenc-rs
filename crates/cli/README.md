@@ -112,7 +112,6 @@ Please see the following:
 - [`rscrypt-dec(1)`]
 - [`rscrypt-info(1)`]
 - [`rscrypt-completion(1)`]
-- [`rscrypt-help(1)`]
 
 ## Source code
 
@@ -164,7 +163,6 @@ licensing information.
 [`rscrypt-dec(1)`]: ../../docs/man/man1/rscrypt-dec.1.adoc
 [`rscrypt-info(1)`]: ../../docs/man/man1/rscrypt-info.1.adoc
 [`rscrypt-completion(1)`]: ../../docs/man/man1/rscrypt-completion.1.adoc
-[`rscrypt-help(1)`]: ../../docs/man/man1/rscrypt-help.1.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [scrypt encryption utility]: https://www.tarsnap.com/scrypt.html
