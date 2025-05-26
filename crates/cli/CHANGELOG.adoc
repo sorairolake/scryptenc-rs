@@ -34,6 +34,10 @@ project adheres to https://semver.org/[Semantic Versioning].
 * Make the message for `--version` the same as the message for `-V`
   ({pull-request-url}/616[#616])
 
+=== Removed
+
+* Remove `rscrypt-help(1)`
+
 == {compare-url}/scryptenc-cli-v0.7.13\...scryptenc-cli-v0.7.14[0.7.14] - 2025-01-09
 
 === Changed
