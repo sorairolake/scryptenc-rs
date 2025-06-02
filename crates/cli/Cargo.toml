@@ -26,7 +26,7 @@ anyhow.workspace = true
 byte-unit = "5.1.6"
 clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.5.50"
-clap_complete_nushell = "4.5.5"
+clap_complete_nushell = "4.5.6"
 dialoguer.workspace = true
 fraction = { version = "0.15.3", default-features = false }
 jiff = { version = "0.2.14", default-features = false, features = ["std"] }
