@@ -24,6 +24,16 @@ fn basic_encrypt() {
 }
 
 #[test]
+fn infer_subcommand_name_for_encrypt_command() {
+    utils::command::command()
+        .arg("e")
+        .arg("-V")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("rscrypt-enc"));
+}
+
+#[test]
 fn encrypt_if_non_existent_input_file() {
     let command = utils::command::command()
         .arg("enc")

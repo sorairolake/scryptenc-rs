@@ -19,6 +19,16 @@ fn basic_decrypt() {
 }
 
 #[test]
+fn infer_subcommand_name_for_decrypt_command() {
+    utils::command::command()
+        .arg("d")
+        .arg("-V")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("rscrypt-dec"));
+}
+
+#[test]
 fn decrypt_if_non_existent_input_file() {
     let command = utils::command::command()
         .arg("dec")

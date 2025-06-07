@@ -19,6 +19,16 @@ fn basic_information() {
 }
 
 #[test]
+fn infer_subcommand_name_for_information_command() {
+    utils::command::command()
+        .arg("i")
+        .arg("-V")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("rscrypt-info"));
+}
+
+#[test]
 fn information_if_non_existent_input_file() {
     let command = utils::command::command()
         .arg("info")
