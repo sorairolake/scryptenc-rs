@@ -4,8 +4,8 @@
 
 = rscrypt-enc(1)
 // Specify in UTC.
-:docdate: 2024-08-02
-:revnumber: 0.7.14
+:docdate: 2025-05-26
+:revnumber: 0.8.0
 :doctype: manpage
 :mansource: rscrypt {revnumber}
 :manmanual: General Commands Manual
@@ -112,8 +112,7 @@ _OUTFILE_::
 
 *-V*, *--version*::
 
-  Print version number. The long flag (*--version*) will also print the
-  copyright notice, the license notice and where to report bugs.
+  Print version number.
 
 ifndef::site-gen-antora[include::{includedir}/section-exit-status.adoc[]]
 ifdef::site-gen-antora[include::partial$man/man1/include/section-exit-status.adoc[]]
@@ -151,5 +150,5 @@ ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[
 
 == SEE ALSO
 
-*rscrypt*(1), *rscrypt-dec*(1), *rscrypt-help*(1), *rscrypt-info*(1),
+*rscrypt*(1), *rscrypt-completion*(1), *rscrypt-dec*(1), *rscrypt-info*(1),
 *scrypt*(1)

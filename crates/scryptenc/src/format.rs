@@ -8,13 +8,13 @@ use core::mem;
 
 use ctr::cipher::{self, KeySizeUser};
 use hmac::{
-    digest::{
-        typenum::{Unsigned, U32},
-        OutputSizeUser,
-    },
     Mac,
+    digest::{
+        OutputSizeUser,
+        typenum::{U32, Unsigned},
+    },
 };
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng, rngs::StdRng};
 use sha2::{Digest, Sha256};
 
 use crate::{Aes256Ctr128BE, Error, HmacSha256, HmacSha256Key, HmacSha256Output, Params, Result};
@@ -41,10 +41,36 @@ type HeaderMacKey = HmacSha256Key;
 type Aes256Ctr128BEKey = cipher::Key<Aes256Ctr128BE>;
 
 /// The number of bytes of the header.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(scryptenc::HEADER_SIZE, 96);
+///
+/// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
+/// let plaintext = include_bytes!("../tests/data/data.txt");
+/// assert_eq!(
+///     scryptenc::HEADER_SIZE,
+///     ciphertext.len() - (plaintext.len() + scryptenc::TAG_SIZE)
+/// );
+/// ```
 pub const HEADER_SIZE: usize = Header::SIZE;
 
 /// The number of bytes of the MAC (authentication tag) of the scrypt encrypted
 /// data format.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(scryptenc::TAG_SIZE, 32);
+///
+/// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
+/// let plaintext = include_bytes!("../tests/data/data.txt");
+/// assert_eq!(
+///     scryptenc::TAG_SIZE,
+///     ciphertext.len() - (scryptenc::HEADER_SIZE + plaintext.len())
+/// );
+/// ```
 pub const TAG_SIZE: usize = <HmacSha256 as OutputSizeUser>::OutputSize::USIZE;
 
 /// Version of the scrypt encrypted data format.
@@ -97,7 +123,7 @@ impl Header {
         let magic_number = Self::MAGIC_NUMBER;
         let version = Version::default();
         let params = params.into();
-        let salt = StdRng::from_entropy().gen();
+        let salt = StdRng::from_entropy().r#gen();
         let checksum = Checksum::default();
         let mac = HeaderMacOutput::default();
         Self {

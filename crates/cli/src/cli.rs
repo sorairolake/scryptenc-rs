@@ -13,69 +13,46 @@ use std::{
 
 use anyhow::anyhow;
 use clap::{
-    value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
+    ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint, value_parser,
 };
 use clap_complete::Generator;
 use fraction::{Fraction, Zero};
-
-const LONG_VERSION: &str = concat!(
-    env!("CARGO_PKG_VERSION"),
-    '\n',
-    "Copyright (C) 2022 Shun Sakai\n",
-    '\n',
-    "This program is distributed under the terms of the GNU General Public License\n",
-    "v3.0 or later.\n",
-    '\n',
-    "This is free software: you are free to change and redistribute it. There is NO\n",
-    "WARRANTY, to the extent permitted by law.\n",
-    '\n',
-    "Report bugs to <https://github.com/sorairolake/scryptenc-rs/issues>."
-);
-
-const AFTER_LONG_HELP: &str = "See `rscrypt(1)` for more details.";
-
-const ENC_AFTER_LONG_HELP: &str = "See `rscrypt-enc(1)` for more details.";
-
-const DEC_AFTER_LONG_HELP: &str = "See `rscrypt-dec(1)` for more details.";
-
-const INFO_AFTER_LONG_HELP: &str = "See `rscrypt-info(1)` for more details.";
+use jiff::Span;
 
 #[derive(Debug, Parser)]
 #[command(
     name("rscrypt"),
     version,
-    long_version(LONG_VERSION),
     about,
     max_term_width(100),
     propagate_version(true),
-    after_long_help(AFTER_LONG_HELP),
-    arg_required_else_help(true),
+    infer_subcommands(true),
+    arg_required_else_help(false),
     args_conflicts_with_subcommands(true)
 )]
 pub struct Opt {
-    /// Generate shell completion.
-    ///
-    /// The completion is output to standard output.
-    #[arg(long, value_enum, value_name("SHELL"))]
-    pub generate_completion: Option<Shell>,
-
     #[command(subcommand)]
-    pub command: Option<Command>,
+    pub command: Command,
 }
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
     /// Encrypt files.
-    #[command(name("enc"), after_long_help(ENC_AFTER_LONG_HELP))]
+    #[command(name("enc"))]
     Encrypt(Encrypt),
 
     /// Decrypt files.
-    #[command(name("dec"), after_long_help(DEC_AFTER_LONG_HELP))]
+    #[command(name("dec"))]
     Decrypt(Decrypt),
 
     /// Provides information about the encryption parameters.
-    #[command(name("info"), after_long_help(INFO_AFTER_LONG_HELP))]
+    #[command(name("info"))]
     Information(Information),
+
+    /// Generate shell completion.
+    ///
+    /// The completion is output to standard output.
+    Completion(Completion),
 }
 
 #[derive(Args, Debug)]
@@ -303,11 +280,18 @@ pub struct Information {
     pub input: PathBuf,
 }
 
+#[derive(Args, Debug)]
+pub struct Completion {
+    /// Shell to generate completion for.
+    #[arg(value_enum, ignore_case(true))]
+    pub shell: Shell,
+}
+
 impl Opt {
     /// Generates shell completion and print it.
-    pub fn print_completion(gen: impl Generator) {
+    pub fn print_completion(generator: impl Generator) {
         clap_complete::generate(
-            gen,
+            generator,
             &mut Self::command(),
             Self::command().get_name(),
             &mut io::stdout(),
@@ -436,8 +420,8 @@ impl FromStr for Time {
     type Err = anyhow::Error;
 
     fn from_str(duration: &str) -> anyhow::Result<Self> {
-        match humantime::Duration::from_str(duration) {
-            Ok(d) => Ok(Self(*d)),
+        match Span::from_str(duration).and_then(Duration::try_from) {
+            Ok(d) => Ok(Self(d)),
             Err(err) => Err(anyhow!("time is not a valid value: {err}")),
         }
     }
@@ -493,30 +477,40 @@ mod tests {
 
     #[test]
     fn from_str_byte_with_invalid_unit() {
-        assert!(Byte::from_str("1048576 A")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'A' is incorrect"));
-        assert!(Byte::from_str("1.0LiB")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'L' is incorrect"));
+        assert!(
+            Byte::from_str("1048576 A")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'A' is incorrect")
+        );
+        assert!(
+            Byte::from_str("1.0LiB")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'L' is incorrect")
+        );
     }
 
     #[test]
     fn from_str_byte_with_nan() {
-        assert!(Byte::from_str("n B")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'n' is not a number"));
-        assert!(Byte::from_str("n")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'n' is not a number"));
-        assert!(Byte::from_str("nMiB")
-            .unwrap_err()
-            .to_string()
-            .contains("the character 'n' is not a number"));
+        assert!(
+            Byte::from_str("n B")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'n' is not a number")
+        );
+        assert!(
+            Byte::from_str("n")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'n' is not a number")
+        );
+        assert!(
+            Byte::from_str("nMiB")
+                .unwrap_err()
+                .to_string()
+                .contains("the character 'n' is not a number")
+        );
     }
 
     #[test]
@@ -539,22 +533,28 @@ mod tests {
 
     #[test]
     fn from_str_rate_with_invalid_fraction() {
-        assert!(Rate::from_str("RATE")
-            .unwrap_err()
-            .to_string()
-            .contains("Could not parse integer"));
+        assert!(
+            Rate::from_str("RATE")
+                .unwrap_err()
+                .to_string()
+                .contains("Could not parse integer")
+        );
     }
 
     #[test]
     fn from_str_rate_if_out_of_range() {
-        assert!(Rate::from_str("0")
-            .unwrap_err()
-            .to_string()
-            .contains("fraction is 0"));
-        assert!(Rate::from_str("0.51")
-            .unwrap_err()
-            .to_string()
-            .contains("fraction is more than 0.5"));
+        assert!(
+            Rate::from_str("0")
+                .unwrap_err()
+                .to_string()
+                .contains("fraction is 0")
+        );
+        assert!(
+            Rate::from_str("0.51")
+                .unwrap_err()
+                .to_string()
+                .contains("fraction is more than 0.5")
+        );
     }
 
     #[test]
@@ -577,21 +577,29 @@ mod tests {
 
     #[test]
     fn from_str_time_with_invalid_time() {
-        assert!(Time::from_str("NaN")
-            .unwrap_err()
-            .to_string()
-            .contains("expected number at 0"));
-        assert!(Time::from_str("1")
-            .unwrap_err()
-            .to_string()
-            .contains("time unit needed"));
-        assert!(Time::from_str("1a")
-            .unwrap_err()
-            .to_string()
-            .contains(r#"unknown time unit "a""#));
-        assert!(Time::from_str("10000000000000y")
-            .unwrap_err()
-            .to_string()
-            .contains("number is too large"));
+        assert!(
+            Time::from_str("NaN")
+                .unwrap_err()
+                .to_string()
+                .contains(r#"failed to parse "NaN" in the "friendly" format"#)
+        );
+        assert!(
+            Time::from_str("1")
+                .unwrap_err()
+                .to_string()
+                .contains(r#"failed to parse "1" in the "friendly" format"#)
+        );
+        assert!(
+            Time::from_str("1a")
+                .unwrap_err()
+                .to_string()
+                .contains(r#"failed to parse "1a" in the "friendly" format"#)
+        );
+        assert!(
+            Time::from_str("10000000000000y")
+                .unwrap_err()
+                .to_string()
+                .contains(r#"failed to parse "10000000000000y" in the "friendly" format"#)
+        );
     }
 }

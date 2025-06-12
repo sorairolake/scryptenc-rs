@@ -4,13 +4,13 @@
 
 //! Encrypts to the scrypt encrypted data format.
 
-use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
+use aes::cipher::{KeyIvInit, StreamCipher, generic_array::GenericArray};
 use hmac::Mac;
 use scrypt::Params;
 
 use crate::{
+    Aes256Ctr128BE, HEADER_SIZE, HmacSha256, HmacSha256Key, HmacSha256Output, TAG_SIZE,
     format::{DerivedKey, Header},
-    Aes256Ctr128BE, HmacSha256, HmacSha256Key, HmacSha256Output, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Encryptor for the scrypt encrypted data format.
@@ -50,7 +50,7 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// # use scryptenc::{Encryptor, scrypt::Params};
     /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
@@ -96,7 +96,7 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// # use scryptenc::{Encryptor, scrypt::Params};
     /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
@@ -135,7 +135,7 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// # use scryptenc::{Encryptor, scrypt::Params};
     /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
@@ -159,7 +159,7 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// # use scryptenc::{Encryptor, scrypt::Params};
     /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";

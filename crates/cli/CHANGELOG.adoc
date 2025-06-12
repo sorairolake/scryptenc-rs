@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2022 Shun Sakai
 //
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: CC-BY-4.0
 
 = Changelog
 :toc: preamble
@@ -18,6 +18,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
+
+== {compare-url}/scryptenc-cli-v0.7.14\...scryptenc-cli-v0.8.0[0.8.0] - 2025-06-12
+
+=== Changed
+
+* Bump MSRV to 1.85.0 ({pull-request-url}/557[#557])
+* Restore demo animation ({pull-request-url}/581[#581])
+* Change the license for documents and assets to CC BY 4.0
+  ({pull-request-url}/598[#598])
+* Replace `--generate-completion` with `completion` subcommand
+  ({pull-request-url}/610[#610])
+* Remove help text for after auto-generated `--help`
+  ({pull-request-url}/616[#616])
+* Make the message for `--version` the same as the message for `-V`
+  ({pull-request-url}/616[#616])
+* Allow partial matches of subcommand names ({pull-request-url}/626[#626])
+
+=== Removed
+
+* Remove `rscrypt-help(1)`
 
 == {compare-url}/scryptenc-cli-v0.7.13\...scryptenc-cli-v0.7.14[0.7.14] - 2025-01-09
 

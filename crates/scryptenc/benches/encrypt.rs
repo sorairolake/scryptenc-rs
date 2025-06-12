@@ -6,7 +6,7 @@
 
 extern crate test;
 
-use scryptenc::{scrypt::Params, Encryptor};
+use scryptenc::{Encryptor, scrypt::Params};
 use test::Bencher;
 
 const PASSPHRASE: &str = "passphrase";

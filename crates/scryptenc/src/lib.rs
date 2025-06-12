@@ -5,7 +5,7 @@
 //! The `scryptenc` crate is an implementation of the [scrypt encrypted data
 //! format].
 //!
-//! This crate supports the scrypt version 0 file format.
+//! This crate supports version 1 of the scrypt format.
 //!
 //! # Examples
 //!
@@ -14,7 +14,7 @@
 //! ```
 //! # #[cfg(feature = "alloc")]
 //! # {
-//! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+//! use scryptenc::{Decryptor, Encryptor, scrypt::Params};
 //!
 //! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";
@@ -38,7 +38,7 @@
 //! and the `std` crate. Disables the `default` feature to enable this.
 //!
 //! ```
-//! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+//! use scryptenc::{Decryptor, Encryptor, scrypt::Params};
 //!
 //! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";
@@ -62,7 +62,7 @@
 //! ```
 //! # #[cfg(feature = "alloc")]
 //! # {
-//! use scryptenc::{scrypt, Encryptor};
+//! use scryptenc::{Encryptor, scrypt};
 //!
 //! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";
@@ -79,7 +79,7 @@
 //! # }
 //! ```
 //!
-//! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.2/FORMAT
+//! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.3/FORMAT
 
 #![doc(html_root_url = "https://docs.rs/scryptenc/0.9.10/")]
 #![no_std]
@@ -103,23 +103,23 @@ use aes::Aes256;
 use ctr::Ctr128BE;
 pub use hmac;
 use hmac::{
-    digest::{generic_array::GenericArray, typenum::U32, Output},
     Hmac,
+    digest::{Output, generic_array::GenericArray, typenum::U32},
 };
 pub use scrypt;
 use sha2::Sha256;
 
-#[cfg(feature = "alloc")]
-pub use crate::{
-    decrypt::decrypt,
-    encrypt::{encrypt, encrypt_with_params},
-};
 pub use crate::{
     decrypt::Decryptor,
     encrypt::Encryptor,
     error::{Error, Result},
     format::{HEADER_SIZE, TAG_SIZE},
     params::Params,
+};
+#[cfg(feature = "alloc")]
+pub use crate::{
+    decrypt::decrypt,
+    encrypt::{encrypt, encrypt_with_params},
 };
 
 /// A type alias for AES-256-CTR.

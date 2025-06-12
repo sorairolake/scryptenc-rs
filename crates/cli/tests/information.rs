@@ -19,6 +19,16 @@ fn basic_information() {
 }
 
 #[test]
+fn infer_subcommand_name_for_information_command() {
+    utils::command::command()
+        .arg("i")
+        .arg("-V")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("rscrypt-info"));
+}
+
+#[test]
 fn information_if_non_existent_input_file() {
     let command = utils::command::command()
         .arg("info")
@@ -79,28 +89,4 @@ fn information_if_input_file_is_invalid() {
         .stderr(predicate::str::contains(
             "encrypted data is shorter than 128 bytes",
         ));
-}
-
-#[test]
-fn long_version_for_information_command() {
-    utils::command::command()
-        .arg("info")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_information_command() {
-    utils::command::command()
-        .arg("info")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/info-after-long-help.md"
-        )));
 }

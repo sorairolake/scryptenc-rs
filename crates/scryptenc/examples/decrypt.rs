@@ -12,7 +12,7 @@ use std::{
 
 use anyhow::Context;
 use clap::Parser;
-use dialoguer::{theme::ColorfulTheme, Password};
+use dialoguer::{Password, theme::ColorfulTheme};
 use scryptenc::{Decryptor, Error};
 
 #[derive(Debug, Parser)]

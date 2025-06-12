@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2022 Shun Sakai
 
-SPDX-License-Identifier: GPL-3.0-or-later
+SPDX-License-Identifier: CC-BY-4.0
 -->
 
 # rscrypt
@@ -15,6 +15,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
 encrypt and decrypt files using the [scrypt encrypted data format].
 
 This is a Rust implementation of `scrypt(1)`.
+
+![Demo animation](assets/demo.gif)
 
 ## Installation
 
@@ -84,7 +86,7 @@ Output:
 
 ### Generate shell completion
 
-`--generate-completion` option generates shell completions to standard output.
+`completion` subcommand generates shell completions to standard output.
 
 The following shells are supported:
 
@@ -98,7 +100,7 @@ The following shells are supported:
 Example:
 
 ```sh
-rscrypt --generate-completion bash > rscrypt.bash
+rscrypt completion bash > rscrypt.bash
 ```
 
 ## Command-line options
@@ -109,17 +111,12 @@ Please see the following:
 - [`rscrypt-enc(1)`]
 - [`rscrypt-dec(1)`]
 - [`rscrypt-info(1)`]
-- [`rscrypt-help(1)`]
+- [`rscrypt-completion(1)`]
 
 ## Source code
 
 The upstream repository is available at
 <https://github.com/sorairolake/scryptenc-rs.git>.
-
-The source code is also available at:
-
-- <https://gitlab.com/sorairolake/scryptenc-rs.git>
-- <https://codeberg.org/sorairolake/scryptenc-rs.git>
 
 ## Changelog
 
@@ -147,7 +144,7 @@ Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
 2.  Some files are distributed under the terms of the _Creative Commons
     Attribution 4.0 International Public License_.
 
-This project is compliant with version 3.2 of the [_REUSE Specification_]. See
+This project is compliant with version 3.3 of the [_REUSE Specification_]. See
 copyright notices of individual files for more details on copyright and
 licensing information.
 
@@ -157,18 +154,18 @@ licensing information.
 [version-url]: https://crates.io/crates/scryptenc-cli
 [msrv-badge]: https://img.shields.io/crates/msrv/scryptenc-cli?style=for-the-badge&logo=rust
 [license-badge]: https://img.shields.io/crates/l/scryptenc-cli?style=for-the-badge
-[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.2/FORMAT
+[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.3/FORMAT
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/scryptenc-rs/releases
 [BUILD.adoc]: BUILD.adoc
-[`rscrypt(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt.1.html
-[`rscrypt-enc(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-enc.1.html
-[`rscrypt-dec(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-dec.1.html
-[`rscrypt-info(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-info.1.html
-[`rscrypt-help(1)`]: https://sorairolake.github.io/scryptenc-rs/book/cli/man/man1/rscrypt-help.1.html
+[`rscrypt(1)`]: ../../docs/man/man1/rscrypt.1.adoc
+[`rscrypt-enc(1)`]: ../../docs/man/man1/rscrypt-enc.1.adoc
+[`rscrypt-dec(1)`]: ../../docs/man/man1/rscrypt-dec.1.adoc
+[`rscrypt-info(1)`]: ../../docs/man/man1/rscrypt-info.1.adoc
+[`rscrypt-completion(1)`]: ../../docs/man/man1/rscrypt-completion.1.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [scrypt encryption utility]: https://www.tarsnap.com/scrypt.html
 [`scryptenc`]: https://crates.io/crates/scryptenc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
-[_REUSE Specification_]: https://reuse.software/spec/
+[_REUSE Specification_]: https://reuse.software/spec-3.3/

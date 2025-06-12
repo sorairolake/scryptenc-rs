@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use scryptenc::{
-    hmac::digest::MacError, scrypt::errors::InvalidParams, Decryptor, Error, HEADER_SIZE, TAG_SIZE,
+    Decryptor, Error, HEADER_SIZE, TAG_SIZE, hmac::digest::MacError, scrypt::errors::InvalidParams,
 };
 
 const PASSPHRASE: &str = "passphrase";
@@ -33,7 +33,7 @@ fn success_to_vec() {
 fn invalid_output_length() {
     let cipher = Decryptor::new(&TEST_DATA_ENC, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + 1];
-    cipher.decrypt(&mut buf).unwrap();
+    let _ = cipher.decrypt(&mut buf);
 }
 
 #[test]

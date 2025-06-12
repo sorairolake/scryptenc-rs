@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2022 Shun Sakai
 
-SPDX-License-Identifier: Apache-2.0 OR MIT
+SPDX-License-Identifier: CC-BY-4.0
 -->
 
 # scryptenc-rs
@@ -15,15 +15,14 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 **scryptenc-rs** ([`scryptenc`][version-url]) is an implementation of the
 [scrypt encrypted data format].
 
-This crate supports the scrypt version 0 file format.
+This crate supports version 1 of the scrypt format.
 
 ## Usage
 
-Add this to your `Cargo.toml`:
+Run the following command in your project directory:
 
-```toml
-[dependencies]
-scryptenc = "0.9.10"
+```sh
+cargo add scryptenc
 ```
 
 ### Crate features
@@ -33,14 +32,14 @@ scryptenc = "0.9.10"
 Enables features that require an allocator. This is enabled by default (implied
 by `std`).
 
+#### `serde`
+
+Enables serialization support for `Params`.
+
 #### `std`
 
 Enables features that depend on the standard library. This is enabled by
 default.
-
-#### `serde`
-
-Enables serialization support for `Params`.
 
 ### `no_std` support
 
@@ -52,17 +51,12 @@ See the [documentation][docs-url] for more details.
 
 ## Minimum supported Rust version
 
-The minimum supported Rust version (MSRV) of this library is v1.74.0.
+The minimum supported Rust version (MSRV) of this library is v1.85.0.
 
 ## Source code
 
 The upstream repository is available at
 <https://github.com/sorairolake/scryptenc-rs.git>.
-
-The source code is also available at:
-
-- <https://gitlab.com/sorairolake/scryptenc-rs.git>
-- <https://codeberg.org/sorairolake/scryptenc-rs.git>
 
 ## Changelog
 
@@ -83,7 +77,7 @@ Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
 This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
 
-This project is compliant with version 3.2 of the [_REUSE Specification_]. See
+This project is compliant with version 3.3 of the [_REUSE Specification_]. See
 copyright notices of individual files for more details on copyright and
 licensing information.
 
@@ -95,8 +89,8 @@ licensing information.
 [docs-badge]: https://img.shields.io/docsrs/scryptenc?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 [docs-url]: https://docs.rs/scryptenc
 [license-badge]: https://img.shields.io/crates/l/scryptenc?style=for-the-badge
-[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.2/FORMAT
+[scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.3/FORMAT
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
-[_REUSE Specification_]: https://reuse.software/spec/
+[_REUSE Specification_]: https://reuse.software/spec-3.3/

@@ -4,13 +4,13 @@
 
 //! Decrypts from the scrypt encrypted data format.
 
-use aes::cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher};
+use aes::cipher::{KeyIvInit, StreamCipher, generic_array::GenericArray};
 use hmac::Mac;
 
 use crate::{
-    format::{DerivedKey, Header},
-    Aes256Ctr128BE, Error, HmacSha256, HmacSha256Key, HmacSha256Output, Result, HEADER_SIZE,
+    Aes256Ctr128BE, Error, HEADER_SIZE, HmacSha256, HmacSha256Key, HmacSha256Output, Result,
     TAG_SIZE,
+    format::{DerivedKey, Header},
 };
 
 /// Decryptor for the scrypt encrypted data format.

@@ -4,7 +4,7 @@
 
 [package]
 name = "scryptenc-cli"
-version = "0.7.14"
+version = "0.8.0"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -17,8 +17,6 @@ keywords = ["scrypt"]
 categories = ["command-line-utilities"]
 include = ["/LICENSES", "/README.md", "/src"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [[bin]]
 name = "rscrypt"
 path = "src/main.rs"
@@ -27,21 +25,20 @@ path = "src/main.rs"
 anyhow.workspace = true
 byte-unit = "5.1.6"
 clap = { workspace = true, features = ["wrap_help"] }
-clap_complete = "4.5.41"
-clap_complete_nushell = "4.5.5"
+clap_complete = "4.5.54"
+clap_complete_nushell = "4.5.7"
 dialoguer.workspace = true
 fraction = { version = "0.15.3", default-features = false }
-humantime = "2.1.0"
-once_cell = "1.20.2"
+jiff = { version = "0.2.14", default-features = false, features = ["std"] }
 scryptenc = { version = "0.9.10", path = "../scryptenc" }
-serde = { version = "1.0.217", features = ["derive"], optional = true }
-serde_json = { version = "1.0.135", optional = true }
-sysexits = "0.8.5"
-sysinfo = "0.33.1"
-thiserror = "2.0.10"
+serde = { version = "1.0.219", features = ["derive"], optional = true }
+serde_json = { version = "1.0.140", optional = true }
+sysexits = "0.9.0"
+sysinfo = "0.35.2"
+thiserror = "2.0.12"
 
 [dev-dependencies]
-assert_cmd = "2.0.16"
+assert_cmd = "2.0.17"
 predicates = "3.1.3"
 
 [features]

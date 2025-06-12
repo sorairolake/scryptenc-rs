@@ -1,1 +1,0 @@
-../../../../../../man/man1/rscrypt-help.1.adoc

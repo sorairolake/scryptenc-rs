@@ -21,8 +21,6 @@ include = ["/LICENSES", "/README.md", "/src"]
 [package.metadata.docs.rs]
 all-features = true
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [[example]]
 name = "decrypt"
 path = "examples/decrypt.rs"
@@ -44,21 +42,21 @@ ctr = "0.9.2"
 hmac = "0.12.1"
 rand = { version = "0.8.5", default-features = false, features = ["getrandom", "std_rng"] }
 scrypt = { version = "0.11.0", default-features = false }
-serde = { version = "1.0.217", default-features = false, features = ["derive"], optional = true }
-sha2 = { version = "0.10.8", default-features = false }
+serde = { version = "1.0.219", default-features = false, features = ["derive"], optional = true }
+sha2 = { version = "0.10.9", default-features = false }
 
 [dev-dependencies]
 anyhow.workspace = true
 clap.workspace = true
 dialoguer.workspace = true
-serde_json = "1.0.135"
+serde_json = "1.0.140"
 serde_test = "1.0.177"
 
 [features]
 default = ["std"]
 alloc = []
-std = ["alloc", "hmac/std", "scrypt/std"]
 serde = ["dep:serde"]
+std = ["alloc", "hmac/std", "scrypt/std"]
 
 [lints]
 workspace = true

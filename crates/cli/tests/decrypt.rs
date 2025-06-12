@@ -19,6 +19,16 @@ fn basic_decrypt() {
 }
 
 #[test]
+fn infer_subcommand_name_for_decrypt_command() {
+    utils::command::command()
+        .arg("d")
+        .arg("-V")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("rscrypt-dec"));
+}
+
+#[test]
 fn decrypt_if_non_existent_input_file() {
     let command = utils::command::command()
         .arg("dec")
@@ -216,7 +226,7 @@ fn invalid_time_for_decrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "time is not a valid value: expected number at 0",
+            r#"failed to parse "NaN" in the "friendly" format"#,
         ));
     utils::command::command()
         .arg("dec")
@@ -229,7 +239,7 @@ fn invalid_time_for_decrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "time is not a valid value: time unit needed",
+            r#"failed to parse "1" in the "friendly" format"#,
         ));
     utils::command::command()
         .arg("dec")
@@ -242,7 +252,7 @@ fn invalid_time_for_decrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            r#"time is not a valid value: unknown time unit "a""#,
+            r#"failed to parse "1a" in the "friendly" format"#,
         ));
     utils::command::command()
         .arg("dec")
@@ -255,7 +265,7 @@ fn invalid_time_for_decrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "time is not a valid value: number is too large",
+            r#"failed to parse "10000000000000y" in the "friendly" format"#,
         ));
 }
 
@@ -320,28 +330,4 @@ fn decrypt_verbose() {
         .stderr(predicate::str::starts_with(
             "Parameters used: N = 1024; r = 8; p = 1;",
         ));
-}
-
-#[test]
-fn long_version_for_decrypt_command() {
-    utils::command::command()
-        .arg("dec")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_decrypt_command() {
-    utils::command::command()
-        .arg("dec")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/dec-after-long-help.md"
-        )));
 }

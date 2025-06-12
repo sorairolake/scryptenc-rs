@@ -50,7 +50,7 @@ rscrypt info -j data.txt.scrypt | jq
 
 == Generate shell completion
 
-`--generate-completion` option generates shell completions to standard output.
+`completion` subcommand generates shell completions to standard output.
 
 .The following shells are supported
 * `bash`
@@ -63,5 +63,5 @@ rscrypt info -j data.txt.scrypt | jq
 .Example
 [source,sh]
 ----
-rscrypt --generate-completion bash > rscrypt.bash
+rscrypt completion bash > rscrypt.bash
 ----
