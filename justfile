@@ -91,16 +91,19 @@ publish-wasm: build-wasm
     wasm-pack publish -a public
 
 # Increment the version of the library
+[working-directory("crates/scryptenc")]
 bump-lib part:
-    bump-my-version bump --config-file .bumpversion-lib.toml {{ part }}
+    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p scryptenc
 
 # Increment the version of the command-line utility
+[working-directory("crates/cli")]
 bump-cli part:
-    bump-my-version bump --config-file .bumpversion-cli.toml {{ part }}
+    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p scryptenc-cli
 
 # Increment the version of the Wasm bindings
+[working-directory("crates/wasm")]
 bump-wasm part:
-    bump-my-version bump --config-file .bumpversion-wasm.toml {{ part }}
+    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p scryptenc-wasm
