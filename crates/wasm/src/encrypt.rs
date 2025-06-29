@@ -12,7 +12,6 @@ use wasm_bindgen::{JsError, prelude::wasm_bindgen};
 /// This uses the recommended scrypt parameters according to the OWASP Password
 /// Storage Cheat Sheet.
 #[must_use]
-#[inline]
 #[wasm_bindgen]
 pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Vec<u8> {
     scryptenc::encrypt(plaintext, passphrase)
@@ -25,7 +24,6 @@ pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Vec<u8> {
 /// # Errors
 ///
 /// Returns an error if the scrypt parameters is invalid.
-#[inline]
 #[wasm_bindgen(js_name = encryptWithParams)]
 pub fn encrypt_with_params(
     plaintext: &[u8],
