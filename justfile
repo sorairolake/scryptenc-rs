@@ -71,6 +71,10 @@ lint-wasm-examples:
 type-check-wasm-examples:
     deno check examples/*.ts
 
+# Build man pages
+build-man:
+    asciidoctor -b manpage docs/man/man1/*.1.adoc
+
 # Run the linter for GitHub Actions workflow files
 lint-github-actions:
     actionlint -verbose
