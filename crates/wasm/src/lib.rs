@@ -4,7 +4,7 @@
 
 //! The `scryptenc-wasm` crate is the Wasm bindings for the `scryptenc` crate.
 
-#![doc(html_root_url = "https://docs.rs/scryptenc-wasm/0.2.4/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc-wasm/0.3.0/")]
 // Lint levels of rustc.
 #![deny(missing_docs)]
 
