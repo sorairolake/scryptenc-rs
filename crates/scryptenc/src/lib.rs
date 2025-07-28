@@ -81,7 +81,7 @@
 //!
 //! [scrypt encrypted data format]: https://github.com/Tarsnap/scrypt/blob/1.3.3/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.9.10/")]
+#![doc(html_root_url = "https://docs.rs/scryptenc/0.10.0/")]
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.

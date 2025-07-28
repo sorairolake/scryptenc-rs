@@ -19,7 +19,7 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/scryptenc-cli-v0.8.0\...HEAD[Unreleased]
+== {compare-url}/scryptenc-cli-v0.8.0\...scryptenc-cli-v0.8.1[0.8.1] - 2025-07-28
 
 === Changed
 

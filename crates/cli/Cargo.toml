@@ -4,7 +4,7 @@
 
 [package]
 name = "scryptenc-cli"
-version = "0.8.0"
+version = "0.8.1"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -30,10 +30,10 @@ clap_complete_nushell = "4.5.8"
 dialoguer.workspace = true
 fraction = { version = "0.15.3", default-features = false }
 jiff = { version = "0.2.15", default-features = false, features = ["std"] }
-scryptenc = { version = "0.9.10", path = "../scryptenc" }
+scryptenc = { version = "0.10.0", path = "../scryptenc" }
 serde = { version = "1.0.219", features = ["derive"], optional = true }
 serde_json = { version = "1.0.141", optional = true }
-sysexits = "0.9.0"
+sysexits = "0.9.1"
 sysinfo = "0.36.1"
 thiserror = "2.0.12"
 
