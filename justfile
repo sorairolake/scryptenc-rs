@@ -57,16 +57,23 @@ build-wasm-examples:
     wasm-pack build -t deno crates/wasm
 
 # Run `deno fmt`
+[working-directory("crates/wasm")]
 fmt-wasm-examples:
-    deno fmt crates/wasm/examples/*.ts
+    deno fmt examples/*.ts
 
 # Run `deno lint`
+[working-directory("crates/wasm")]
 lint-wasm-examples:
-    deno lint crates/wasm/examples/*.ts
+    deno lint examples/*.ts
 
 # Run `deno check`
+[working-directory("crates/wasm")]
 type-check-wasm-examples:
-    deno check crates/wasm/examples/*.ts
+    deno check examples/*.ts
+
+# Build man pages
+build-man:
+    asciidoctor -b manpage docs/man/man1/*.1.adoc
 
 # Run the linter for GitHub Actions workflow files
 lint-github-actions:

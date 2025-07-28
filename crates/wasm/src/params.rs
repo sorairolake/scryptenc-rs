@@ -23,7 +23,6 @@ impl Params {
     /// - The magic number is invalid.
     /// - The version number is the unrecognized scrypt version number.
     /// - The scrypt parameters are invalid.
-    #[inline]
     #[wasm_bindgen(constructor)]
     pub fn new(ciphertext: &[u8]) -> Result<Self, JsError> {
         scryptenc::Params::new(ciphertext)
@@ -34,7 +33,6 @@ impl Params {
     #[allow(clippy::missing_const_for_fn)]
     /// Gets log<sub>2</sub> of the scrypt parameter `N`.
     #[must_use]
-    #[inline]
     #[wasm_bindgen(js_name = logN, getter)]
     pub fn log_n(&self) -> u8 {
         self.0.log_n()
@@ -43,7 +41,6 @@ impl Params {
     #[allow(clippy::missing_const_for_fn)]
     /// Gets `N` parameter.
     #[must_use]
-    #[inline]
     #[wasm_bindgen(getter)]
     pub fn n(&self) -> u64 {
         self.0.n()
@@ -52,7 +49,6 @@ impl Params {
     #[allow(clippy::missing_const_for_fn)]
     /// Gets `r` parameter.
     #[must_use]
-    #[inline]
     #[wasm_bindgen(getter)]
     pub fn r(&self) -> u32 {
         self.0.r()
@@ -61,7 +57,6 @@ impl Params {
     #[allow(clippy::missing_const_for_fn)]
     /// Gets `p` parameter.
     #[must_use]
-    #[inline]
     #[wasm_bindgen(getter)]
     pub fn p(&self) -> u32 {
         self.0.p()

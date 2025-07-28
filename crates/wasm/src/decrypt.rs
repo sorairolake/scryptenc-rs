@@ -20,7 +20,6 @@ use wasm_bindgen::{JsError, prelude::wasm_bindgen};
 /// - The MAC (authentication tag) of the header is invalid.
 /// - The MAC (authentication tag) of the scrypt encrypted data format is
 ///   invalid.
-#[inline]
 #[wasm_bindgen]
 pub fn decrypt(ciphertext: &[u8], passphrase: &[u8]) -> Result<Vec<u8>, JsError> {
     scryptenc::decrypt(ciphertext, passphrase).map_err(JsError::from)

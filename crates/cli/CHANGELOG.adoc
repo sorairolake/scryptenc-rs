@@ -19,6 +19,13 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/scryptenc-cli-v0.8.0\...scryptenc-cli-v0.8.1[0.8.1] - 2025-07-28
+
+=== Changed
+
+* Stop building man pages when compiling a package
+  ({pull-request-url}/657[#657])
+
 == {compare-url}/scryptenc-cli-v0.7.14\...scryptenc-cli-v0.8.0[0.8.0] - 2025-06-12
 
 === Changed
