@@ -5,12 +5,10 @@
 [package]
 name = "scryptenc"
 version = "0.10.0"
-authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 description = "An implementation of the scrypt encrypted data format"
 documentation = "https://docs.rs/scryptenc"
-readme = "README.md"
 homepage.workspace = true
 repository.workspace = true
 license = "Apache-2.0 OR MIT"
