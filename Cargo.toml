@@ -30,8 +30,4 @@ unsafe_code = "forbid"
 
 [profile.release.package.scryptenc-cli]
 codegen-units = 1
-# The `lto` setting cannot be specified yet, see https://github.com/rust-lang/cargo/issues/9330
-# lto = true
-# The `panic` setting cannot be specified yet, see https://github.com/rust-lang/cargo/issues/9330
-# panic = "abort"
 strip = true
