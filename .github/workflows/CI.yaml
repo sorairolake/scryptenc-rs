@@ -200,7 +200,7 @@ jobs:
           components: rustfmt
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
-      - name: Check code formatted
+      - name: Run formatter in check mode
         run: cargo fmt --all -- --check
 
   clippy:
@@ -216,11 +216,11 @@ jobs:
           components: clippy
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
-      - name: Check no lint warnings
+      - name: Run linter
         run: cargo clippy --workspace -- -D warnings
-      - name: Check no lint warnings (all features)
+      - name: Run linter (all features)
         run: cargo clippy --workspace --all-features -- -D warnings
-      - name: Check no lint warnings (no default features)
+      - name: Run linter (no default features)
         run: cargo clippy --workspace --no-default-features -- -D warnings
 
   doc:
@@ -235,7 +235,7 @@ jobs:
           toolchain: stable
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
-      - name: Check no `rustdoc` lint warnings
+      - name: Run linter
         run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude scryptenc-cli --no-deps --document-private-items --all-features
 
   benchmark:
@@ -273,10 +273,10 @@ jobs:
           version: "latest"
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
-      - name: Check code formatted
+      - name: Run formatter in check mode
         run: deno fmt --check deno.jsonc examples/*.ts
         working-directory: crates/wasm
-      - name: Check no lint warnings
+      - name: Run linter
         run: deno lint examples/*.ts
         working-directory: crates/wasm
       - name: Build a package
@@ -295,5 +295,5 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Check files formatted
+      - name: Run formatter in check mode
         run: npx prettier -c "**.{hbs,json,md,yaml,yml}"
