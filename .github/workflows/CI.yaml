@@ -217,11 +217,11 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
       - name: Run linter
-        run: cargo clippy --workspace -- -D warnings
+        run: cargo clippy -- -D warnings
       - name: Run linter (all features)
-        run: cargo clippy --workspace --all-features -- -D warnings
+        run: cargo clippy --all-features -- -D warnings
       - name: Run linter (no default features)
-        run: cargo clippy --workspace --no-default-features -- -D warnings
+        run: cargo clippy --no-default-features -- -D warnings
 
   doc:
     name: Documentation
@@ -236,7 +236,7 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
       - name: Run linter
-        run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude scryptenc-cli --no-deps --document-private-items --all-features
+        run: RUSTDOCFLAGS="-D warnings" cargo doc --exclude scryptenc-cli --no-deps --document-private-items --all-features
 
   benchmark:
     name: Benchmark
