@@ -236,7 +236,7 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
       - name: Run linter
-        run: RUSTDOCFLAGS="-D warnings" cargo doc --exclude scryptenc-cli --no-deps --document-private-items --all-features
+        run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude scryptenc-cli --no-deps --document-private-items --all-features
 
   benchmark:
     name: Benchmark
