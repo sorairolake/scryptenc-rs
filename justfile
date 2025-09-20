@@ -22,7 +22,7 @@ check:
 
 # Run tests
 test:
-    cargo test -p scryptenc -p scryptenc-cli
+    cargo test -p scryptenc -p scryptenc-cli --all-features
 
 # Run benchmarks
 bench:
