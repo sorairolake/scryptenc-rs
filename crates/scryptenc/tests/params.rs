@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use scryptenc::Params;
+#[cfg(feature = "serde")]
+use serde_test::{Token, assert_ser_tokens};
 
 // Generated using `scrypt` version 1.3.1.
 const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.scrypt");
@@ -40,8 +42,6 @@ fn p() {
 #[cfg(feature = "serde")]
 #[test]
 fn serialize() {
-    use serde_test::{Token, assert_ser_tokens};
-
     assert_ser_tokens(
         &Params::new(TEST_DATA_ENC).unwrap(),
         &[

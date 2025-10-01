@@ -6,9 +6,11 @@ mod utils;
 
 use predicates::prelude::predicate;
 
+use crate::utils::command;
+
 #[test]
 fn basic_decrypt() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt.scrypt")
@@ -20,7 +22,7 @@ fn basic_decrypt() {
 
 #[test]
 fn infer_subcommand_name_for_decrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("d")
         .arg("-V")
         .assert()
@@ -30,7 +32,7 @@ fn infer_subcommand_name_for_decrypt_command() {
 
 #[test]
 fn decrypt_if_non_existent_input_file() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("dec")
         .arg("--passphrase-from-stdin")
         .arg("non_existent.txt.scrypt")
@@ -54,7 +56,7 @@ fn decrypt_if_non_existent_input_file() {
 
 #[test]
 fn decrypt_if_output_is_directory() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("dec")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt.scrypt")
@@ -74,7 +76,7 @@ fn decrypt_if_output_is_directory() {
 
 #[test]
 fn decrypt_with_max_memory() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-M")
         .arg("64MiB")
@@ -85,7 +87,7 @@ fn decrypt_with_max_memory() {
         .assert()
         .success()
         .stderr(predicate::str::contains("64 MiB available"));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-M")
         .arg("64.0MiB")
@@ -96,7 +98,7 @@ fn decrypt_with_max_memory() {
         .assert()
         .success()
         .stderr(predicate::str::contains("64 MiB available"));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-M")
         .arg("64.5MiB")
@@ -107,7 +109,7 @@ fn decrypt_with_max_memory() {
         .assert()
         .success()
         .stderr(predicate::str::contains("64.5 MiB available"));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-M")
         .arg("64.56MiB")
@@ -122,7 +124,7 @@ fn decrypt_with_max_memory() {
 
 #[test]
 fn invalid_amount_of_ram_for_decrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-M")
         .arg("1023.99KiB")
@@ -133,7 +135,7 @@ fn invalid_amount_of_ram_for_decrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains("amount of RAM is less than 1 MiB"));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-M")
         .arg("16.01EiB")
@@ -146,7 +148,7 @@ fn invalid_amount_of_ram_for_decrypt_command() {
         .stderr(predicate::str::contains(
             "amount of RAM is not a valid value: the value 16.01 exceeds the valid range",
         ));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-M")
         .arg("BYTE")
@@ -163,7 +165,7 @@ fn invalid_amount_of_ram_for_decrypt_command() {
 
 #[test]
 fn invalid_fraction_of_the_available_ram_for_decrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-m")
         .arg("0")
@@ -174,7 +176,7 @@ fn invalid_fraction_of_the_available_ram_for_decrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains("fraction is 0"));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-m")
         .arg("0.51")
@@ -185,7 +187,7 @@ fn invalid_fraction_of_the_available_ram_for_decrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains("fraction is more than 0.5"));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-m")
         .arg("RATE")
@@ -200,7 +202,7 @@ fn invalid_fraction_of_the_available_ram_for_decrypt_command() {
 
 #[test]
 fn decrypt_with_max_time() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-t")
         .arg("3600s")
@@ -215,7 +217,7 @@ fn decrypt_with_max_time() {
 
 #[test]
 fn invalid_time_for_decrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-t")
         .arg("NaN")
@@ -228,7 +230,7 @@ fn invalid_time_for_decrypt_command() {
         .stderr(predicate::str::contains(
             r#"failed to parse "NaN" in the "friendly" format"#,
         ));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-t")
         .arg("1")
@@ -241,7 +243,7 @@ fn invalid_time_for_decrypt_command() {
         .stderr(predicate::str::contains(
             r#"failed to parse "1" in the "friendly" format"#,
         ));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-t")
         .arg("1a")
@@ -254,7 +256,7 @@ fn invalid_time_for_decrypt_command() {
         .stderr(predicate::str::contains(
             r#"failed to parse "1a" in the "friendly" format"#,
         ));
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-t")
         .arg("10000000000000y")
@@ -271,7 +273,7 @@ fn invalid_time_for_decrypt_command() {
 
 #[test]
 fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("--passphrase-from-stdin")
         .arg("-")
@@ -285,7 +287,7 @@ fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
 
 #[test]
 fn decrypt_if_input_file_is_invalid() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
@@ -303,7 +305,7 @@ fn decrypt_if_input_file_is_invalid() {
 
 #[test]
 fn decrypt_if_passphrase_is_incorrect() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt.scrypt")
@@ -318,7 +320,7 @@ fn decrypt_if_passphrase_is_incorrect() {
 
 #[test]
 fn decrypt_verbose() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("--passphrase-from-stdin")
         .arg("-v")

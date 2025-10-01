@@ -11,6 +11,8 @@ use anyhow::Context;
 use byte_unit::UnitType;
 use fraction::{Fraction, GenericFraction, ToPrimitive};
 use scryptenc::scrypt;
+#[cfg(feature = "json")]
+use serde::Serialize;
 use sysinfo::System;
 use thiserror::Error;
 
@@ -226,7 +228,7 @@ pub fn check(
 
 /// The scrypt parameters used for the encrypted data.
 #[cfg(feature = "json")]
-#[derive(Clone, Copy, Debug, serde::Serialize)]
+#[derive(Clone, Copy, Debug, Serialize)]
 pub struct Params {
     #[serde(rename = "N")]
     n: u64,

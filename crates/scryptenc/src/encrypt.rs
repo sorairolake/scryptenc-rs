@@ -4,6 +4,9 @@
 
 //! Encrypts to the scrypt encrypted data format.
 
+#[cfg(feature = "alloc")]
+use alloc::vec::Vec;
+
 use aes::cipher::{KeyIvInit, StreamCipher, generic_array::GenericArray};
 use hmac::Mac;
 use scrypt::Params;
@@ -129,8 +132,7 @@ impl<'m> Encryptor<'m> {
         inner(self, buf.as_mut());
     }
 
-    /// Encrypts the plaintext and into a newly allocated
-    /// [`Vec`](alloc::vec::Vec).
+    /// Encrypts the plaintext and into a newly allocated [`Vec`].
     ///
     /// # Examples
     ///
@@ -148,7 +150,7 @@ impl<'m> Encryptor<'m> {
     #[cfg(feature = "alloc")]
     #[must_use]
     #[inline]
-    pub fn encrypt_to_vec(&self) -> alloc::vec::Vec<u8> {
+    pub fn encrypt_to_vec(&self) -> Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.encrypt(&mut buf);
         buf
@@ -177,7 +179,7 @@ impl<'m> Encryptor<'m> {
     }
 }
 
-/// Encrypts `plaintext` and into a newly allocated [`Vec`](alloc::vec::Vec).
+/// Encrypts `plaintext` and into a newly allocated [`Vec`].
 ///
 /// This uses the recommended scrypt parameters according to the [OWASP Password
 /// Storage Cheat Sheet] created by [`Params::default`].
@@ -198,13 +200,13 @@ impl<'m> Encryptor<'m> {
 /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#scrypt
 #[cfg(feature = "alloc")]
 #[inline]
-pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> alloc::vec::Vec<u8> {
+pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Vec<u8> {
     Encryptor::new(&plaintext, passphrase).encrypt_to_vec()
 }
 
 #[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified [`Params`] and into a newly
-/// allocated [`Vec`](alloc::vec::Vec).
+/// allocated [`Vec`].
 ///
 /// This is a convenience function for using [`Encryptor::with_params`] and
 /// [`Encryptor::encrypt_to_vec`].
@@ -227,6 +229,6 @@ pub fn encrypt_with_params(
     plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,
     params: Params,
-) -> alloc::vec::Vec<u8> {
+) -> Vec<u8> {
     Encryptor::with_params(&plaintext, passphrase, params).encrypt_to_vec()
 }

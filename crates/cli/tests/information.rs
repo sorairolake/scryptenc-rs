@@ -6,9 +6,11 @@ mod utils;
 
 use predicates::prelude::predicate;
 
+use crate::utils::command;
+
 #[test]
 fn basic_information() {
-    utils::command::command()
+    command::command()
         .arg("info")
         .arg("data/data.txt.scrypt")
         .assert()
@@ -20,7 +22,7 @@ fn basic_information() {
 
 #[test]
 fn infer_subcommand_name_for_information_command() {
-    utils::command::command()
+    command::command()
         .arg("i")
         .arg("-V")
         .assert()
@@ -30,7 +32,7 @@ fn infer_subcommand_name_for_information_command() {
 
 #[test]
 fn information_if_non_existent_input_file() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("info")
         .arg("non_existent.txt.scrypt")
         .assert()
@@ -53,7 +55,7 @@ fn information_if_non_existent_input_file() {
 #[cfg(not(feature = "json"))]
 #[test]
 fn information_command_without_default_feature() {
-    utils::command::command()
+    command::command()
         .arg("info")
         .arg("-j")
         .arg("data/data.txt.scrypt")
@@ -66,7 +68,7 @@ fn information_command_without_default_feature() {
 #[cfg(feature = "json")]
 #[test]
 fn information_as_json() {
-    utils::command::command()
+    command::command()
         .arg("info")
         .arg("-j")
         .arg("data/data.txt.scrypt")
@@ -77,7 +79,7 @@ fn information_as_json() {
 
 #[test]
 fn information_if_input_file_is_invalid() {
-    utils::command::command()
+    command::command()
         .arg("info")
         .arg("data/data.txt")
         .assert()
