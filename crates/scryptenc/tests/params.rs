@@ -4,7 +4,7 @@
 
 use scryptenc::Params;
 #[cfg(feature = "serde")]
-use serde_test::{Token, assert_ser_tokens};
+use serde_test::Token;
 
 // Generated using `scrypt` version 1.3.1.
 const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.scrypt");
@@ -42,7 +42,7 @@ fn p() {
 #[cfg(feature = "serde")]
 #[test]
 fn serialize() {
-    assert_ser_tokens(
+    serde_test::assert_ser_tokens(
         &Params::new(TEST_DATA_ENC).unwrap(),
         &[
             Token::Struct {
