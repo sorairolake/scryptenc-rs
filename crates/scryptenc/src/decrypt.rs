@@ -104,7 +104,7 @@ impl<'c> Decryptor<'c> {
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, *data);
     /// ```
-    pub fn decrypt(&self, buf: &mut (impl AsMut<[u8]> + ?Sized)) -> Result<()> {
+    pub fn decrypt<B: AsMut<[u8]> + ?Sized>(&self, buf: &mut B) -> Result<()> {
         let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
             fn verify_mac(data: &[u8], key: &HmacSha256Key, tag: &HmacSha256Output) -> Result<()> {
                 let mut mac = HmacSha256::new_from_slice(key)

@@ -110,7 +110,7 @@ impl<'m> Encryptor<'m> {
     /// cipher.encrypt(&mut buf);
     /// # assert_ne!(buf.as_slice(), data);
     /// ```
-    pub fn encrypt(&self, buf: &mut (impl AsMut<[u8]> + ?Sized)) {
+    pub fn encrypt<B: AsMut<[u8]> + ?Sized>(&self, buf: &mut B) {
         let inner = |encryptor: &Self, buf: &mut [u8]| {
             fn compute_mac(data: &[u8], key: &HmacSha256Key) -> HmacSha256Output {
                 let mut mac = HmacSha256::new_from_slice(key)
