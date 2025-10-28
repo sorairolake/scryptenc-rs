@@ -130,7 +130,7 @@ jobs:
           fi
           rm -rv rscrypt-*/
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: "rscrypt-${{ needs.get-version.outputs.version }}-${{ matrix.target }}"
           path: "rscrypt-*-*"
