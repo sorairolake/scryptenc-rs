@@ -102,6 +102,7 @@ mod params;
 use aes::Aes256;
 use ctr::Ctr128BE;
 pub use hmac;
+#[allow(deprecated)]
 use hmac::{
     Hmac,
     digest::{Output, generic_array::GenericArray, typenum::U32},
@@ -131,5 +132,6 @@ type HmacSha256 = Hmac<Sha256>;
 /// A type alias for output of HMAC-SHA-256.
 type HmacSha256Output = Output<HmacSha256>;
 
+#[allow(deprecated)]
 /// A type alias for key of HMAC-SHA-256.
 type HmacSha256Key = GenericArray<u8, U32>;

@@ -7,6 +7,7 @@
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 
+#[allow(deprecated)]
 use aes::cipher::{KeyIvInit, StreamCipher, generic_array::GenericArray};
 use hmac::Mac;
 
@@ -65,6 +66,7 @@ impl<'c> Decryptor<'c> {
             header.verify_mac(&dk.mac(), ciphertext[64..HEADER_SIZE].into())?;
             let (ciphertext, mac) =
                 ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
+            #[allow(deprecated)]
             let mac = *HmacSha256Output::from_slice(mac);
             Ok(Self {
                 header,
@@ -115,6 +117,7 @@ impl<'c> Decryptor<'c> {
 
             buf.copy_from_slice(decryptor.ciphertext);
 
+            #[allow(deprecated)]
             let mut cipher = Aes256Ctr128BE::new(&decryptor.dk.encrypt(), &GenericArray::default());
             cipher.apply_keystream(buf);
             let data = [&decryptor.header.as_bytes(), decryptor.ciphertext].concat();

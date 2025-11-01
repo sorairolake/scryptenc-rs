@@ -7,6 +7,7 @@
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 
+#[allow(deprecated)]
 use aes::cipher::{KeyIvInit, StreamCipher, generic_array::GenericArray};
 use hmac::Mac;
 use scrypt::Params;
@@ -124,6 +125,7 @@ impl<'m> Encryptor<'m> {
             let body = &mut buf[bound.0..bound.1];
             body.copy_from_slice(encryptor.plaintext);
 
+            #[allow(deprecated)]
             let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &GenericArray::default());
             cipher.apply_keystream(body);
             let mac = compute_mac(&buf[..bound.1], &encryptor.dk.mac());

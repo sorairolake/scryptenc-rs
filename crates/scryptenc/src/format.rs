@@ -255,7 +255,9 @@ impl DerivedKey {
     /// Creates a new `DerivedKey`.
     #[inline]
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
+        #[allow(deprecated)]
         let encrypt = *Aes256Ctr128BEKey::from_slice(&dk[..32]);
+        #[allow(deprecated)]
         let mac = *HmacSha256Key::from_slice(&dk[32..]);
         Self { encrypt, mac }
     }
