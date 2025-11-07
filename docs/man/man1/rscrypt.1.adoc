@@ -4,7 +4,7 @@
 
 = rscrypt(1)
 // Specify in UTC.
-:docdate: 2025-05-26
+:docdate: 2025-11-07
 :revnumber: 0.8.1
 :doctype: manpage
 :mansource: rscrypt {revnumber}
@@ -14,7 +14,7 @@ ifndef::site-gen-antora[:includedir: ./include]
 
 == NAME
 
-rscrypt - an utility for encrypt and decrypt files
+rscrypt - a command-line utility for encrypt and decrypt files
 
 == SYNOPSIS
 
