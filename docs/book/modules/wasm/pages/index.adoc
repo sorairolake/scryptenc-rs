@@ -9,18 +9,10 @@
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :npm-version-badge: {shields-url}/npm/v/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge&logo=npm
 :npm-version-url: https://www.npmjs.com/package/@sorairolake/scryptenc-wasm
-:crates-version-badge: {shields-url}/crates/v/scryptenc-wasm?style=for-the-badge&logo=rust
-:crates-version-url: https://crates.io/crates/scryptenc-wasm
-:msrv-badge: {shields-url}/crates/msrv/scryptenc-wasm?style=for-the-badge&logo=rust
-:docs-badge: {shields-url}/docsrs/scryptenc-wasm?style=for-the-badge&logo=docsdotrs&label=Docs.rs
-:docs-url: https://docs.rs/scryptenc-wasm
-:license-badge: {shields-url}/crates/l/scryptenc-wasm?style=for-the-badge
+:license-badge: {shields-url}/npm/l/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge
 
 image:{ci-badge}[CI,link={ci-url}]
 image:{npm-version-badge}[npm Version,link={npm-version-url}]
-image:{crates-version-badge}[crates.io Version,link={crates-version-url}]
-image:{msrv-badge}[MSRV]
-image:{docs-badge}[Docs,link={docs-url}]
 image:{license-badge}[License]
 
 *scryptenc-wasm* is the Wasm bindings for the xref:lib:index.adoc[`scryptenc`]

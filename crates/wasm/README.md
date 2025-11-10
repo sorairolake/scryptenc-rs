@@ -8,9 +8,6 @@ SPDX-License-Identifier: CC-BY-4.0
 
 [![CI][ci-badge]][ci-url]
 [![npm Version][npm-version-badge]][npm-version-url]
-[![crates.io Version][crates-version-badge]][crates-version-url]
-![MSRV][msrv-badge]
-[![Docs][docs-badge]][docs-url]
 ![License][license-badge]
 
 **scryptenc-wasm** is the Wasm bindings for the [`scryptenc`] crate.
@@ -75,12 +72,7 @@ licensing information.
 [ci-url]: https://github.com/sorairolake/scryptenc-rs/actions?query=branch%3Adevelop+workflow%3ACI++
 [npm-version-badge]: https://img.shields.io/npm/v/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge&logo=npm
 [npm-version-url]: https://www.npmjs.com/package/@sorairolake/scryptenc-wasm
-[crates-version-badge]: https://img.shields.io/crates/v/scryptenc-wasm?style=for-the-badge&logo=rust
-[crates-version-url]: https://crates.io/crates/scryptenc-wasm
-[msrv-badge]: https://img.shields.io/crates/msrv/scryptenc-wasm?style=for-the-badge&logo=rust
-[docs-badge]: https://img.shields.io/docsrs/scryptenc-wasm?style=for-the-badge&logo=docsdotrs&label=Docs.rs
-[docs-url]: https://docs.rs/scryptenc-wasm
-[license-badge]: https://img.shields.io/crates/l/scryptenc-wasm?style=for-the-badge
+[license-badge]: https://img.shields.io/npm/l/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge
 [`scryptenc`]: https://crates.io/crates/scryptenc
 [`wasm-pack`]: https://rustwasm.github.io/wasm-pack/
 [CHANGELOG.adoc]: https://github.com/sorairolake/scryptenc-rs/blob/develop/crates/wasm/CHANGELOG.adoc
