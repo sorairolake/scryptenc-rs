@@ -11,11 +11,8 @@ import * as command from "@cliffy/command";
 
 import * as scryptenc from "../pkg/scryptenc_wasm.js";
 
-import { VERSION } from "./version.ts";
-
 const { args, options } = await new command.Command()
   .name("decrypt")
-  .version(VERSION)
   .description(
     "An example of decrypting from the scrypt encrypted data format.",
   )

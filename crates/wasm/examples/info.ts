@@ -10,11 +10,8 @@ import * as command from "@cliffy/command";
 
 import * as scryptenc from "../pkg/scryptenc_wasm.js";
 
-import { VERSION } from "./version.ts";
-
 const { args } = await new command.Command()
   .name("info")
-  .version(VERSION)
   .description("An example of reading the scrypt parameters.")
   .arguments("[FILE:file]")
   .parse();

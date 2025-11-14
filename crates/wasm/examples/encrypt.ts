@@ -10,11 +10,8 @@ import * as command from "@cliffy/command";
 
 import * as scryptenc from "../pkg/scryptenc_wasm.js";
 
-import { VERSION } from "./version.ts";
-
 const { args, options } = await new command.Command()
   .name("encrypt")
-  .version(VERSION)
   .description("An example of encrypting to the scrypt encrypted data format.")
   .option("--log-n <VALUE:integer>", "Set the work parameter N to 2^<VALUE>.", {
     default: 17,
