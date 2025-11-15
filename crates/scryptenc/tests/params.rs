@@ -7,7 +7,7 @@ use scryptenc::Params;
 use serde_test::Token;
 
 // Generated using `scrypt` version 1.3.1.
-const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.scrypt");
+static TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.scrypt");
 
 #[test]
 fn success() {

@@ -6,9 +6,9 @@ use wasm_bindgen::JsValue;
 use wasm_bindgen_test::wasm_bindgen_test;
 
 const PASSPHRASE: &[u8] = b"passphrase";
-const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
+static TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 // Generated using `scrypt` version 1.3.1.
-const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.scrypt");
+static TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.scrypt");
 
 #[wasm_bindgen_test]
 fn success() {
