@@ -6,7 +6,7 @@ use scryptenc::{Decryptor, Encryptor, HEADER_SIZE, TAG_SIZE, scrypt::Params};
 use sha2::{Digest, Sha256};
 
 const PASSPHRASE: &str = "passphrase";
-static TEST_DATA: &[u8] = include_bytes!("data/data.txt");
+const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
 #[test]
 fn success() {

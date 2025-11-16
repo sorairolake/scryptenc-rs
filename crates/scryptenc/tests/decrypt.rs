@@ -7,7 +7,7 @@ use scryptenc::{
 };
 
 const PASSPHRASE: &str = "passphrase";
-static TEST_DATA: &[u8] = include_bytes!("data/data.txt");
+const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 // Generated using `scrypt` version 1.3.1.
 static TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.scrypt");
 
