@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/scryptenc-wasm-v0.3.0\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump MSRV to 1.88.0 ({pull-request-url}/744[#744])
+
 == {compare-url}/scryptenc-wasm-v0.2.4\...scryptenc-wasm-v0.3.0[0.3.0] - 2025-07-28
 
 === Changed

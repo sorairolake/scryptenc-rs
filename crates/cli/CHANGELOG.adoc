@@ -25,6 +25,10 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 * Add more archive formats for releases ({pull-request-url}/730[#730])
 
+=== Changed
+
+* Bump MSRV to 1.88.0 ({pull-request-url}/744[#744])
+
 == {compare-url}/scryptenc-cli-v0.8.0\...scryptenc-cli-v0.8.1[0.8.1] - 2025-07-28
 
 === Changed

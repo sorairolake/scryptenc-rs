@@ -112,10 +112,10 @@ fn get_memory_to_use(max_memory: Option<Byte>, max_memory_fraction: Rate) -> u64
     .to_u64()
     .expect("available memory should be an integer");
 
-    if let Some(max_mem) = max_memory.map(|mem| mem.as_u64()) {
-        if max_mem < mem_limit {
-            mem_limit = max_mem;
-        }
+    if let Some(max_mem) = max_memory.map(|mem| mem.as_u64())
+        && max_mem < mem_limit
+    {
+        mem_limit = max_mem;
     }
 
     let min_mem = byte_unit::Byte::MEBIBYTE.into();
