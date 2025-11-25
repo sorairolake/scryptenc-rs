@@ -21,7 +21,7 @@ path = "src/main.rs"
 
 [dependencies]
 anyhow.workspace = true
-byte-unit = "5.1.6"
+byte-unit = "5.2.0"
 clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.5.61"
 clap_complete_nushell = "4.5.10"
