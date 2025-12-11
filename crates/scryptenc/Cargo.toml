@@ -29,7 +29,7 @@ required-features = ["std"]
 
 [[example]]
 name = "info"
-required-features = ["std", "serde"]
+required-features = ["serde", "std"]
 
 [dependencies]
 aes = "0.8.4"
