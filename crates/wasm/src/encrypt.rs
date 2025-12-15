@@ -17,7 +17,6 @@ pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Vec<u8> {
     scryptenc::encrypt(plaintext, passphrase)
 }
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified scrypt parameters and into a newly
 /// allocated `Uint8Array`.
 ///

@@ -36,7 +36,6 @@ pub enum Error {
 }
 
 impl fmt::Display for Error {
-    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::InvalidLength => write!(f, "encrypted data is shorter than 128 bytes"),
@@ -52,7 +51,6 @@ impl fmt::Display for Error {
 
 #[cfg(feature = "std")]
 impl std::error::Error for Error {
-    #[inline]
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
             Self::InvalidParams(err) => Some(err),
@@ -63,7 +61,6 @@ impl std::error::Error for Error {
 }
 
 impl From<InvalidParams> for Error {
-    #[inline]
     fn from(err: InvalidParams) -> Self {
         Self::InvalidParams(err)
     }

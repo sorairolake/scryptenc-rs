@@ -43,7 +43,6 @@ impl<'m> Encryptor<'m> {
     /// ```
     ///
     /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#scrypt
-    #[inline]
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Self {
         Self::with_params(plaintext, passphrase, Params::default())
     }
@@ -151,7 +150,6 @@ impl<'m> Encryptor<'m> {
     /// ```
     #[cfg(feature = "alloc")]
     #[must_use]
-    #[inline]
     pub fn encrypt_to_vec(&self) -> Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.encrypt(&mut buf);
@@ -174,7 +172,6 @@ impl<'m> Encryptor<'m> {
     /// assert_eq!(cipher.out_len(), 142);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn out_len(&self) -> usize {
         assert!(self.plaintext.len() <= (usize::MAX - HEADER_SIZE - TAG_SIZE));
         HEADER_SIZE + self.plaintext.len() + TAG_SIZE
@@ -201,12 +198,10 @@ impl<'m> Encryptor<'m> {
 ///
 /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#scrypt
 #[cfg(feature = "alloc")]
-#[inline]
 pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Vec<u8> {
     Encryptor::new(&plaintext, passphrase).encrypt_to_vec()
 }
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified [`Params`] and into a newly
 /// allocated [`Vec`].
 ///
@@ -226,7 +221,6 @@ pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Vec
 /// # assert_ne!(ciphertext, data);
 /// ```
 #[cfg(feature = "alloc")]
-#[inline]
 pub fn encrypt_with_params(
     plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,

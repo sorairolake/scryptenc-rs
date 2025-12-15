@@ -40,7 +40,6 @@ impl Params {
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
-    #[inline]
     pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
         let inner = |ciphertext: &[u8]| -> Result<Self> {
             let params = Header::parse(ciphertext).map(|h| h.params())?;
@@ -62,7 +61,6 @@ impl Params {
     /// assert_eq!(params.log_n(), 10);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn log_n(&self) -> u8 {
         self.log_n
     }
@@ -80,7 +78,6 @@ impl Params {
     /// assert_eq!(params.n(), 1024);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn n(&self) -> u64 {
         1 << self.log_n
     }
@@ -98,7 +95,6 @@ impl Params {
     /// assert_eq!(params.r(), 8);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn r(&self) -> u32 {
         self.r
     }
@@ -116,14 +112,12 @@ impl Params {
     /// assert_eq!(params.p(), 1);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn p(&self) -> u32 {
         self.p
     }
 }
 
 impl From<Params> for scrypt::Params {
-    #[inline]
     fn from(params: Params) -> Self {
         Self::new(
             params.log_n(),
@@ -136,7 +130,6 @@ impl From<Params> for scrypt::Params {
 }
 
 impl From<scrypt::Params> for Params {
-    #[inline]
     fn from(params: scrypt::Params) -> Self {
         let (log_n, r, p) = (params.log_n(), params.r(), params.p());
         Self { log_n, r, p }
