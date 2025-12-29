@@ -30,7 +30,7 @@ fraction = { version = "0.15.3", default-features = false }
 jiff = { version = "0.2.16", default-features = false, features = ["std"] }
 scryptenc = { path = "../scryptenc", version = "0.10.0" }
 serde = { version = "1.0.228", features = ["derive"], optional = true }
-serde_json = { version = "1.0.146", optional = true }
+serde_json = { version = "1.0.148", optional = true }
 sysexits = "0.10.0"
 sysinfo = "0.37.2"
 thiserror = "2.0.17"
