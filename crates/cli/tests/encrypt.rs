@@ -241,7 +241,7 @@ fn invalid_time_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            r#"failed to parse "NaN" in the "friendly" format"#,
+            r#"failed to parse input in the "friendly" duration format"#,
         ));
     command::command()
         .arg("enc")
@@ -254,7 +254,7 @@ fn invalid_time_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            r#"failed to parse "1" in the "friendly" format"#,
+            r#"failed to parse input in the "friendly" duration format"#,
         ));
     command::command()
         .arg("enc")
@@ -267,7 +267,7 @@ fn invalid_time_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            r#"failed to parse "1a" in the "friendly" format"#,
+            r#"failed to parse input in the "friendly" duration format"#,
         ));
     command::command()
         .arg("enc")
@@ -280,7 +280,7 @@ fn invalid_time_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            r#"failed to parse "10000000000000y" in the "friendly" format"#,
+            r#"failed to parse input in the "friendly" duration format"#,
         ));
 }
 

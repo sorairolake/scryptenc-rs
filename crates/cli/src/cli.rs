@@ -581,25 +581,25 @@ mod tests {
             Time::from_str("NaN")
                 .unwrap_err()
                 .to_string()
-                .contains(r#"failed to parse "NaN" in the "friendly" format"#)
+                .contains(r#"failed to parse input in the "friendly" duration format"#)
         );
         assert!(
             Time::from_str("1")
                 .unwrap_err()
                 .to_string()
-                .contains(r#"failed to parse "1" in the "friendly" format"#)
+                .contains(r#"failed to parse input in the "friendly" duration format"#)
         );
         assert!(
             Time::from_str("1a")
                 .unwrap_err()
                 .to_string()
-                .contains(r#"failed to parse "1a" in the "friendly" format"#)
+                .contains(r#"failed to parse input in the "friendly" duration format"#)
         );
         assert!(
             Time::from_str("10000000000000y")
                 .unwrap_err()
                 .to_string()
-                .contains(r#"failed to parse "10000000000000y" in the "friendly" format"#)
+                .contains(r#"failed to parse input in the "friendly" duration format"#)
         );
     }
 }
