@@ -151,7 +151,7 @@ pub fn run() -> anyhow::Result<()> {
             }
         }
         Command::Information(arg) => {
-            let input = input::read(&arg.input)?;
+            let input = input::read(&arg.file)?;
 
             let params = params::get(&input)?;
             #[cfg(feature = "json")]

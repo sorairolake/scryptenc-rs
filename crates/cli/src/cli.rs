@@ -276,8 +276,8 @@ pub struct Information {
     /// Input file.
     ///
     /// If "-" is specified, data will be read from standard input.
-    #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
-    pub input: PathBuf,
+    #[arg(value_hint(ValueHint::FilePath))]
+    pub file: PathBuf,
 }
 
 #[derive(Args, Debug)]
