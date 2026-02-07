@@ -149,7 +149,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.2
       - name: Check a package
@@ -182,7 +182,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.2
       - name: Run tests
@@ -297,6 +297,6 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - name: Run formatter in check mode
         run: npx prettier -c "**.{hbs,json,md,yaml,yml}"
