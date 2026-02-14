@@ -7,7 +7,6 @@
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 
-#[allow(deprecated)]
 use aes::cipher::{KeyIvInit, StreamCipher, generic_array::GenericArray};
 use hmac::Mac;
 use scrypt::Params;
@@ -47,7 +46,7 @@ impl<'m> Encryptor<'m> {
         Self::with_params(plaintext, passphrase, Params::default())
     }
 
-    #[allow(clippy::missing_panics_doc)]
+    #[expect(clippy::missing_panics_doc)]
     /// Creates a new `Encryptor` with the specified [`Params`].
     ///
     /// # Examples
@@ -124,7 +123,6 @@ impl<'m> Encryptor<'m> {
             let body = &mut buf[bound.0..bound.1];
             body.copy_from_slice(encryptor.plaintext);
 
-            #[allow(deprecated)]
             let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &GenericArray::default());
             cipher.apply_keystream(body);
             let mac = compute_mac(&buf[..bound.1], &encryptor.dk.mac());
@@ -156,7 +154,7 @@ impl<'m> Encryptor<'m> {
         buf
     }
 
-    #[allow(clippy::missing_panics_doc)]
+    #[expect(clippy::missing_panics_doc)]
     /// Returns the number of output bytes of the encrypted data.
     ///
     /// # Examples

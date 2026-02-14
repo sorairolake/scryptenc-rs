@@ -56,7 +56,7 @@ pub enum Command {
 }
 
 #[derive(Args, Debug)]
-#[allow(clippy::struct_excessive_bools)]
+#[expect(clippy::struct_excessive_bools)]
 #[command(
     group(ArgGroup::new("passphrase")),
     group(
@@ -183,7 +183,7 @@ pub struct Encrypt {
 }
 
 #[derive(Args, Debug)]
-#[allow(clippy::struct_excessive_bools)]
+#[expect(clippy::struct_excessive_bools)]
 #[command(
     group(ArgGroup::new("passphrase")),
     group(ArgGroup::new("resources").multiple(true).conflicts_with("force"))
@@ -315,7 +315,7 @@ pub enum Shell {
     /// Nushell.
     Nushell,
 
-    #[allow(clippy::enum_variant_names)]
+    #[expect(clippy::enum_variant_names)]
     /// PowerShell.
     PowerShell,
 

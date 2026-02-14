@@ -80,7 +80,7 @@ enum Version {
     #[default]
     V0,
 
-    #[allow(dead_code)]
+    #[expect(dead_code)]
     /// Version 1.
     #[doc(hidden)]
     V1,
@@ -248,9 +248,7 @@ impl DerivedKey {
 
     /// Creates a new `DerivedKey`.
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
-        #[allow(deprecated)]
         let encrypt = *Aes256Ctr128BEKey::from_slice(&dk[..32]);
-        #[allow(deprecated)]
         let mac = *HmacSha256Key::from_slice(&dk[32..]);
         Self { encrypt, mac }
     }
