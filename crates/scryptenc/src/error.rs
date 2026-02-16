@@ -5,6 +5,8 @@
 //! Error types for this crate.
 
 use core::{fmt, result};
+#[cfg(feature = "std")]
+use std::error;
 
 use hmac::digest::MacError;
 use scrypt::errors::InvalidParams;
@@ -50,8 +52,8 @@ impl fmt::Display for Error {
 }
 
 #[cfg(feature = "std")]
-impl std::error::Error for Error {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+impl error::Error for Error {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match self {
             Self::InvalidParams(err) => Some(err),
             Self::InvalidHeaderMac(err) | Self::InvalidMac(err) => Some(err),
@@ -99,6 +101,8 @@ pub type Result<T> = result::Result<T, Error>;
 #[cfg(test)]
 mod tests {
     use core::any;
+    #[cfg(feature = "std")]
+    use std::error::Error as _;
 
     use super::*;
 
@@ -325,8 +329,6 @@ mod tests {
     #[cfg(feature = "std")]
     #[test]
     fn source() {
-        use std::error::Error as _;
-
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
