@@ -68,7 +68,7 @@ fn success_to_vec() {
     assert_eq!(params.p(), 16);
 
     let plaintext = Decryptor::new(&ciphertext, PASSPHRASE)
-        .and_then(|c| c.decrypt_to_vec())
+        .and_then(Decryptor::decrypt_to_vec)
         .unwrap();
     assert_eq!(plaintext, TEST_DATA);
 }

@@ -109,8 +109,8 @@ impl<'m> Encryptor<'m> {
     /// cipher.encrypt(&mut buf);
     /// # assert_ne!(buf.as_slice(), data);
     /// ```
-    pub fn encrypt<B: AsMut<[u8]> + ?Sized>(&self, buf: &mut B) {
-        let inner = |encryptor: &Self, buf: &mut [u8]| {
+    pub fn encrypt<B: AsMut<[u8]> + ?Sized>(self, buf: &mut B) {
+        let inner = |encryptor: Self, buf: &mut [u8]| {
             fn compute_mac(data: &[u8], key: &HmacSha256Key) -> HmacSha256Output {
                 let mut mac = HmacSha256::new_from_slice(key)
                     .expect("HMAC-SHA-256 key size should be 256 bits");
@@ -148,7 +148,7 @@ impl<'m> Encryptor<'m> {
     /// ```
     #[cfg(feature = "alloc")]
     #[must_use]
-    pub fn encrypt_to_vec(&self) -> Vec<u8> {
+    pub fn encrypt_to_vec(self) -> Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.encrypt(&mut buf);
         buf

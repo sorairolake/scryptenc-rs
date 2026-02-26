@@ -61,7 +61,7 @@ impl Params {
     /// assert_eq!(params.log_n(), 10);
     /// ```
     #[must_use]
-    pub const fn log_n(&self) -> u8 {
+    pub const fn log_n(self) -> u8 {
         self.log_n
     }
 
@@ -78,8 +78,8 @@ impl Params {
     /// assert_eq!(params.n(), 1024);
     /// ```
     #[must_use]
-    pub const fn n(&self) -> u64 {
-        1 << self.log_n
+    pub const fn n(self) -> u64 {
+        1 << self.log_n()
     }
 
     /// Gets `r` parameter.
@@ -95,7 +95,7 @@ impl Params {
     /// assert_eq!(params.r(), 8);
     /// ```
     #[must_use]
-    pub const fn r(&self) -> u32 {
+    pub const fn r(self) -> u32 {
         self.r
     }
 
@@ -112,7 +112,7 @@ impl Params {
     /// assert_eq!(params.p(), 1);
     /// ```
     #[must_use]
-    pub const fn p(&self) -> u32 {
+    pub const fn p(self) -> u32 {
         self.p
     }
 }
