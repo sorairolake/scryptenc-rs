@@ -27,7 +27,7 @@ clap_complete = "4.5.66"
 clap_complete_nushell = "4.5.10"
 dialoguer.workspace = true
 fraction = { version = "0.15.3", default-features = false }
-jiff = { version = "0.2.21", default-features = false, features = ["std"] }
+jiff = { version = "0.2.22", default-features = false, features = ["std"] }
 scryptenc = { path = "../scryptenc", version = "0.10.0" }
 serde = { version = "1.0.228", features = ["derive"], optional = true }
 serde_json = { version = "1.0.149", optional = true }
