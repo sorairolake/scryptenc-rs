@@ -149,21 +149,11 @@ impl Header {
             v => return Err(Error::UnknownVersion(v)),
         };
         let log_n = data[7];
-        let r = u32::from_be_bytes(
-            data[8..12]
-                .try_into()
-                .expect("size of `r` parameter should be 4 bytes"),
-        );
-        let p = u32::from_be_bytes(
-            data[12..16]
-                .try_into()
-                .expect("size of `p` parameter should be 4 bytes"),
-        );
+        let r = u32::from_be_bytes(data[8..12].try_into().unwrap());
+        let p = u32::from_be_bytes(data[12..16].try_into().unwrap());
         let params =
             scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN).map(Params::from)?;
-        let salt = data[16..48]
-            .try_into()
-            .expect("size of salt should be 32 bytes");
+        let salt = data[16..48].try_into().unwrap();
         let checksum = Checksum::default();
         let mac = HeaderMacOutput::default();
         Ok(Self {
@@ -194,16 +184,14 @@ impl Header {
 
     /// Gets a HMAC-SHA-256 of this header.
     pub fn compute_mac(&mut self, key: &HeaderMacKey) {
-        let mut mac =
-            HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
+        let mut mac = HmacSha256::new_from_slice(key).unwrap();
         mac.update(&self.as_bytes()[..64]);
         self.mac.copy_from_slice(&mac.finalize().into_bytes());
     }
 
     /// Verifies a HMAC-SHA-256 stored in this header.
     pub fn verify_mac(&mut self, key: &HeaderMacKey, tag: &HeaderMacOutput) -> Result<()> {
-        let mut mac =
-            HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
+        let mut mac = HmacSha256::new_from_slice(key).unwrap();
         mac.update(&self.as_bytes()[..64]);
         mac.verify(tag).map_err(Error::InvalidHeaderMac)?;
         self.mac.copy_from_slice(tag);

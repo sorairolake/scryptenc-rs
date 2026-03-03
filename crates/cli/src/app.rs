@@ -49,8 +49,7 @@ pub fn run() -> anyhow::Result<()> {
             }?;
 
             let params = if let (Some(log_n), Some(r), Some(p)) = (arg.log_n, arg.r, arg.p) {
-                scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
-                    .expect("encryption parameters should be valid")
+                scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN).unwrap()
             } else {
                 params::new(arg.max_memory, arg.max_memory_fraction, arg.max_time)
             };

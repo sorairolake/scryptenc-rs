@@ -110,7 +110,7 @@ fn get_memory_to_use(max_memory: Option<Byte>, max_memory_fraction: Rate) -> u64
         * U128Fraction::from_fraction(*max_memory_fraction))
     .floor()
     .to_u64()
-    .expect("available memory should be an integer");
+    .unwrap();
 
     if let Some(max_mem) = max_memory.map(|mem| mem.as_u64())
         && max_mem < mem_limit
@@ -127,16 +127,14 @@ fn get_memory_to_use(max_memory: Option<Byte>, max_memory_fraction: Rate) -> u64
 
 /// Returns the number of times Salsa20/8 cores can be executed per second.
 fn get_scrypt_performance() -> u64 {
-    let params = scrypt::Params::new(7, 1, 1, scrypt::Params::RECOMMENDED_LEN)
-        .expect("encryption parameters should be valid");
+    let params = scrypt::Params::new(7, 1, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
     let mut dk = [u8::default(); 1];
 
     let mut i = u64::default();
 
     let start = Instant::now();
     let elapsed = loop {
-        scrypt::scrypt(Default::default(), Default::default(), &params, &mut dk)
-            .expect("derived key size should be non-empty");
+        scrypt::scrypt(Default::default(), Default::default(), &params, &mut dk).unwrap();
 
         i += 512;
 
@@ -146,8 +144,7 @@ fn get_scrypt_performance() -> u64 {
         }
     };
 
-    u64::try_from((u128::from(i) * SECOND.as_nanos()) / elapsed.as_nanos())
-        .expect("executions per second of Salsa20/8 cores should be valid as `u64`")
+    u64::try_from((u128::from(i) * SECOND.as_nanos()) / elapsed.as_nanos()).unwrap()
 }
 
 /// Creates the encryption parameters from resources.
@@ -170,8 +167,7 @@ pub fn new(max_memory: Option<Byte>, max_memory_fraction: Rate, max_time: Time) 
     let mut p = 1;
 
     let max_n = if ops_limit < (u128::from(mem_limit) / 32) {
-        u64::try_from(ops_limit / (u128::from(r) * 4))
-            .expect("`N` parameter should be valid as `u64`")
+        u64::try_from(ops_limit / (u128::from(r) * 4)).unwrap()
     } else {
         mem_limit / (u64::from(r) * 128)
     };
@@ -194,8 +190,7 @@ pub fn new(max_memory: Option<Byte>, max_memory_fraction: Rate, max_time: Time) 
         };
         p = max_r_p / r;
     }
-    scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
-        .expect("encryption parameters should be valid")
+    scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN).unwrap()
 }
 
 /// Checks the encryption parameters.
@@ -212,7 +207,7 @@ pub fn check(
         * U128Fraction::from_fraction(Fraction::from(max_time.as_secs_f64())))
     .floor()
     .to_u128()
-    .expect("operation limits should be an integer");
+    .unwrap();
 
     let n: u64 = 1 << log_n;
     match (

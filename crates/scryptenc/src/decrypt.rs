@@ -58,8 +58,7 @@ impl<'c> Decryptor<'c> {
             // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
             // and the last 256 bits are for HMAC-SHA-256 key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
-            scrypt::scrypt(passphrase, &header.salt(), &header.params().into(), &mut dk)
-                .expect("derived key size should be 64 bytes");
+            scrypt::scrypt(passphrase, &header.salt(), &header.params().into(), &mut dk).unwrap();
             let dk = DerivedKey::new(dk);
 
             header.verify_mac(&dk.mac(), ciphertext[64..HEADER_SIZE].into())?;
@@ -107,8 +106,7 @@ impl<'c> Decryptor<'c> {
     pub fn decrypt<B: AsMut<[u8]> + ?Sized>(self, buf: &mut B) -> Result<()> {
         let inner = |decryptor: Self, buf: &mut [u8]| -> Result<()> {
             fn verify_mac(data: &[u8], key: &HmacSha256Key, tag: &HmacSha256Output) -> Result<()> {
-                let mut mac = HmacSha256::new_from_slice(key)
-                    .expect("HMAC-SHA-256 key size should be 256 bits");
+                let mut mac = HmacSha256::new_from_slice(key).unwrap();
                 mac.update(data);
                 mac.verify(tag).map_err(Error::InvalidMac)
             }

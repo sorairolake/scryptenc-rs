@@ -117,6 +117,7 @@ impl Params {
     }
 }
 
+#[expect(clippy::fallible_impl_from)]
 impl From<Params> for scrypt::Params {
     fn from(params: Params) -> Self {
         Self::new(
@@ -125,7 +126,7 @@ impl From<Params> for scrypt::Params {
             params.p(),
             Self::RECOMMENDED_LEN,
         )
-        .expect("`Params` should be valid as `scrypt::Params`")
+        .unwrap()
     }
 }
 
