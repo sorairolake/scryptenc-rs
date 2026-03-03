@@ -31,7 +31,7 @@ jiff = { version = "0.2.22", default-features = false, features = ["std"] }
 scryptenc = { path = "../scryptenc", version = "0.10.0" }
 serde = { version = "1.0.228", features = ["derive"], optional = true }
 serde_json = { version = "1.0.149", optional = true }
-sysexits = "0.12.0"
+sysexits = "0.13.0"
 sysinfo = "0.38.3"
 thiserror = "2.0.18"
 
