@@ -36,7 +36,7 @@ sysinfo = "0.38.3"
 thiserror = "2.0.18"
 
 [dev-dependencies]
-assert_cmd = "2.1.2"
+assert_cmd = "2.2.0"
 predicates = "3.1.4"
 
 [features]
