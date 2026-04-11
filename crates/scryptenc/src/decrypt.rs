@@ -7,8 +7,8 @@
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 
-use aes::cipher::{KeyIvInit, StreamCipher, generic_array::GenericArray};
-use hmac::Mac;
+use aes::cipher::{KeyIvInit, StreamCipher, array::Array};
+use hmac::{KeyInit, Mac};
 
 use crate::{
     Aes256Ctr128BE, Error, HEADER_SIZE, HmacSha256, HmacSha256Key, HmacSha256Output, Result,
@@ -61,10 +61,10 @@ impl<'c> Decryptor<'c> {
             scrypt::scrypt(passphrase, &header.salt(), &header.params().into(), &mut dk).unwrap();
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk.mac(), ciphertext[64..HEADER_SIZE].into())?;
+            header.verify_mac(&dk.mac(), ciphertext[64..HEADER_SIZE].try_into().unwrap())?;
             let (ciphertext, mac) =
                 ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
-            let mac = *HmacSha256Output::from_slice(mac);
+            let mac = HmacSha256Output::try_from(mac).unwrap();
             Ok(Self {
                 header,
                 dk,
@@ -113,7 +113,7 @@ impl<'c> Decryptor<'c> {
 
             buf.copy_from_slice(decryptor.ciphertext);
 
-            let mut cipher = Aes256Ctr128BE::new(&decryptor.dk.encrypt(), &GenericArray::default());
+            let mut cipher = Aes256Ctr128BE::new(&decryptor.dk.encrypt(), &Array::default());
             cipher.apply_keystream(buf);
             let data = [&decryptor.header.as_bytes(), decryptor.ciphertext].concat();
             verify_mac(&data, &decryptor.dk.mac(), &decryptor.mac)

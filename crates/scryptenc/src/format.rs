@@ -8,7 +8,7 @@ use core::mem;
 
 use ctr::cipher::{self, KeySizeUser};
 use hmac::{
-    Mac,
+    KeyInit, Mac,
     digest::{
         OutputSizeUser,
         typenum::{U32, Unsigned},
@@ -236,8 +236,8 @@ impl DerivedKey {
 
     /// Creates a new `DerivedKey`.
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
-        let encrypt = *Aes256Ctr128BEKey::from_slice(&dk[..32]);
-        let mac = *HmacSha256Key::from_slice(&dk[32..]);
+        let encrypt = Aes256Ctr128BEKey::try_from(&dk[..32]).unwrap();
+        let mac = HmacSha256Key::try_from(&dk[32..]).unwrap();
         Self { encrypt, mac }
     }
 

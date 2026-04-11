@@ -7,8 +7,8 @@
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 
-use aes::cipher::{KeyIvInit, StreamCipher, generic_array::GenericArray};
-use hmac::Mac;
+use aes::cipher::{KeyIvInit, StreamCipher, array::Array};
+use hmac::{KeyInit, Mac};
 use scrypt::Params;
 
 use crate::{
@@ -121,7 +121,7 @@ impl<'m> Encryptor<'m> {
             let body = &mut buf[bound.0..bound.1];
             body.copy_from_slice(encryptor.plaintext);
 
-            let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &GenericArray::default());
+            let mut cipher = Aes256Ctr128BE::new(&encryptor.dk.encrypt(), &Array::default());
             cipher.apply_keystream(body);
             let mac = compute_mac(&buf[..bound.1], &encryptor.dk.mac());
             buf[bound.1..].copy_from_slice(&mac);

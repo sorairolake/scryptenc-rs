@@ -104,7 +104,7 @@ use ctr::Ctr128BE;
 pub use hmac;
 use hmac::{
     Hmac,
-    digest::{Output, generic_array::GenericArray, typenum::U32},
+    digest::{Output, array::Array, typenum::U32},
 };
 pub use scrypt;
 use sha2::Sha256;
@@ -132,4 +132,4 @@ type HmacSha256 = Hmac<Sha256>;
 type HmacSha256Output = Output<HmacSha256>;
 
 /// A type alias for key of HMAC-SHA-256.
-type HmacSha256Key = GenericArray<u8, U32>;
+type HmacSha256Key = Array<u8, U32>;
