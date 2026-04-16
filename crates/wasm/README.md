@@ -32,6 +32,10 @@ wasm-pack build
 
 This will generate build artifacts in the `pkg` directory.
 
+## Examples
+
+Please see the [examples] directory for examples of using this library.
+
 ## Minimum supported Rust version
 
 The minimum supported Rust version (MSRV) of this library is v1.88.0.
@@ -71,6 +75,7 @@ licensing information.
 [license-badge]: https://img.shields.io/npm/l/%40sorairolake%2Fscryptenc-wasm?style=for-the-badge
 [`scryptenc`]: https://crates.io/crates/scryptenc
 [`wasm-pack`]: https://rustwasm.github.io/wasm-pack/
+[examples]: examples
 [CHANGELOG.adoc]: https://github.com/sorairolake/scryptenc-rs/blob/develop/crates/wasm/CHANGELOG.adoc
 [CONTRIBUTING.adoc]: https://github.com/sorairolake/scryptenc-rs/blob/develop/CONTRIBUTING.adoc
 [AUTHORS.adoc]: https://github.com/sorairolake/scryptenc-rs/blob/develop/AUTHORS.adoc
