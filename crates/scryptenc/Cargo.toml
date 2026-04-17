@@ -35,13 +35,14 @@ required-features = ["serde", "std"]
 aes = "0.9.0"
 ctr = "0.10.0"
 hmac = "0.13.0"
-rand = { version = "0.8.5", default-features = false, features = [
-  "getrandom",
-  "std_rng",
-] }
 scrypt = { version = "0.11.0", default-features = false }
 serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 sha2 = { version = "0.11.0", default-features = false }
+
+[dependencies.rand]
+version = "0.8.5"
+default-features = false
+features = ["getrandom", "std_rng"]
 
 [dev-dependencies]
 anyhow.workspace = true
