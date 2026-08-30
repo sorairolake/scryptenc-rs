@@ -102,6 +102,7 @@ impl<'c> Decryptor<'c> {
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let mut buf = [u8::default(); 14];
     /// cipher.decrypt(&mut buf).unwrap();
+    /// assert_eq!(buf, *data);
     /// ```
     pub fn decrypt<B: AsMut<[u8]> + ?Sized>(self, buf: &mut B) -> Result<()> {
         let inner = |decryptor: Self, buf: &mut [u8]| -> Result<()> {
@@ -139,6 +140,7 @@ impl<'c> Decryptor<'c> {
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
+    /// assert_eq!(plaintext, data);
     /// ```
     #[cfg(feature = "alloc")]
     pub fn decrypt_to_vec(self) -> Result<Vec<u8>> {
@@ -192,6 +194,7 @@ impl<'c> Decryptor<'c> {
 /// let passphrase = "passphrase";
 ///
 /// let plaintext = scryptenc::decrypt(ciphertext, passphrase).unwrap();
+/// assert_eq!(plaintext, data);
 /// ```
 #[cfg(feature = "alloc")]
 pub fn decrypt(ciphertext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
