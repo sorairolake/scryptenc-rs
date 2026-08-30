@@ -107,6 +107,7 @@ impl<'m> Encryptor<'m> {
     /// let cipher = Encryptor::with_params(data, passphrase, params);
     /// let mut buf = [u8::default(); 142];
     /// cipher.encrypt(&mut buf);
+    /// assert_ne!(buf.as_slice(), data);
     /// ```
     pub fn encrypt<B: AsMut<[u8]> + ?Sized>(self, buf: &mut B) {
         let inner = |encryptor: Self, buf: &mut [u8]| {
@@ -142,6 +143,7 @@ impl<'m> Encryptor<'m> {
     /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
     /// let cipher = Encryptor::with_params(data, passphrase, params);
     /// let ciphertext = cipher.encrypt_to_vec();
+    /// assert_ne!(ciphertext, data);
     /// ```
     #[cfg(feature = "alloc")]
     #[must_use]
@@ -188,6 +190,7 @@ impl<'m> Encryptor<'m> {
 /// let passphrase = "passphrase";
 ///
 /// let ciphertext = scryptenc::encrypt(data, passphrase);
+/// assert_ne!(ciphertext, data);
 /// ```
 ///
 /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#scrypt
@@ -212,6 +215,7 @@ pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Vec
 ///
 /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
 /// let ciphertext = scryptenc::encrypt_with_params(data, passphrase, params);
+/// assert_ne!(ciphertext, data);
 /// ```
 #[cfg(feature = "alloc")]
 pub fn encrypt_with_params(
