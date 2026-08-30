@@ -34,8 +34,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::Params;
-    /// #
+    /// use scryptenc::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// assert!(Params::new(ciphertext).is_ok());
@@ -53,8 +53,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::Params;
-    /// #
+    /// use scryptenc::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
@@ -70,8 +70,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::Params;
-    /// #
+    /// use scryptenc::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
@@ -87,8 +87,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::Params;
-    /// #
+    /// use scryptenc::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
@@ -104,8 +104,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::Params;
-    /// #
+    /// use scryptenc::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/data.txt.scrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
