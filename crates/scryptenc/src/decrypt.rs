@@ -55,8 +55,9 @@ impl<'c> Decryptor<'c> {
             let mut header = Header::parse(ciphertext)?;
             header.verify_checksum(&ciphertext[48..64])?;
 
-            // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
-            // and the last 256 bits are for HMAC-SHA-256 key.
+            // The derived key size is 64 bytes. The first 256 bits are for
+            // AES-256-CTR key, and the last 256 bits are for
+            // HMAC-SHA-256 key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
             scrypt::scrypt(passphrase, &header.salt(), &header.params().into(), &mut dk).unwrap();
             let dk = DerivedKey::new(dk);
