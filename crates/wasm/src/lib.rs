@@ -19,7 +19,7 @@ pub use crate::{
     params::Params,
 };
 
-#[allow(clippy::missing_const_for_fn)]
+#[expect(clippy::missing_const_for_fn)]
 /// The number of bytes of the header.
 #[must_use]
 #[wasm_bindgen(js_name = headerSize)]
@@ -27,7 +27,7 @@ pub fn header_size() -> usize {
     scryptenc::HEADER_SIZE
 }
 
-#[allow(clippy::missing_const_for_fn)]
+#[expect(clippy::missing_const_for_fn)]
 /// The number of bytes of the MAC (authentication tag) of the scrypt encrypted
 /// data format.
 #[must_use]
