@@ -30,7 +30,7 @@ impl Params {
             .map_err(JsError::from)
     }
 
-    #[allow(clippy::missing_const_for_fn)]
+    #[expect(clippy::missing_const_for_fn)]
     /// Gets log<sub>2</sub> of the scrypt parameter `N`.
     #[must_use]
     #[wasm_bindgen(js_name = logN, getter)]
@@ -38,7 +38,7 @@ impl Params {
         self.0.log_n()
     }
 
-    #[allow(clippy::missing_const_for_fn)]
+    #[expect(clippy::missing_const_for_fn)]
     /// Gets `N` parameter.
     #[must_use]
     #[wasm_bindgen(getter)]
@@ -46,7 +46,7 @@ impl Params {
         self.0.n()
     }
 
-    #[allow(clippy::missing_const_for_fn)]
+    #[expect(clippy::missing_const_for_fn)]
     /// Gets `r` parameter.
     #[must_use]
     #[wasm_bindgen(getter)]
@@ -54,7 +54,7 @@ impl Params {
         self.0.r()
     }
 
-    #[allow(clippy::missing_const_for_fn)]
+    #[expect(clippy::missing_const_for_fn)]
     /// Gets `p` parameter.
     #[must_use]
     #[wasm_bindgen(getter)]
