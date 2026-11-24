@@ -15,6 +15,10 @@ keywords = ["scrypt"]
 categories = ["command-line-utilities"]
 include = ["/LICENSES", "/README.md", "/src"]
 
+[features]
+default = ["json"]
+json = ["dep:serde", "dep:serde_json"]
+
 [[bin]]
 name = "rscrypt"
 path = "src/main.rs"
@@ -38,10 +42,6 @@ thiserror = "2.0.18"
 [dev-dependencies]
 assert_cmd = "2.2.1"
 predicates = "3.1.4"
-
-[features]
-default = ["json"]
-json = ["dep:serde", "dep:serde_json"]
 
 [lints]
 workspace = true
