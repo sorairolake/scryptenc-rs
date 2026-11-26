@@ -117,6 +117,13 @@ impl Params {
     }
 }
 
+impl From<scrypt::Params> for Params {
+    fn from(params: scrypt::Params) -> Self {
+        let (log_n, r, p) = (params.log_n(), params.r(), params.p());
+        Self { log_n, r, p }
+    }
+}
+
 #[expect(clippy::fallible_impl_from)]
 impl From<Params> for scrypt::Params {
     fn from(params: Params) -> Self {
@@ -127,12 +134,5 @@ impl From<Params> for scrypt::Params {
             Self::RECOMMENDED_LEN,
         )
         .unwrap()
-    }
-}
-
-impl From<scrypt::Params> for Params {
-    fn from(params: scrypt::Params) -> Self {
-        let (log_n, r, p) = (params.log_n(), params.r(), params.p());
-        Self { log_n, r, p }
     }
 }
