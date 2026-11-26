@@ -13,6 +13,6 @@ use test::Bencher;
 static TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.scrypt");
 
 #[bench]
-fn params(b: &mut Bencher) {
+fn new(b: &mut Bencher) {
     b.iter(|| Params::new(TEST_DATA_ENC));
 }
