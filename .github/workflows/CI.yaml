@@ -29,10 +29,10 @@ jobs:
           - stable
         include:
           - os-alias: ubuntu
-            os: ubuntu-24.04
+            os: ubuntu-26.04
             target: x86_64-unknown-linux-gnu
           - os-alias: macos
-            os: macos-15
+            os: macos-26
             target: aarch64-apple-darwin
           - os-alias: windows
             os: windows-2025
@@ -80,10 +80,10 @@ jobs:
           - stable
         include:
           - os-alias: ubuntu
-            os: ubuntu-24.04
+            os: ubuntu-26.04
             target: x86_64-unknown-linux-gnu
           - os-alias: macos
-            os: macos-15
+            os: macos-26
             target: aarch64-apple-darwin
           - os-alias: windows
             os: windows-2025
@@ -124,7 +124,7 @@ jobs:
 
   wasm-check:
     name: Check Wasm bindings
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         toolchain-alias:
@@ -149,7 +149,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.9.3
       - name: Check a package
@@ -157,7 +157,7 @@ jobs:
 
   wasm-test:
     name: Test Wasm bindings
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         toolchain-alias:
@@ -182,7 +182,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.9.3
       - name: Run tests
@@ -190,7 +190,7 @@ jobs:
 
   rustfmt:
     name: Rustfmt
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -206,7 +206,7 @@ jobs:
 
   clippy:
     name: Clippy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -226,7 +226,7 @@ jobs:
 
   doc:
     name: Documentation
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -243,7 +243,7 @@ jobs:
 
   benchmark:
     name: Benchmark
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -258,7 +258,7 @@ jobs:
 
   wasm-examples:
     name: Examples for the Wasm bindings
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -290,13 +290,13 @@ jobs:
 
   prettier:
     name: Prettier
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
       - name: Setup Node.js environment
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
       - name: Run formatter in check mode
         run: npx prettier -c "**.{hbs,json,md,yaml,yml}"
